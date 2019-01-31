@@ -10,17 +10,17 @@ import java.util.List;
 
 public class GUI {
 
-	List<Box> boxList = new ArrayList<Box>();
+	List<UIComponent> UIComponentList = new ArrayList<UIComponent>();
 
 	public GUI () {
 	}
 
-	public void addBox(Box box) {
-		boxList.add(box);
+	public void addUIComponent(UIComponent UIComponent) {
+		UIComponentList.add(UIComponent);
 	}
 
-	public List<Box> getBoxList() {
-		return boxList;
+	public List<UIComponent> getUIComponentList() {
+		return UIComponentList;
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -44,31 +44,28 @@ public class GUI {
 		Action actionToPerform = null;
 		int[] m = InputBuffer.getMousePosition();
 
-		for (int i=0; i<3; i++) {
-			System.out.println(i + ": " + InputBuffer.isMousePressed(i) + ", " + InputBuffer.isMouseClicked(i));
-		}
-
 		if (InputBuffer.isMouseClicked(1) > 0) {
-			System.out.println("mouse is clicked " + m[0] + " , " + m[1]);
-			for (Box box : boxList) {
-				if (box.inside(m)) {
-					System.out.println("box " + box.getPosition());
-					for (Button button : box.getButtonList()) {
-						System.out.println("button " + button.getPosition());
-						if (button.inside(m)) {
-							System.out.println("action: " + button.getText());
-							actionToPerform = button.getAction();
-						} else {
-							System.out.println("notin " + m[0] + ", " + m[1] + " " + button.getPosition());
-						}
-					}
-				}
-			}
+			actionToPerform = drillClick(getUIComponentList());
 		}
 
 		if (actionToPerform != null) {
 			actionToPerform.perform(screen, worldState);
 		}
+	}
+
+	private Action drillClick(List<UIComponent> uiComponentList) {
+		if (uiComponentList != null) {
+			for (UIComponent uiComponent : uiComponentList) {
+				if (uiComponent.inside(InputBuffer.getMousePosition())) {
+					if (uiComponent.getClass() == ButtonComponent.class) {
+						return ((ButtonComponent) uiComponent).getAction();
+					} else {
+						return drillClick(uiComponent.getUIComponentList());
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }

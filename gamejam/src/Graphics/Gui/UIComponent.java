@@ -1,27 +1,37 @@
 package Graphics.Gui;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UIComponent {
 
 	private Rect position = new Rect(0,0,0,0);
-	private List<UIComponent> subComponentList = new ArrayList<UIComponent>();
+	private List<UIComponent> uiComponentList = new ArrayList<UIComponent>();
+	private Color color = new Color(180,180,180);
 
 	public UIComponent(Rect position) {
 		this.position = position;
 	}
 
-	public void addSubComponent(UIComponent uiComponent) {
-		subComponentList.add(uiComponent);
+	public void addUIComponent(UIComponent uiComponent) {
+		uiComponentList.add(uiComponent);
 	}
 
 	public Rect getPosition() {
 		return position;
 	}
 
-	public List<UIComponent> getSubComponentList() {
-		return subComponentList;
+	public List<UIComponent> getUIComponentList() {
+		return uiComponentList;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public boolean inside(int[] mousePosition) {

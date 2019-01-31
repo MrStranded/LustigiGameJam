@@ -1,11 +1,13 @@
 package Graphics;
 
+import Graphics.Gui.TextComponent;
 import Logic.WorldState;
 import Graphics.Gui.*;
-import Graphics.Gui.Button;
+import Graphics.Gui.ButtonComponent;
 import Input.InputBuffer;
 
 import javax.swing.*;
+import javax.xml.soap.Text;
 import java.awt.*;
 
 
@@ -93,31 +95,46 @@ public class Screen extends JPanel {
 
 	private void drawGui(Graphics g) {
 		if (gui != null) {
-			for (Box box : gui.getBoxList()) {
-				drawBox(g, box);
+			for (UIComponent uiComponent : gui.getUIComponentList()) {
+				drawUIComponent(g, uiComponent);
 			}
 		}
 	}
 
-	private void drawBox(Graphics g, Box box) {
-		g.setColor(Color.GREEN);
-		drawRect(g, box.getPosition());
+	private void drawUIComponent(Graphics g, UIComponent uiComponent) {
 
-		for (Button button : box.getButtonList()) {
-			drawButton(g, button);
+		if (uiComponent.getClass() == ButtonComponent.class) { // button
+			if (uiComponent.inside(InputBuffer.getMousePosition())) {
+				g.setColor(((ButtonComponent) uiComponent).getSecondaryColor());
+			} else {
+				g.setColor(uiComponent.getColor());
+			}
+			drawRect(g, uiComponent.getPosition());
+
+			g.setColor(Color.BLACK);
+			g.drawString(((ButtonComponent) uiComponent).getText(), uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
+
+		} else if (uiComponent.getClass() == TextComponent.class) { // text
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
+
+			String[] lines = ((TextComponent) uiComponent).getText().split("\\n");
+			int i = 0;
+			int xPos = uiComponent.getPosition().getX() + 5;
+			int yPos = uiComponent.getPosition().getY() + 10;
+			for (String line : lines) {
+				g.drawString(line, xPos, yPos + i * 10);
+				i++;
+			}
+
+		} else { // default
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
 		}
-	}
 
-	private void drawButton(Graphics g, Button button) {
-		if (button.inside(InputBuffer.getMousePosition())) {
-			g.setColor(Color.ORANGE);
-		} else {
-			g.setColor(Color.CYAN);
+		for (UIComponent subComponent : uiComponent.getUIComponentList()) {
+			drawUIComponent(g, subComponent);
 		}
-		drawRect(g, button.getPosition());
-
-		g.setColor(Color.BLACK);
-		g.drawString(button.getText(), button.getPosition().getX()+10, button.getPosition().getY() + (button.getPosition().getH()) / 2);
 	}
 
 	private void drawRect(Graphics g, Rect r) {

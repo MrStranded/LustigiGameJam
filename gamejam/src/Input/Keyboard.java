@@ -1,7 +1,4 @@
-package input;
-
-import Logic.WorldState;
-import graphics.Screen;
+package Input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

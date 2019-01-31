@@ -10,7 +10,7 @@ public class TestClient {
     public static void main(String[] args) {
         Network network = new Network();
         Client client;
-        String ip = "";
+        String ip = "192.168.178.20";
         int port = 42069;
         String username = args[0];
 
@@ -20,7 +20,7 @@ public class TestClient {
             // app functionality here
             String message;
             while (true) {
-                // input
+                // Input
                 Scanner scanner = new Scanner(System.in);
                 message = scanner.nextLine();
 

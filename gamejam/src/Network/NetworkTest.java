@@ -21,7 +21,7 @@ public class NetworkTest {
             // app functionality here
             String message;
             while (true) {
-                // input
+                // Input
                 Scanner scanner = new Scanner(System.in);
                 message = scanner.nextLine();
 

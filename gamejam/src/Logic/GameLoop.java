@@ -1,9 +1,8 @@
 package Logic;
 
-import Logic.WorldState;
-import graphics.Window;
-import graphics.gui.GUI;
-import graphics.gui.GUICreater;
+import Graphics.Window;
+import Graphics.Gui.GUI;
+import Graphics.Gui.GUICreater;
 
 public class GameLoop extends Thread {
 

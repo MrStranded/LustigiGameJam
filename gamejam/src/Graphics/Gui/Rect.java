@@ -1,4 +1,4 @@
-package graphics.gui;
+package Graphics.Gui;
 
 public class Rect {
 

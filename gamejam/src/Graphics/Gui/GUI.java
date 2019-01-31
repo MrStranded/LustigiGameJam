@@ -1,12 +1,10 @@
-package graphics.gui;
+package Graphics.Gui;
 
 import Logic.WorldState;
-import graphics.Screen;
-import graphics.gui.actions.Action;
-import input.InputBuffer;
+import Graphics.Screen;
+import Graphics.Gui.Actions.Action;
+import Input.InputBuffer;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 

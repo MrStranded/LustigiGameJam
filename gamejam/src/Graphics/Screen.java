@@ -1,16 +1,12 @@
-package graphics;
+package Graphics;
 
 import Logic.WorldState;
-import graphics.gui.*;
-import graphics.gui.Box;
-import graphics.gui.Button;
-import input.InputBuffer;
-import input.Keyboard;
-import input.Mouse;
+import Graphics.Gui.*;
+import Graphics.Gui.Button;
+import Input.InputBuffer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 
 public class Screen extends JPanel {
@@ -52,7 +48,7 @@ public class Screen extends JPanel {
 		// drawing the map
 		drawWorld(g);
 
-		// drawing the gui
+		// drawing the Gui
 		drawGui(g);
 	}
 

@@ -27,7 +27,7 @@ public class ServerClient extends ClientModel {
         try {
             Boolean proceed = true;
             while(proceed) {
-                // input
+                // Input
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 int count = bufferedReader.read(buffer, 0, BUFSIZE); // blocking function
                 try {

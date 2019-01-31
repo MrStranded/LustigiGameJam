@@ -1,8 +1,7 @@
-package graphics.gui;
+package Graphics.Gui;
 
-import graphics.Screen;
-import graphics.Window;
-import graphics.gui.actions.*;
+import Graphics.Window;
+import Graphics.Gui.Actions.*;
 
 public class GUICreater {
 

@@ -1,10 +1,10 @@
-package graphics;
+package Graphics;
 
 import Logic.WorldState;
-import graphics.gui.GUI;
-import input.InputBuffer;
-import input.Keyboard;
-import input.Mouse;
+import Graphics.Gui.GUI;
+import Input.InputBuffer;
+import Input.Keyboard;
+import Input.Mouse;
 
 import javax.swing.*;
 import java.awt.*;

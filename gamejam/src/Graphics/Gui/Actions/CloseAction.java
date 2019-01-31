@@ -1,7 +1,7 @@
-package graphics.gui.actions;
+package Graphics.Gui.Actions;
 
 import Logic.WorldState;
-import graphics.Screen;
+import Graphics.Screen;
 
 public class CloseAction implements Action {
 	@Override

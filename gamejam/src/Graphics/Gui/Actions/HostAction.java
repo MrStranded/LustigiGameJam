@@ -1,9 +1,9 @@
-package graphics.gui.actions;
+package Graphics.Gui.Actions;
 
 import Logic.WorldState;
-import graphics.Screen;
+import Graphics.Screen;
 
-public class JoinAction implements Action {
+public class HostAction implements Action {
 	@Override
 	public void perform(Screen screen, WorldState worldState) {
 

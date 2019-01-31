@@ -1,12 +1,15 @@
 package graphics;
 
+import Logic.WorldState;
+import input.Keyboard;
+import input.Mouse;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class Window {
 
 	private int width, height;
-	private Canvas canvas;
+	private Screen screen;
 	private JFrame frame;
 
 	public Window () {
@@ -18,11 +21,19 @@ public class Window {
 
 	private void initialize() {
 		frame = new JFrame("LustigiGameJam");
-		frame.add(canvas = new Screen(width, height));
+		frame.add(screen = new Screen(width, height));
 		frame.setLayout(null);
 		frame.setSize(width, height);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		frame.addKeyListener(new Keyboard());
+		frame.addMouseListener(new Mouse());
+	}
+
+	public void drawWorld(WorldState worldState) {
+		screen.draw(worldState);
+		screen.repaint();
 	}
 
 }

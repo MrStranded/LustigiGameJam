@@ -9,6 +9,10 @@ public class Box {
 	private Rect position = new Rect(0,0,0,0);
 	private List<Button> buttonList = new ArrayList<Button>();
 
+	public Box(Rect position) {
+		this.position = position;
+	}
+
 	public void addButton(Button button) {
 		buttonList.add(button);
 	}

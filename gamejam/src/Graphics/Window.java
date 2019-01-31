@@ -49,8 +49,12 @@ public class Window {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
 
-	public void drawWorld(WorldState worldState, GUI gui) {
-		screen.draw(worldState, gui);
+	public void registerInput(WorldState worldState) {
+		screen.registerInput(worldState);
+	}
+
+	public void drawWorld(WorldState worldState) {
+		screen.updateWorldState(worldState);
 		screen.repaint();
 	}
 

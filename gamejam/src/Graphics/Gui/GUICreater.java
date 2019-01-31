@@ -1,17 +1,16 @@
 package Graphics.Gui;
 
-import Graphics.Window;
+import Graphics.Screen;
 import Graphics.Gui.Actions.*;
-
 import java.awt.*;
 
 public class GUICreater {
 
 	private static int width, height;
 
-	public static GUI createHostMenu(Window window) {
-		width = window.getWidth();
-		height = window.getHeight();
+	public static GUI createHostMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
 
 		GUI gui = new GUI();
 
@@ -19,7 +18,11 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		TextComponent text = createText("A1 \\n yolo \\n\\nlel\\n",0.2, 0.2, 0.6, 0.4);
+		TextComponent ip = createText("Your IP Address: ",0.2, 0.125, 0.6, 0.05);
+		mainBox.addUIComponent(ip);
+		ip.setColor(new Color(190,190,190));
+
+		TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
 		mainBox.addUIComponent(text);
 		text.setColor(new Color(190,190,190));
 
@@ -28,9 +31,9 @@ public class GUICreater {
 		return gui;
 	}
 
-	public static GUI createMainMenu(Window window) {
-		width = window.getWidth();
-		height = window.getHeight();
+	public static GUI createMainMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
 
 		GUI gui = new GUI();
 

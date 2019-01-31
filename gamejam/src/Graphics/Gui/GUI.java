@@ -30,7 +30,7 @@ public class GUI {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public void registerInput(Screen screen, WorldState worldState) {
-		int scrollSpeed = 3;
+		//int scrollSpeed = 3;
 
 		//dx += scrollSpeed * (InputBuffer.isKeyPressed(KeyEvent.VK_A) - InputBuffer.isKeyPressed(KeyEvent.VK_D));
 		//dy += scrollSpeed * (InputBuffer.isKeyPressed(KeyEvent.VK_W) - InputBuffer.isKeyPressed(KeyEvent.VK_S));

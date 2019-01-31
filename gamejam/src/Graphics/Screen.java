@@ -1,13 +1,11 @@
 package Graphics;
 
-import Graphics.Gui.TextComponent;
-import Logic.WorldState;
 import Graphics.Gui.*;
-import Graphics.Gui.ButtonComponent;
+import Graphics.Gui.TextComponent;
 import Input.InputBuffer;
+import Logic.WorldState;
 
 import javax.swing.*;
-import javax.xml.soap.Text;
 import java.awt.*;
 
 
@@ -30,6 +28,8 @@ public class Screen extends JPanel {
 	private void initialize() {
 		setBackground(Color.BLUE);
 		setSize(width, height);
+
+		gui = GUICreater.createMainMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -38,9 +38,24 @@ public class Screen extends JPanel {
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// -----------------------------------------------------------------------------------------------------------------
 
-	public void draw(WorldState worldState, GUI gui) {
-		this.worldState = worldState;
+	public void updateGui(GUI gui) {
 		this.gui = gui;
+	}
+
+	public void registerInput(WorldState worldState) {
+		if (gui != null) {
+			gui.registerInput(this, worldState);
+		}
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// ########################################################## DRAW #################################################
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// -----------------------------------------------------------------------------------------------------------------
+
+	public void updateWorldState(WorldState worldState) {
+		this.worldState = worldState;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -118,12 +133,13 @@ public class Screen extends JPanel {
 			g.setColor(uiComponent.getColor());
 			drawRect(g, uiComponent.getPosition());
 
-			String[] lines = ((TextComponent) uiComponent).getText().split("\\n");
+			g.setColor(Color.BLACK);
+			String[] lines = ((TextComponent) uiComponent).getText().split("\n");
 			int i = 0;
 			int xPos = uiComponent.getPosition().getX() + 5;
 			int yPos = uiComponent.getPosition().getY() + 10;
 			for (String line : lines) {
-				g.drawString(line, xPos, yPos + i * 10);
+				g.drawString(line, xPos, yPos + i * 15);
 				i++;
 			}
 

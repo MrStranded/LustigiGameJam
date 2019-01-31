@@ -18,8 +18,6 @@ public class GameLoop extends Thread {
 
 		worldState = new WorldState();
 		worldState.createTestMap();
-
-		gui = GUICreater.createMainMenu(window);
 	}
 
 	@Override
@@ -27,8 +25,8 @@ public class GameLoop extends Thread {
 		while (true) {
 			t = System.currentTimeMillis();
 
-			gui.registerInput(window.getScreen(), worldState);
-			window.drawWorld(worldState, gui);
+			window.registerInput(worldState);
+			window.drawWorld(worldState);
 
 			try {
 				sleep(millisPerFrame - (System.currentTimeMillis()-t));

@@ -2,6 +2,7 @@ package Graphics.Gui;
 
 import Graphics.Screen;
 import Graphics.Gui.Actions.*;
+
 import java.awt.*;
 
 public class GUICreater {
@@ -18,9 +19,8 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		TextComponent ip = createText("Your IP Address: ",0.2, 0.125, 0.6, 0.05);
-		mainBox.addUIComponent(ip);
-		ip.setColor(new Color(190,190,190));
+		String ipAddress = Network.Utility.getOwnIp();
+		mainBox.addUIComponent(createButton("Your IP Address: " + ipAddress, new CopyContentAction(ipAddress),0.2, 0.125, 0.6, 0.05));
 
 		TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
 		mainBox.addUIComponent(text);

@@ -28,10 +28,13 @@ public class GameLoop extends Thread {
 			window.registerInput(worldState);
 			window.drawWorld(worldState);
 
-			try {
-				sleep(millisPerFrame - (System.currentTimeMillis()-t));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			long waitTime = millisPerFrame - (System.currentTimeMillis()-t);
+			if (waitTime > 0) {
+				try {
+					sleep(waitTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

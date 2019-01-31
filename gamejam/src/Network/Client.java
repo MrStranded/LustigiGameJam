@@ -8,8 +8,9 @@ import java.net.Socket;
  */
 public class Client extends ClientModel {
 
-    public Client(Socket _socket) {
+    public Client(Socket _socket, String _name) {
         super(_socket);
+        name = _name;
     }
 
 
@@ -31,6 +32,8 @@ public class Client extends ClientModel {
 
                 if (message.startsWith("MSG")) {
 
+                } else if (message.equals("GIBMENAME")) {
+                    send("HEREISNAME: " + name);
                 }
 
 
@@ -47,5 +50,9 @@ public class Client extends ClientModel {
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void getPlayers() throws IOException {
+        send("CANIHAZPLAYERLIST");
     }
 }

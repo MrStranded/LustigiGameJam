@@ -13,13 +13,13 @@ public class ClientModel implements Runnable {
     final int BUFSIZE = 1024;
     char[] buffer = new char[BUFSIZE];
     String message;
+    String name;
 
 
     public ClientModel(Socket _socket) {
         socket = _socket;
         client = new Thread(this);
         client.start();
-
     }
 
 

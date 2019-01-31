@@ -3,8 +3,6 @@ package Network;
 import Logic.WorldState;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -23,9 +21,9 @@ public class Network {
 
 
 
-    public Client connect(String ip, int port) throws IOException {
+    public Client connect(String ip, int port, String name) throws IOException {
         Socket socket = new Socket(ip, port);
-        Client client = new Client(socket);
+        Client client = new Client(socket, name);
         return client;
     }
 

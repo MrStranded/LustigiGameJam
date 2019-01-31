@@ -12,6 +12,13 @@ public class ServerClient extends ClientModel {
     public ServerClient(Socket _socket, Server _server) {
         super(_socket);
         server = _server;
+        try {
+            send("GIBMENAME");
+        } catch (IOException e) {
+            System.out.println("failed to receive name");
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -32,6 +39,15 @@ public class ServerClient extends ClientModel {
 
                 if (message.equals("bye")) {
                     break;
+                } else if (message.startsWith("HEREISNAME: ")) {
+                    name = message.split(" ")[1];
+                    server.broadcast("<server>: " + getName() + " joined the game");
+                } else if (message.equals("CANIHAZPLAYERLIST")) {
+                    String players = "PLAYERS:\n";
+                    for (ServerClient client: server.getClients()) {
+                        players += client.getName() + "\n";
+                    }
+                    send(players);
                 }
 
                 PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -47,5 +63,9 @@ public class ServerClient extends ClientModel {
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }

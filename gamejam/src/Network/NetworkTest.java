@@ -16,7 +16,7 @@ public class NetworkTest {
 
         try {
             server = network.startServer(port);
-            client = network.connect(ip, port);
+            client = network.connect(ip, port, "gundar");
 
             // app functionality here
             String message;

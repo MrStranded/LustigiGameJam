@@ -30,26 +30,12 @@ public class Server implements Runnable {
                 Socket socket = serverSocket.accept();
                 System.out.println("New connection from " + socket.getInetAddress() + ":" + socket.getPort());
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                int count = bufferedReader.read(buffer, 0, BUFSIZE); // blocking function
-                try {
-                    message = new String(buffer, 0, count);
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("Lost connection to " + socket.getInetAddress());
-                    continue;
-                }
-
-                if (message.equals("bye")) {
-                    break;
-                }
+                ServerClient client = new ServerClient(socket, this);
 
 
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-                printWriter.print("JAHUI: " + message);
-                printWriter.flush();
 
-                socket.close();
+
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

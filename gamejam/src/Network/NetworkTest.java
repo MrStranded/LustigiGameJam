@@ -1,6 +1,7 @@
 package Network;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Created by Lukas on 31.01.19.
@@ -17,10 +18,19 @@ public class NetworkTest {
             server = network.startServer(port);
             client = network.connect(ip, port);
 
-            network.sendMessage(client.getSocket(), "swehuia");
-            network.sendMessage(client.getSocket(), "bye");
-            network.sendMessage(client.getSocket(), "swehuia");
+            // app functionality here
+            String message;
+            while (true) {
+                // input
+                Scanner scanner = new Scanner(System.in);
+                message = scanner.nextLine();
 
+                if (message.equals("exit")) {
+                    break;
+                }
+
+                client.send(message);
+            }
 
             // try worldstate, message
         } catch (IOException e) {

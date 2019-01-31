@@ -38,10 +38,4 @@ public class Network {
     public void sendWorldState() {
 
     }
-
-    public void sendMessage(Socket socket, String message) throws IOException {
-        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-        printWriter.print(message);
-        printWriter.flush();
-    }
 }

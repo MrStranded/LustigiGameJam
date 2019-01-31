@@ -6,15 +6,17 @@ import java.net.Socket;
 /**
  * Created by Lukas on 31.01.19.
  */
-public class Client extends ClientModel {
+public class ServerClient extends ClientModel {
+    private Server server;
 
-    public Client(Socket _socket) {
+    public ServerClient(Socket _socket, Server _server) {
         super(_socket);
+        server = _server;
     }
-
 
     @Override
     public void run() {
+
         try {
             Boolean proceed = true;
             while(proceed) {
@@ -28,15 +30,13 @@ public class Client extends ClientModel {
                     break;
                 }
 
-
-                if (message.startsWith("MSG")) {
-
+                if (message.equals("bye")) {
+                    break;
                 }
 
-
-                System.out.println(message);
-
-
+                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+                printWriter.print("JAHUI: " + message);
+                printWriter.flush();
             }
 
 

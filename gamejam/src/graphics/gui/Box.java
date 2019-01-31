@@ -25,7 +25,7 @@ public class Box {
 		return buttonList;
 	}
 
-	public boolean inside(MouseEvent e) {
-		return position.inside(e.getX(), e.getY());
+	public boolean inside(int[] mousePosition) {
+		return position.inside(mousePosition[0], mousePosition[1]);
 	}
 }

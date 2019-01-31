@@ -2,10 +2,12 @@ package graphics;
 
 import Logic.WorldState;
 import graphics.gui.GUI;
+import input.InputBuffer;
 import input.Keyboard;
 import input.Mouse;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 
 public class Window {
@@ -26,12 +28,21 @@ public class Window {
 		frame.add(screen = new Screen(width, height, this));
 		frame.setLayout(null);
 		frame.setSize(width, height);
-		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+		frame.setVisible(true);
+
+		Insets insets = frame.getInsets();
+		InputBuffer.setMouseDisplacement(insets.left, insets.top);
+		frame.setSize(width, height + insets.top);
+
+		Dimension fullScreen = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation((int) (fullScreen.getWidth() - width) / 2, (int) (fullScreen.getHeight() - height) / 2);
 
 		frame.addKeyListener(new Keyboard());
-		frame.addMouseListener(new Mouse());
+		Mouse mouse = new Mouse();
+		frame.addMouseListener(mouse);
+		frame.addMouseMotionListener(mouse);
 	}
 
 	public void close() {

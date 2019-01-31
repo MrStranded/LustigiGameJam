@@ -12,16 +12,19 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		InputBuffer.mouseIsClicked(e.getButton());
+		InputBuffer.setMousePosition(e.getX(), e.getY());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		InputBuffer.mouseIsPressed(e.getButton());
+		InputBuffer.setMousePosition(e.getX(), e.getY());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		InputBuffer.mouseIsReleased(e.getButton());
+		InputBuffer.setMousePosition(e.getX(), e.getY());
 	}
 
 	@Override

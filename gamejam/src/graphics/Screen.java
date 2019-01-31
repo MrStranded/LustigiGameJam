@@ -73,7 +73,7 @@ public class Screen extends JPanel {
 					Color.GRAY
 			};
 
-			int tileSize = 32;
+			int tileSize = 40;
 
 			for (int x = 0; x < s; x++) {
 				for (int y = 0; y < s; y++) {
@@ -112,7 +112,12 @@ public class Screen extends JPanel {
 		}
 	}
 
-	private void drawButton(Graphics g, Button button) {g.setColor(Color.CYAN);
+	private void drawButton(Graphics g, Button button) {
+		if (button.inside(InputBuffer.getMousePosition())) {
+			g.setColor(Color.ORANGE);
+		} else {
+			g.setColor(Color.CYAN);
+		}
 		drawRect(g, button.getPosition());
 
 		g.setColor(Color.BLACK);

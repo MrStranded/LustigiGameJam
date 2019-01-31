@@ -30,4 +30,8 @@ public class Rect {
 	public int getH() {
 		return h;
 	}
+
+	public String toString() {
+		return "( " + x + ", " + y + ", " + w + ", " + h + ")";
+	}
 }

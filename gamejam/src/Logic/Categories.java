@@ -6,7 +6,9 @@ public enum Categories {
     TURRET(2),
     TREASURE(3),
     ARMOR(4),
-    ACCELERATOR(5);
+    ACCELERATOR(5),
+    SLOT(6),
+    PROJECTILE(7);
 
     private final int cat;
 

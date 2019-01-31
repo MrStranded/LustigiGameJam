@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldState {
 
-	private final int tilesize = 32;
+	private final int tileSize = 32;
 
 	private int[][] map;
 	private int size;
@@ -24,46 +24,13 @@ public class WorldState {
 		units = new ConcurrentLinkedDeque<>();
 	}
 
-	public double[] shoot() {
-		
-
-		return null;
+	public void addUnit(Component component) {
+		units.add(component);
 	}
 
-	public double[] fly() {
-
-		return null;
+	public int getTileSize() {
+		return tileSize;
 	}
-
-	public double[] move(Position p, double[] inputVector) {
-		int[] index = getTileIndex(p);
-
-		Tiles xTile = getTile(new Position(p.getX() + inputVector[0], p.getY()));
-		Tiles yTile = getTile(new Position(p.getX(), p.getY() + inputVector[1]));
-
-		int xBorder = tilesize * (index[0] + (inputVector[0] >= 0 ? 1 : 0));
-		int yBorder = tilesize * (index[1] + (inputVector[1] >= 0 ? 1 : 0));
-
-		if (xTile.isCollision()) {
-			inputVector[0] = Math.abs(xBorder - p.getX());
-		}
-
-		if (yTile.isCollision()) {
-			inputVector[1] = Math.abs(yBorder - p.getY());
-		}
-
-		return inputVector;
-	}
-
-	public Tiles getTile(Position p) {
-		return Tiles.valueOf(map[(int)p.getX()/tilesize][(int)p.getY()/tilesize]);
-	}
-
-	public int[] getTileIndex(Position p) {
-		int[] index = {(int)p.getX()/tilesize, (int)p.getY()/tilesize};
-		return index;
-	}
-
 
 	public int[][] getMap() {
 		return map;

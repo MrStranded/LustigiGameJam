@@ -1,17 +1,19 @@
 package graphics.gui;
 
-import Logic.WorldState;
+import graphics.gui.actions.Action;
 
 import java.awt.event.MouseEvent;
 
-public abstract class Button {
+public class Button {
 
 	private Rect position = new Rect(0,0,0,0);
 	private String text;
+	private Action action;
 
-	public Button(String text, Rect position) {
+	public Button(String text, Rect position, Action action) {
 		this.text = text;
 		this.position = position;
+		this.action = action;
 	}
 
 	public Rect getPosition() {
@@ -22,9 +24,15 @@ public abstract class Button {
 		return text;
 	}
 
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
+
 	public boolean inside(MouseEvent e) {
 		return position.inside(e.getX(), e.getY());
 	}
-
-	public abstract void trigger();
 }

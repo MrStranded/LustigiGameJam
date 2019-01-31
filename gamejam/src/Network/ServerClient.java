@@ -63,10 +63,23 @@ public class ServerClient extends ClientModel {
             // create error log
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            clean();
         }
     }
 
     public String getName() {
         return name;
+    }
+
+    public void clean() {
+
+        try {
+            server.getClients().remove(this);
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("couldn't close socket");
+            e.printStackTrace();
+        }
     }
 }

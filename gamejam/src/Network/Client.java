@@ -52,6 +52,8 @@ public class Client extends ClientModel {
             // create error log
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            clean();
         }
     }
 
@@ -61,5 +63,14 @@ public class Client extends ClientModel {
 
     public void disconnect() throws IOException {
         send("GUESSIDIE");
+    }
+
+    public void clean() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("couldn't close socket");
+            e.printStackTrace();
+        }
     }
 }

@@ -34,6 +34,9 @@ public class Client extends ClientModel {
 
                 } else if (message.equals("GIBMENAME")) {
                     send("HEREISNAME: " + name);
+                } else if (message.equals("GUESSYOUDIE")) {
+                    System.out.println("ok bye");
+                    break;
                 }
 
 
@@ -54,5 +57,9 @@ public class Client extends ClientModel {
 
     public void getPlayers() throws IOException {
         send("CANIHAZPLAYERLIST");
+    }
+
+    public void disconnect() throws IOException {
+        send("GUESSIDIE");
     }
 }

@@ -37,11 +37,14 @@ public class ServerClient extends ClientModel {
                     break;
                 }
 
-                if (message.equals("bye")) {
+                if (message.equals("GUESSIDIE")) {
+                    server.getClients().remove(this);
+                    send("GUESSYOUDIE");
+                    server.broadcast("<server> " + getName() + " left the game");
                     break;
                 } else if (message.startsWith("HEREISNAME: ")) {
                     name = message.split(" ")[1];
-                    server.broadcast("<server>: " + getName() + " joined the game");
+                    server.broadcast("<server> " + getName() + " joined the game");
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
                     String players = "PLAYERS:\n";
                     for (ServerClient client: server.getClients()) {
@@ -50,9 +53,7 @@ public class ServerClient extends ClientModel {
                     send(players);
                 }
 
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-                printWriter.print("JAHUI: " + message);
-                printWriter.flush();
+                server.broadcast("<"+getName()+"> " + message);
             }
 
 

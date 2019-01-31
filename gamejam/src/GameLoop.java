@@ -23,9 +23,7 @@ public class GameLoop extends Thread {
 			window.drawWorld(worldState);
 
 			try {
-				synchronized (this) {
-					wait(millisPerFrame - (System.currentTimeMillis()-t));
-				}
+				sleep(millisPerFrame - (System.currentTimeMillis()-t));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

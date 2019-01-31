@@ -1,6 +1,8 @@
 package graphics;
 
 import Logic.WorldState;
+import input.Keyboard;
+import input.Mouse;
 
 import javax.swing.*;
 
@@ -24,6 +26,9 @@ public class Window {
 		frame.setSize(width, height);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		frame.addKeyListener(new Keyboard());
+		frame.addMouseListener(new Mouse());
 	}
 
 	public void drawWorld(WorldState worldState) {

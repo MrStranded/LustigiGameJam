@@ -2,6 +2,7 @@ package graphics.gui;
 
 import Logic.WorldState;
 import graphics.Screen;
+import graphics.gui.actions.Action;
 import input.InputBuffer;
 
 import java.awt.event.KeyEvent;
@@ -30,11 +31,19 @@ public class GUI {
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// -----------------------------------------------------------------------------------------------------------------
 
-	public void registerInput(WorldState worldState) {
+	public void registerInput(Screen screen, WorldState worldState) {
 		int scrollSpeed = 3;
 
 		//dx += scrollSpeed * (InputBuffer.isKeyPressed(KeyEvent.VK_A) - InputBuffer.isKeyPressed(KeyEvent.VK_D));
 		//dy += scrollSpeed * (InputBuffer.isKeyPressed(KeyEvent.VK_W) - InputBuffer.isKeyPressed(KeyEvent.VK_S));
+	}
+
+	public void registerMenus(Screen screen, WorldState worldState) {
+		Action actionToPerform = null;
+
+		if (actionToPerform != null) {
+			actionToPerform.perform(screen, worldState);
+		}
 	}
 
 }

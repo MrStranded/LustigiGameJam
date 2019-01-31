@@ -28,7 +28,7 @@ public class GameLoop extends Thread {
 		while (true) {
 			t = System.currentTimeMillis();
 
-			gui.registerInput(worldState);
+			gui.registerInput(window.getScreen(), worldState);
 			window.drawWorld(worldState, gui);
 
 			try {

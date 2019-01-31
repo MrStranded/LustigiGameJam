@@ -5,5 +5,5 @@ import graphics.Screen;
 
 public interface Action {
 
-	public void perform(Screen screen);
+	public void perform(Screen screen, WorldState worldState);
 }

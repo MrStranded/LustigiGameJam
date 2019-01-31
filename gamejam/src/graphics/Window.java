@@ -50,4 +50,6 @@ public class Window {
 	public int getHeight() {
 		return height;
 	}
+
+	public Screen getScreen() { return screen; }
 }

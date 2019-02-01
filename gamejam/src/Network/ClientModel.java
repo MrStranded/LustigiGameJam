@@ -26,10 +26,12 @@ public class ClientModel implements Runnable {
     }
 
 
-    public synchronized void send(String message) throws IOException {
-        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-        printWriter.print(message);
-        printWriter.flush();
+    public void send(String message) throws IOException {
+        synchronized (socket) {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        }
     }
 
     @Override

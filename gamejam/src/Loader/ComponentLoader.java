@@ -13,6 +13,7 @@ public class ComponentLoader {
 
 	public static void loadComponents() {
 		parseFile("ships.txt");
+		parseFile("canons.txt");
 	}
 
 	public static void parseFile(String path) {
@@ -41,6 +42,7 @@ public class ComponentLoader {
 
 							if (a != null) {
 								component.set(a, Double.parseDouble(val));
+								//System.out.println("["+att+"|"+val+"]");
 							}
 
 						}

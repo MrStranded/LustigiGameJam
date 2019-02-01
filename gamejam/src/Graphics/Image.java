@@ -32,7 +32,7 @@ public class Image {
 
 				AffineTransform at = new AffineTransform();
 				at.translate(s/2d, s/2d);
-				at.rotate(-i*da);
+				at.rotate(i*da);
 				at.translate(-w/2d,-h/2d);
 				g.drawImage(original, at, null);
 			}
@@ -42,8 +42,9 @@ public class Image {
 	}
 
 	public BufferedImage getImage(double angle) {
-		int i = (int) ((double) (Images.DIRECTIONS) * angle / (Math.PI*2d)) % Images.DIRECTIONS;
-		i = Math.min(Math.max(i,0),Images.DIRECTIONS-1);
+		int i = (int) (angle * (double) (Images.DIRECTIONS) / 360d);
+		while (i < 0) { i+=Images.DIRECTIONS; }
+		while (i >= Images.DIRECTIONS) { i-=Images.DIRECTIONS; }
 
 		return images[i];
 	}

@@ -71,6 +71,8 @@ public class Screen extends JPanel {
 	public void paintComponent(Graphics g) {
 		// clearing the screen
 		g.clearRect(0,0,width, height);
+		g.setColor(Color.BLUE);
+		g.fillRect(0,0,width,height);
 
 		// drawing the map
 		drawWorld(g);

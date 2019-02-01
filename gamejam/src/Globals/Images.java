@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class Images {
 
-	public static final int DIRECTIONS = 8;
-	public static final int COMPONENTS = 1;
+	public static final int DIRECTIONS = 32;
+	public static final int COMPONENTS = 5;
 
 	public static Image[] components = new Image[COMPONENTS];
 

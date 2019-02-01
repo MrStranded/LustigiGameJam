@@ -44,6 +44,8 @@ public class GUICreater {
 
 		mainBox.addUIComponent(createInput(screen.getWorldState().userName + ": ", new ChatAction(), 0.2, 0.6, 0.6, 0.05));
 
+		mainBox.addUIComponent(createButton("Start", new StartGameAction(),0.2, 0.7, 0.6, 0.05));
+
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;
@@ -81,7 +83,7 @@ public class GUICreater {
 
 		mainBox.addUIComponent(createInput("IP to connect to: ", new IpFromInputAction(), 0.2, 0.2, 0.6, 0.05));
 
-		mainBox.addUIComponent(createUpdatingText(UpdatingButtonsComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
+		mainBox.addUIComponent(createUpdatingButtons(UpdatingButtonsComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.2, 0.6, 0.6, 0.05));
 
 		mainBox.addUIComponent(createButton("Connect", new ConnectAction(),0.2, 0.7, 0.6, 0.05));
@@ -121,6 +123,10 @@ public class GUICreater {
 
 	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, Screen screen, double x, double y, double w, double h) {
 		return new UpdatingTextComponent(whatToUpdate, screen, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	}
+
+	private static UpdatingButtonsComponent createUpdatingButtons(int whatToUpdate, Screen screen, double x, double y, double w, double h) {
+		return new UpdatingButtonsComponent(whatToUpdate, screen, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
 	private static InputComponent createInput(String text, Action action, double x, double y, double w, double h) {

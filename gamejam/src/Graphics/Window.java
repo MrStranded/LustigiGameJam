@@ -34,7 +34,7 @@ public class Window {
 
 		Insets insets = frame.getInsets();
 		InputBuffer.setMouseDisplacement(insets.left, insets.top);
-		frame.setSize(width, height + insets.top);
+		//frame.setSize(width, height + insets.top);
 
 		Dimension fullScreen = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((int) (fullScreen.getWidth() - width) / 2, (int) (fullScreen.getHeight() - height) / 2);

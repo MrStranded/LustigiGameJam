@@ -12,13 +12,13 @@ public class ConnectAction implements Action {
 	public void perform(Screen screen, WorldState worldState) {
 		screen.updateGui(GUICreater.createPlayerMenu(screen));
 
-		Network network = new Network();
+		Network network = new Network(worldState.userName);
 		Client client;
 		int port = 42069;
 		String username = worldState.userName;
 
 		try {
-			client = network.connect(worldState.ip, port, username);
+			client = network.connect(worldState.ip, port);
 			Sender.setClient(client);
 		} catch (Exception e) {
 			e.printStackTrace();

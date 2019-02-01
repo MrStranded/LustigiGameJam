@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class TestDataSendingClient {
     public static void main(String[] args) {
-        Network network = new Network();
+        Network network = new Network("client");
         Client client;
         String ip = "127.0.0.1";
         //ip = "192.168.178.20";
@@ -21,7 +21,7 @@ public class TestDataSendingClient {
         new GameLoop().start();
 
         try {
-            client = network.connect(ip, port, username);
+            client = network.connect(ip, port);
 
             Sender.setClient(client);
 

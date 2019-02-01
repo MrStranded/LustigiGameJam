@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class TestDataSendingServer {
     public static void main(String[] args) {
-        Network network = new Network();
+        Network network = new Network("server");
         Server server;
         Client client;
         String ip = "";
@@ -23,7 +23,7 @@ public class TestDataSendingServer {
 
         try {
             server = network.startServer(port);
-            client = network.connect(ip, port, "gundar");
+            client = network.connect(ip, port);
 
             Sender.setClient(client);
             Sender.setServer(server);

@@ -10,6 +10,6 @@ public class JoinAction implements Action {
 	public void perform(Screen screen, WorldState worldState) {
 		screen.updateGui(GUICreater.createLobbyMenu(screen));
 
-		new Network().scan();
+		new Network(worldState.userName).scan();
 	}
 }

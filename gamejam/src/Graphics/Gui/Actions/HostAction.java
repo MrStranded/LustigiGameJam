@@ -21,7 +21,7 @@ public class HostAction implements Action {
 		worldState.addPlayer(serverPlayer);
 
 		try {
-			Network network = new Network();
+			Network network = new Network(worldState.userName);
 			Server server;
 			int port = 42069;
 

@@ -8,14 +8,14 @@ import java.util.Scanner;
  */
 public class TestClient {
     public static void main(String[] args) {
-        Network network = new Network();
+        Network network = new Network("client");
         Client client;
         String ip = "192.168.178.20";
         int port = 42069;
         String username = args[0];
 
         try {
-            client = network.connect(ip, port, username);
+            client = network.connect(ip, port);
 
             // app functionality here
             String message;

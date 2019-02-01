@@ -6,6 +6,7 @@ import Graphics.Gui.Rect;
 import Graphics.Screen;
 import Logic.WorldState;
 
+import java.util.HashMap;
 import java.util.Set;
 
 public class UpdatingButtonsComponent extends UIComponent implements UpdatingComponent {
@@ -34,7 +35,6 @@ public class UpdatingButtonsComponent extends UIComponent implements UpdatingCom
 	}
 
 	public void update() {
-		System.out.println("updtaed");
 		WorldState worldState = screen.getWorldState();
 		if (worldState != null) {
 
@@ -45,15 +45,18 @@ public class UpdatingButtonsComponent extends UIComponent implements UpdatingCom
 
 			switch (whatToUpdate) {
 				case GAMELIST:
-					Set<String> gameIps = worldState.getIpNameTuples().keySet();
-					int n = gameIps.size();
-					clearComponents();
+					HashMap<String, String> ipNameTuples = worldState.getIpNameTuples();
+					if (ipNameTuples != null) {
+						Set<String> gameIps = ipNameTuples.keySet();
+						int n = gameIps.size();
+						clearComponents();
 
-					int dh = h / n;
-					int i = 0;
-					for (String ip : gameIps) {
-						ButtonComponent button = new ButtonComponent(ip + " - " + worldState.getIpNameTuples().get(ip), new IpSetAction(ip), new Rect(xPos, yPos+i*dh, w, dh));
-						addUIComponent(button);
+						int dh = h / n;
+						int i = 0;
+						for (String ip : gameIps) {
+							ButtonComponent button = new ButtonComponent(ip + " - " + ipNameTuples.get(ip), new IpSetAction(ip), new Rect(xPos, yPos + i * dh, w, dh));
+							addUIComponent(button);
+						}
 					}
 
 					break;

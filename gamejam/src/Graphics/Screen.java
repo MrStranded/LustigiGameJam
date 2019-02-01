@@ -1,10 +1,12 @@
 package Graphics;
 
+import Logic.Attributes;
+import Logic.WorldState;
+import Logic.Component;
 import Graphics.Gui.*;
 import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
 import Input.InputBuffer;
-import Logic.WorldState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +18,8 @@ public class Screen extends JPanel {
 	private Window window;
 	private WorldState worldState;
 	private GUI gui;
+
+	private int tileSize = 40;
 
 	public Screen(int width, int height, Window window) {
 		this.width = width;
@@ -69,6 +73,9 @@ public class Screen extends JPanel {
 		// drawing the map
 		drawWorld(g);
 
+		// drawing the units
+		drawUnits(g);
+
 		// drawing the Gui
 		drawGui(g);
 	}
@@ -90,8 +97,6 @@ public class Screen extends JPanel {
 					Color.GRAY
 			};
 
-			int tileSize = 40;
-
 			for (int x = 0; x < s; x++) {
 				for (int y = 0; y < s; y++) {
 					int xPos = x * tileSize;
@@ -102,6 +107,26 @@ public class Screen extends JPanel {
 					g.setColor(Color.BLACK);
 					g.drawString(String.valueOf(map[x][y]), xPos + tileSize / 2, yPos + tileSize / 2);
 				}
+			}
+		}
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// ########################################################## DRAW Units ###########################################
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// -----------------------------------------------------------------------------------------------------------------
+
+	private void drawUnits(Graphics g) {
+		if (worldState != null) {
+			for (Component unit : worldState.getUnits()) {
+				int xPos = (int) (unit.getPosition().getX()*tileSize);
+				int yPos = (int) (unit.getPosition().getY()*tileSize);
+
+				g.setColor(Color.RED);
+				g.fillOval(xPos-20,yPos-20, 40, 40);
+				g.setColor(Color.BLACK);
+				g.drawString(String.valueOf(unit.getAttribute(Attributes.ANGLE)), xPos, yPos);
 			}
 		}
 	}

@@ -90,7 +90,6 @@ public class ServerClient extends ClientModel {
 
     public void clean() {
         Sender.sendDisconnect(connectionId);
-
         try {
             server.getClients().remove(this);
             Thread.sleep(1000);

@@ -1,9 +1,8 @@
 package Logic;
 
-import Logic.WorldState;
-import graphics.Window;
-import graphics.gui.GUI;
-import graphics.gui.GUICreater;
+import Graphics.Window;
+import Graphics.Gui.GUI;
+import Graphics.Gui.GUICreater;
 
 public class GameLoop extends Thread {
 
@@ -19,8 +18,6 @@ public class GameLoop extends Thread {
 
 		worldState = new WorldState();
 		worldState.createTestMap();
-
-		gui = GUICreater.createMainMenu(window);
 	}
 
 	@Override
@@ -28,13 +25,16 @@ public class GameLoop extends Thread {
 		while (true) {
 			t = System.currentTimeMillis();
 
-			gui.registerInput(window.getScreen(), worldState);
-			window.drawWorld(worldState, gui);
+			window.registerInput(worldState);
+			window.drawWorld(worldState);
 
-			try {
-				sleep(millisPerFrame - (System.currentTimeMillis()-t));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			long waitTime = millisPerFrame - (System.currentTimeMillis()-t);
+			if (waitTime > 0) {
+				try {
+					sleep(waitTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

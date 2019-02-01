@@ -1,16 +1,15 @@
 package Logic;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldState {
 
+	private final int tileSize = 32;
+
 	private int[][] map;
 	private int size;
 
-	private ConcurrentLinkedDeque<String> units;
-
-
+	private ConcurrentLinkedDeque<Component> units;
 
 	public void createTestMap() {
 		size = 32;
@@ -22,13 +21,16 @@ public class WorldState {
 			}
 		}
 
-		units = new ConcurrentLinkedDeque<String>();
-
-		units.add("One");
-		units.add("Two");
+		units = new ConcurrentLinkedDeque<>();
 	}
 
+	public void addUnit(Component component) {
+		units.add(component);
+	}
 
+	public int getTileSize() {
+		return tileSize;
+	}
 
 	public int[][] getMap() {
 		return map;
@@ -38,7 +40,7 @@ public class WorldState {
 		return size;
 	}
 
-	public ConcurrentLinkedDeque<String> getUnits() {
+	public ConcurrentLinkedDeque<Component> getUnits() {
 		return units;
 	}
 }

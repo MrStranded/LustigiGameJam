@@ -1,16 +1,14 @@
-package graphics;
+package Graphics;
 
+import Graphics.Gui.*;
+import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.TextComponent;
+import Graphics.Gui.GraphicalComponents.UIComponent;
+import Input.InputBuffer;
 import Logic.WorldState;
-import graphics.gui.*;
-import graphics.gui.Box;
-import graphics.gui.Button;
-import input.InputBuffer;
-import input.Keyboard;
-import input.Mouse;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 
 public class Screen extends JPanel {
@@ -32,6 +30,8 @@ public class Screen extends JPanel {
 	private void initialize() {
 		setBackground(Color.BLUE);
 		setSize(width, height);
+
+		gui = GUICreater.createMainMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -40,9 +40,27 @@ public class Screen extends JPanel {
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// -----------------------------------------------------------------------------------------------------------------
 
-	public void draw(WorldState worldState, GUI gui) {
-		this.worldState = worldState;
+	public void updateGui(GUI gui) {
+		if (this.gui != null && this.gui != gui) {
+			this.gui.cleanUp();
+		}
 		this.gui = gui;
+	}
+
+	public void registerInput(WorldState worldState) {
+		if (gui != null) {
+			gui.registerInput(this, worldState);
+		}
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// ########################################################## DRAW #################################################
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// -----------------------------------------------------------------------------------------------------------------
+
+	public void updateWorldState(WorldState worldState) {
+		this.worldState = worldState;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -52,7 +70,7 @@ public class Screen extends JPanel {
 		// drawing the map
 		drawWorld(g);
 
-		// drawing the gui
+		// drawing the Gui
 		drawGui(g);
 	}
 
@@ -73,7 +91,7 @@ public class Screen extends JPanel {
 					Color.GRAY
 			};
 
-			int tileSize = 32;
+			int tileSize = 40;
 
 			for (int x = 0; x < s; x++) {
 				for (int y = 0; y < s; y++) {
@@ -97,26 +115,47 @@ public class Screen extends JPanel {
 
 	private void drawGui(Graphics g) {
 		if (gui != null) {
-			for (Box box : gui.getBoxList()) {
-				drawBox(g, box);
+			for (UIComponent uiComponent : gui.getUIComponentList()) {
+				drawUIComponent(g, uiComponent);
 			}
 		}
 	}
 
-	private void drawBox(Graphics g, Box box) {
-		g.setColor(Color.GREEN);
-		drawRect(g, box.getPosition());
+	private void drawUIComponent(Graphics g, UIComponent uiComponent) {
 
-		for (Button button : box.getButtonList()) {
-			drawButton(g, button);
+		if (uiComponent.getClass() == ButtonComponent.class) { // button
+			if (uiComponent.inside(InputBuffer.getMousePosition())) {
+				g.setColor(((ButtonComponent) uiComponent).getSecondaryColor());
+			} else {
+				g.setColor(uiComponent.getColor());
+			}
+			drawRect(g, uiComponent.getPosition());
+
+			g.setColor(Color.BLACK);
+			g.drawString(((ButtonComponent) uiComponent).getText(), uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
+
+		} else if (uiComponent.getClass() == TextComponent.class) { // text
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
+
+			g.setColor(Color.BLACK);
+			String[] lines = ((TextComponent) uiComponent).getText().split("\n");
+			int i = 0;
+			int xPos = uiComponent.getPosition().getX() + 5;
+			int yPos = uiComponent.getPosition().getY() + 10;
+			for (String line : lines) {
+				g.drawString(line, xPos, yPos + i * 15);
+				i++;
+			}
+
+		} else { // default
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
 		}
-	}
 
-	private void drawButton(Graphics g, Button button) {g.setColor(Color.CYAN);
-		drawRect(g, button.getPosition());
-
-		g.setColor(Color.BLACK);
-		g.drawString(button.getText(), button.getPosition().getX()+10, button.getPosition().getY() + (button.getPosition().getH()) / 2);
+		for (UIComponent subComponent : uiComponent.getUIComponentList()) {
+			drawUIComponent(g, subComponent);
+		}
 	}
 
 	private void drawRect(Graphics g, Rect r) {
@@ -130,6 +169,9 @@ public class Screen extends JPanel {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public void close() {
+		if (gui != null) {
+			gui.cleanUp();
+		}
 		window.close();
 	}
 

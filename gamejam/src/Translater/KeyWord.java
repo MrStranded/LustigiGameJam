@@ -12,6 +12,7 @@ public enum KeyWord {
 	PING,
 	GAMELIST,
 	DISCONNECT,
-	PLAYERID
+	PLAYERID,
+	START
 
 }

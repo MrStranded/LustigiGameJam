@@ -25,6 +25,7 @@ public class GameLoop extends Thread {
 
 		Sender.setWorldState(worldState);
 		Parser.setWorldState(worldState);
+		Parser.setScreen(window.getScreen());
 	}
 
 	@Override

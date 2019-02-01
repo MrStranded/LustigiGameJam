@@ -8,7 +8,7 @@ public class Main {
         c.set(Attributes.CATEGORY, Categories.SHIP.valueOf());
         c.set(Attributes.HEALTH, 500);
         c.set(Attributes.WIDTH, 3.5);
-        c.set(Attributes.HEIGHT, 1.5);
+        c.set(Attributes.LENGTH, 1.5);
 
         c.setPosition(new Position(15.3, 199.0));
         c.setId(0);

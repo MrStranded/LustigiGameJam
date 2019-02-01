@@ -49,7 +49,7 @@ public class Ping implements Runnable {
         client.setLastPing(System.currentTimeMillis());
     }
 
-    public synchronized void stop() {
+    public void stop() {
         proceed = false;
     }
 

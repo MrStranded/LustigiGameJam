@@ -17,12 +17,14 @@ public class Client extends ClientModel {
     private boolean gameServer = false;
     private String ip;
     private int port;
+    private boolean scan;
 
-    public Client(Socket _socket, String _name, String _ip, int _port) {
+    public Client(Socket _socket, String _name, String _ip, int _port, boolean _scan) {
         socket = _socket;
         name = _name;
         ip = _ip;
         port = _port;
+        scan = _scan;
         client = new Thread(this);
         client.start();
         clients = new ConcurrentLinkedDeque<ClientModel>();
@@ -47,8 +49,14 @@ public class Client extends ClientModel {
                     break;
                 }
 
-
-                if (message.startsWith("GAME: ")) {
+                if (scan) {
+                    if (message.equals("LUSCHTIGIGAMEJAM")) {
+                        gameServer = true;
+                        break;
+                    } else {
+                        getHeader();
+                    }
+                } else if (message.startsWith("GAME: ")) {
                     String change = message.substring(message.indexOf(" ") + 1);
                     Parser.parse(0, change);
 
@@ -64,17 +72,12 @@ public class Client extends ClientModel {
                     send("PONG");
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
-                } else if (message.equals("LUSCHTIGIGAMEJAM")) {
-                    gameServer = true;
-                    break;
                 } else {
                     System.out.println(message);
                 }
             }
         } catch (IOException e) {
-            // create error log
-            System.out.println("Client " + socket.getInetAddress() + " crashed: " + e.getMessage());
-            //e.printStackTrace();
+            // socket closed
         } finally {
             clean();
         }
@@ -108,5 +111,9 @@ public class Client extends ClientModel {
 
     public boolean isGameServer() {
         return gameServer;
+    }
+
+    public void getHeader() throws IOException {
+        send("HEADER");
     }
 }

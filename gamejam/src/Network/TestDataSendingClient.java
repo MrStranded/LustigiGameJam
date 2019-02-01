@@ -21,7 +21,7 @@ public class TestDataSendingClient {
 
         try {
             client = network.connect(ip, port, username);
-            
+
             Sender.setClient(client);
 
             // app functionality here

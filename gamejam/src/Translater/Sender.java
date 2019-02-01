@@ -60,7 +60,7 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	private static void send(String msg) {
-		msg = "n" + msg;
+		msg = "Game: " + msg;
 
 		if (MasterSwitch.isServer) {
 			if (server != null) {

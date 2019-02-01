@@ -8,7 +8,7 @@ import java.net.Socket;
  */
 public class ClientModel implements Runnable {
     Thread client;
-    Socket socket;
+    final Socket socket;
     BufferedReader bufferedReader;
     final int BUFSIZE = 1024;
     char[] buffer;

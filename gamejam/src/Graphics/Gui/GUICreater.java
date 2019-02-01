@@ -25,7 +25,7 @@ public class GUICreater {
 		String ipAddress = Network.Utility.getOwnIp();
 		mainBox.addUIComponent(createButton("Your IP Address: " + ipAddress, new CopyContentAction(ipAddress),0.2, 0.125, 0.6, 0.05));
 
-		Graphics.Gui.GraphicalComponents.TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
+		TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
 		mainBox.addUIComponent(text);
 		text.setColor(new Color(190,190,190));
 
@@ -59,7 +59,7 @@ public class GUICreater {
 		return new ButtonComponent(text, action, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
-	private static Graphics.Gui.GraphicalComponents.TextComponent createText(String text, double x, double y, double w, double h) {
+	private static TextComponent createText(String text, double x, double y, double w, double h) {
 		return new TextComponent(text, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 

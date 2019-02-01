@@ -23,7 +23,7 @@ public class Network {
 
 
     public Server startServer(int port) throws IOException {
-        Server server = new Server(port);
+        Server server = new Server(port, userName);
         return server;
     }
 

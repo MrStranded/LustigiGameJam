@@ -15,10 +15,12 @@ public class Server implements Runnable {
     private int port;
     private Queue<ClientModel> clients;
     private Ping ping;
+    private String userName;
 
 
-    public Server(int _port) throws IOException {
+    public Server(int _port, String _userName) throws IOException {
         port = _port;
+        userName = _userName;
         serverSocket = new ServerSocket(port);
         server = new Thread(this);
         server.start();
@@ -34,7 +36,7 @@ public class Server implements Runnable {
                     Socket socket = serverSocket.accept();
                     System.out.println("New connection from " + socket.getInetAddress() + ":" + socket.getPort());
 
-                    ServerClient client = new ServerClient(socket, this);
+                    ServerClient client = new ServerClient(socket, this, userName);
                     clients.add(client);
 
                 } catch (IOException e) {

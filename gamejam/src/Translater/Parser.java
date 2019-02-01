@@ -90,12 +90,14 @@ public class Parser {
 				case PLAYERLIST:
 					ConcurrentLinkedDeque<Player> playerList = new ConcurrentLinkedDeque<>();
 
-					int p = values.length/4;
-					for (int i=0; i<p; i++) {
-						player = new Player(Integer.parseInt(values[0]));
-						player.setName(values[1]);
-						player.setPing(Integer.parseInt(values[2]));
-						player.setCash(Integer.parseInt(values[3]));
+					if (values.length > 0) {
+						int p = values.length / 4;
+						for (int i = 0; i < p; i++) {
+							player = new Player(Integer.parseInt(values[0]));
+							player.setName(values[1]);
+							player.setPing(Integer.parseInt(values[2]));
+							player.setCash(Integer.parseInt(values[3]));
+						}
 					}
 
 					worldState.setPlayers(playerList);

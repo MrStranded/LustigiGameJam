@@ -102,8 +102,9 @@ public class Encoder {
 		if (worldState != null) {
 			stringBuilder.append(Separator.KEYWORD);
 
+			boolean first = true;
 			for (Player player : worldState.getPlayers()) {
-				stringBuilder.append(Separator.VALUE);
+				if (!first) {stringBuilder.append(Separator.VALUE);}
 				stringBuilder.append(player.getId());
 				stringBuilder.append(Separator.VALUE);
 				stringBuilder.append(player.getName());
@@ -111,6 +112,7 @@ public class Encoder {
 				stringBuilder.append(player.getPing());
 				stringBuilder.append(Separator.VALUE);
 				stringBuilder.append(player.getCash());
+				first = false;
 			}
 		}
 

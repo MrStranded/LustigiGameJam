@@ -34,6 +34,7 @@ public class UpdatingButtonsComponent extends UIComponent implements UpdatingCom
 	}
 
 	public void update() {
+		System.out.println("updtaed");
 		WorldState worldState = screen.getWorldState();
 		if (worldState != null) {
 

@@ -6,6 +6,7 @@ import Translater.Encoder;
 import Translater.Sender;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Logic {
     private static WorldState worldState;
@@ -17,12 +18,16 @@ public class Logic {
 
     private static CosSinLookup cosSinLookup;
 
+
+    // --------------------------------------------- INITIALIZE --------------------------------------------------------
     public static void init(WorldState ws) {
         worldState = ws;
         tileSize = worldState.getTileSize();
         cosSinLookup = CosSinLookup.getTable();
     }
 
+
+    // --------------------------------------------- ITERATE -----------------------------------------------------------
     public static void locigIteration(WorldState ws) {
         worldState = ws;
 
@@ -43,41 +48,64 @@ public class Logic {
     }
 
     public static void processInput() {
-        if (!MasterSwitch.isServer) {
-            ArrayList<Component> accelerators = new ArrayList<>();
-            boolean sailUp;
+        ArrayList<Component> accelerators = new ArrayList<>();
+        boolean sailUp;
 
-            int[] controls = InputBuffer.getControls();
-            Component ship = getShipById(worldState.getUserId());
+        int[] controls = InputBuffer.getControls();
+        Component ship = getShipById(worldState.getUserId());
+        
+        if (MasterSwitch.isServer) {
+            accelerators = new ArrayList<>();
+            HashMap<Integer, Integer[]> controlsAll = worldState.getControls();
 
+            for (Player p : worldState.getPlayers()) {
+                Integer[] controls = controlsAll.get(p.getId());
+                Component ship = getShipById(p.getId());
 
-            // ---------------------------  TOGGLE SAIL  ---------------------------------------------
-            if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
-                sailUp = toggleSails(ship);
-            } else {
-                sailUp = ship.getAttribute(Attributes.SAIL) == 1;
-            }
-
-            // --------------------------- MOVE UP DOWN -------------------------------------------
-            for (Component c : ship.getSubComponents()) {
-                if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
-                    accelerators.add(c);
+                // ---------------------------- SHOOT ----------------------------------------------------
+                if (controls[Actions.SHOOTLEFT.valueOf()] == 1) {
+                    shoot(ship, Slotpositions.LEFT);
                 }
 
-                if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
-                    accelerators.add(c);
+                if (controls[Actions.SHOOTRIGHT.valueOf()] == 1) {
+                    shoot(ship, Slotpositions.LEFT);
+                }
+
+                if (controls[Actions.SHOOTUP.valueOf()] == 1) {
+                    shoot(ship, Slotpositions.LEFT);
+                }
+
+                if (controls[Actions.SHOOTDOWN.valueOf()] == 1) {
+                    shoot(ship, Slotpositions.LEFT);
                 }
             }
-
-            accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
-
-            // -------------------------- STEER -----------------------------------------------------
-            ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * controls[Actions.MOVELEFTRIGHT.valueOf()]));
-
-        } else {
-
         }
+
+        // ---------------------------  TOGGLE SAIL  ---------------------------------------------
+        if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
+            sailUp = toggleSails(ship);
+        } else {
+            sailUp = ship.getAttribute(Attributes.SAIL) == 1;
+        }
+
+        // --------------------------- MOVE UP DOWN -------------------------------------------
+        for (Component c : ship.getSubComponents()) {
+            if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
+                accelerators.add(c);
+            }
+
+            if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
+                accelerators.add(c);
+            }
+        }
+
+        accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
+
+        // -------------------------- STEER -----------------------------------------------------
+        steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
     }
+
+    // ----------------------------------------- LOGIC -----------------------------------------------------------------
 
     public static void move(Component component) {
         Position inputVector = getVector(component);
@@ -103,18 +131,20 @@ public class Logic {
 
     }
 
-    public static void shoot(Component ship, Component[] components) {
-        for (Component c : components) {
-            Component projectile = new Component();
-            projectile.set(Attributes.CATEGORY, Categories.PROJECTILE.valueOf());
-            projectile.set(Attributes.HEALTH, 1);
-            projectile.set(Attributes.SPEED, c.getAttribute(Attributes.SPEED));
-            double angle = projectile.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + c.getAttribute(Attributes.ANGLE));
+    public static void shoot(Component ship, Slotpositions position) {
+        for (Component c : ship.getSubComponents()) {
+            if (c.getAttribute(Attributes.SLOTPOSITION) == position.valueOf()) {
+                Component projectile = new Component();
+                projectile.set(Attributes.CATEGORY, Categories.PROJECTILE.valueOf());
+                projectile.set(Attributes.HEALTH, 1);
+                projectile.set(Attributes.SPEED, c.getAttribute(Attributes.SPEED));
+                double angle = projectile.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + c.getAttribute(Attributes.ANGLE));
 
-            projectile.setPosition(Position.add(getVector(1, angle), Position.add(ship.getPosition(), c.getPosition())));
+                projectile.setPosition(Position.add(getVector(1, angle), Position.add(ship.getPosition(), c.getPosition())));
 
-            worldState.addUnit(projectile);
-            changes.append(Encoder.createFullComponentMsg(c));
+                worldState.addUnit(projectile);
+                changes.append(Encoder.createFullComponentMsg(c));
+            }
         }
     }
 
@@ -200,7 +230,25 @@ public class Logic {
         }
 
         ship.set(Attributes.SPEED, speed);
+
+        if (MasterSwitch.isServer) {
+            changes.append(Encoder.createAttributesMsg(ship));
+        }
     }
+
+    public static boolean toggleSails(Component ship) {
+        int x = ship.getAttribute(Attributes.SAIL) == 0 ? 1 : 0;
+        ship.set(Attributes.SAIL, x);
+
+        return x == 1;
+    }
+
+    public static void steer(Component ship, int input) {
+        ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * input));
+    }
+
+
+    // ----------------------------------------- GET -------------------------------------------------------------------
 
     public static Position getRotatedPosition(Position position, double angle) {
         return new Position(cosSinLookup.getCos((int) angle) * position.getX() - cosSinLookup.getSine((int) angle) * position.getY(),
@@ -221,7 +269,7 @@ public class Logic {
     public static Position getVector(Component component) {
         double distance = getDistance(component);
 
-        return new Position(Math.cos(component.getAttribute(Attributes.ANGLE)) * distance, Math.sin(component.getAttribute(Attributes.ANGLE)) * distance);
+        return new Position(cosSinLookup.getCos((int) component.getAttribute(Attributes.ANGLE)) * distance, cosSinLookup.getSine((int) component.getAttribute(Attributes.ANGLE)) * distance);
     }
 
     public static Position getVector(double distance, double angle) {
@@ -276,13 +324,7 @@ public class Logic {
                 return c;
             }
         }
+        System.err.println("No ship has been found for the player: " + playerId + "!!!");
         return null;
-    }
-
-    public static boolean toggleSails(Component ship) {
-        int x = ship.getAttribute(Attributes.SAIL) == 0 ? 1 : 0;
-        ship.set(Attributes.SAIL, x);
-
-        return x == 1;
     }
 }

@@ -13,6 +13,6 @@ public enum KeyWord {
 	GAMELIST,
 	DISCONNECT,
 	PLAYERID,
-	START
-
+	START,
+	CONTROL
 }

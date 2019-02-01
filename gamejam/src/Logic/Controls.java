@@ -15,16 +15,19 @@ public enum Controls {
     MOVERIGHT(6, KeyEvent.VK_R),
     MOVEUP(7, KeyEvent.VK_W),
     MOVEDOWN(8, KeyEvent.VK_S),
-    TOGGLESAIL(9, KeyEvent.VK_F);
+    TOGGLESAIL(9, KeyEvent.VK_F),
+    MOUSEX(10, 0),
+    MOUSEY(11, 1),
+    MOUSELEFT(12, MouseEvent.BUTTON1);
 
     private int id;
     private int event;
 
     private static Map<Integer, Controls> map = new HashMap<Integer, Controls>();
 
-//    public static Controls valueOf(int value) {
-//        return map.get(value);
-//    }
+    public static Controls controlOf(int value) {
+        return map.get(value);
+    }
 
     Controls(int id, int event) {
         this.id = id;

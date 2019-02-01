@@ -2,6 +2,8 @@ package Translater;
 
 import Globals.MasterSwitch;
 import Graphics.Screen;
+import Logic.Component;
+import Logic.Controls;
 import Logic.Player;
 import Logic.WorldState;
 
@@ -12,18 +14,18 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Parser {
 
-	private static WorldState worldState;
-	private static Screen screen;
+    private static WorldState worldState;
+    private static Screen screen;
 
-	private static Map<Integer, ConcurrentLinkedDeque<String>> playerMessages = new HashMap<>(32);
+    private static Map<Integer, ConcurrentLinkedDeque<String>> playerMessages = new HashMap<>(32);
 
-	public static void setScreen(Screen screen) {
-		Parser.screen = screen;
-	}
+    public static void setScreen(Screen screen) {
+        Parser.screen = screen;
+    }
 
-	public static void setWorldState(WorldState worldState) {
-		Parser.worldState = worldState;
-	}
+    public static void setWorldState(WorldState worldState) {
+        Parser.worldState = worldState;
+    }
 
 	public static void parse(int playerId, String msg) {
 		ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
@@ -42,14 +44,14 @@ public class Parser {
 				Iterator<String> messageIterator = messages.iterator();
 				String msg;
 
-				while (messageIterator.hasNext()) {
-					msg = messageIterator.next();
-					messageIterator.remove();
+                while (messageIterator.hasNext()) {
+                    msg = messageIterator.next();
+                    messageIterator.remove();
 
-					if (msg.startsWith("GAME: ")) {
-						msg = msg.substring(6);
-					}
-					String[] infos = msg.split(Separator.INFO);
+                    if (msg.startsWith("GAME: ")) {
+                        msg = msg.substring(6);
+                    }
+                    String[] infos = msg.split(Separator.INFO);
 
 					for (String info : infos) {
 						if (info != null && info.length() > 0) {
@@ -63,9 +65,9 @@ public class Parser {
 		}
 	}
 
-	private static void parseInfo(int playerId, String msg) {
-		System.out.println("parse " + msg);
-		int sep = msg.indexOf(Separator.KEYWORD);
+    private static void parseInfo(int playerId, String msg) {
+        System.out.println("parse " + msg);
+        int sep = msg.indexOf(Separator.KEYWORD);
 
 		String keyword;
 
@@ -206,14 +208,27 @@ public class Parser {
 				break;
 		}
 	}
+                    break;
+                case CONTROL:
+                    if (worldState != null) {
+                        Integer[] array = new Integer[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            array[i] = Integer.parseInt(values[i]);
+                        }
+                        worldState.addControl(playerId, array);
+                    }
+                    break;
+            }
+        }
+    }
 
-	private static KeyWord getFittingKeyWord(String keyword) {
-		for (KeyWord keyWord : KeyWord.values()) {
-			if (keyWord.name().equals(keyword)) {
-				return keyWord;
-			}
-		}
-		return null;
-	}
+    private static KeyWord getFittingKeyWord(String keyword) {
+        for (KeyWord keyWord : KeyWord.values()) {
+            if (keyWord.name().equals(keyword)) {
+                return keyWord;
+            }
+        }
+        return null;
+    }
 
 }

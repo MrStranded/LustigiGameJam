@@ -42,6 +42,8 @@ public class GameLoop extends Thread {
 
 			Parser.update();
 
+			Logic.locigIteration(worldState);
+
 			window.registerInput(worldState);
 			window.drawWorld(worldState);
 

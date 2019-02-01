@@ -1,6 +1,7 @@
 package Graphics.Gui;
 
 import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.InputComponent;
 import Graphics.Gui.GraphicalComponents.UIComponent;
 import Logic.WorldState;
 import Graphics.Screen;
@@ -61,6 +62,8 @@ public class GUI {
 				if (uiComponent.inside(InputBuffer.getMousePosition())) {
 					if (uiComponent.getClass() == ButtonComponent.class) {
 						return ((ButtonComponent) uiComponent).getAction();
+					} else if (uiComponent.getClass() == InputComponent.class) {
+						return ((InputComponent) uiComponent).getAction();
 					} else {
 						return drillClick(uiComponent.getUIComponentList());
 					}

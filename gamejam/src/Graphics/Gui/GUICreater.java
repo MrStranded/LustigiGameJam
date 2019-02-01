@@ -1,9 +1,7 @@
 package Graphics.Gui;
 
-import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
-import Graphics.Gui.GraphicalComponents.UIComponent;
-import Graphics.Gui.GraphicalComponents.UpdatingTextComponent;
 import Graphics.Screen;
 import Graphics.Gui.Actions.*;
 import Logic.WorldState;
@@ -13,6 +11,21 @@ import java.awt.*;
 public class GUICreater {
 
 	private static int width, height;
+
+	public static GUI createUserNameInputMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
+
+		GUI gui = new GUI();
+
+		UIComponent mainBox = createUIComponent(0.1,0.45,0.8,0.1);
+		gui.addUIComponent(mainBox);
+		mainBox.setColor(new Color(200,200,200));
+
+		mainBox.addUIComponent(createInput("Username: ", new UserNameAction(), 0.11, 0.46, 0.78, 0.08));
+
+		return gui;
+	}
 
 	public static GUI createHostMenu(Screen screen) {
 		width = screen.getWidth();
@@ -27,9 +40,8 @@ public class GUICreater {
 		String ipAddress = Network.Utility.getOwnIp();
 		mainBox.addUIComponent(createButton("Your IP Address: " + ipAddress, new CopyContentAction(ipAddress),0.2, 0.125, 0.6, 0.05));
 
-		TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
-		mainBox.addUIComponent(text);
-		text.setColor(new Color(190,190,190));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.175));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.4, 0.6, 0.175));
 
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.6, 0.6, 0.1));
 
@@ -46,7 +58,8 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createUpdatingText(0, screen.getWorldState(), 0.2, 0.2, 0.6, 0.6));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.275));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.5, 0.6, 0.3));
 
 		return gui;
 	}
@@ -80,8 +93,12 @@ public class GUICreater {
 		return new TextComponent(text, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
-	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, WorldState worldState, double x, double y, double w, double h) {
-		return new UpdatingTextComponent(whatToUpdate, worldState, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, Screen screen, double x, double y, double w, double h) {
+		return new UpdatingTextComponent(whatToUpdate, screen, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	}
+
+	private static InputComponent createInput(String text, Action action, double x, double y, double w, double h) {
+		return new InputComponent(text, action, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
 }

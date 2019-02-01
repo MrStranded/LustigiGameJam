@@ -1,5 +1,6 @@
 package Translater;
 
+import Globals.MasterSwitch;
 import Logic.Component;
 import Logic.Player;
 import Logic.WorldState;
@@ -31,10 +32,10 @@ public class Parser {
 		if (worldState != null) {
 			for (int playerId : playerMessages.keySet()) {
 				ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
-				if (messages.size() > 0) {
-					System.out.println("looking at player " + playerId);
-					System.out.println(messages.size() + " messages");
-				}
+				//if (messages.size() > 0) {
+					//System.out.println("looking at player " + playerId);
+					//System.out.println(messages.size() + " messages");
+				//}
 				Iterator<String> messageIterator = messages.iterator();
 				String msg;
 
@@ -42,6 +43,9 @@ public class Parser {
 					msg = messageIterator.next();
 					messageIterator.remove();
 
+					if (msg.startsWith("GAME: ")) {
+						msg = msg.substring(6);
+					}
 					String[] infos = msg.split(Separator.INFO);
 
 					for (String info : infos) {
@@ -88,19 +92,22 @@ public class Parser {
 					break;
 
 				case PLAYERLIST:
-					ConcurrentLinkedDeque<Player> playerList = new ConcurrentLinkedDeque<>();
-
 					if (values.length > 0) {
 						int p = values.length / 4;
 						for (int i = 0; i < p; i++) {
-							player = new Player(Integer.parseInt(values[0]));
-							player.setName(values[1]);
-							player.setPing(Integer.parseInt(values[2]));
-							player.setCash(Integer.parseInt(values[3]));
+							int id = Integer.parseInt(values[0+i*4]);
+							player = worldState.getPlayer(id);
+
+							if (player == null) {
+								player = new Player(id);
+								worldState.addPlayer(player);
+							}
+
+							player.setName(values[1+i*4]);
+							player.setPing(Integer.parseInt(values[2+i*4]));
+							player.setCash(Integer.parseInt(values[3+i*4]));
 						}
 					}
-
-					worldState.setPlayers(playerList);
 
 					break;
 
@@ -122,6 +129,15 @@ public class Parser {
 						worldState.addPlayer(player);
 					}
 
+					break;
+
+				case CHAT:
+					if (MasterSwitch.isServer) {
+						worldState.addChatMessage(values[0]);
+						Sender.sendMessages();
+					} else {
+						worldState.addChatMessage(values[0]);
+					}
 					break;
 			}
 		}

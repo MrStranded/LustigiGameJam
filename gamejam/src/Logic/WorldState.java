@@ -11,14 +11,17 @@ public class WorldState {
 	private int[][] map;
 	private int size;
 
+	public String userName = "-";
+
 	private ConcurrentLinkedDeque<Player> players;
 	private ConcurrentLinkedDeque<Component> units;
 
-	private Stack<String> chatMessages = new Stack<>();
+	private ConcurrentLinkedDeque<String> chatMessages;
 
 	public WorldState() {
 		players = new ConcurrentLinkedDeque<Player>();
 		units = new ConcurrentLinkedDeque<Component>();
+		chatMessages = new ConcurrentLinkedDeque<String>();
 
 		createTestMap();
 	}
@@ -64,6 +67,10 @@ public class WorldState {
 		return units;
 	}
 
+	public void removeUnit(Component unit) {
+		units.remove(unit);
+	}
+
 	public Component getUnit(int id) {
 		for (Component component : units) {
 			if (component.getId() == id) {
@@ -92,5 +99,16 @@ public class WorldState {
 
 	public void setUnits(ConcurrentLinkedDeque<Component> units) {
 		this.units = units;
+	}
+
+	public void addChatMessage(String msg) {
+		chatMessages.add(msg);
+		if (chatMessages.size() > 5) {
+			chatMessages.pop();
+		}
+	}
+
+	public ConcurrentLinkedDeque<String> getChatMessages() {
+		return chatMessages;
 	}
 }

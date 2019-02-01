@@ -1,9 +1,8 @@
 package Graphics;
 
 import Graphics.Gui.*;
-import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
-import Graphics.Gui.GraphicalComponents.UIComponent;
 import Input.InputBuffer;
 import Logic.WorldState;
 
@@ -31,7 +30,7 @@ public class Screen extends JPanel {
 		setBackground(Color.BLUE);
 		setSize(width, height);
 
-		gui = GUICreater.createPlayerMenu(this);
+		gui = GUICreater.createUserNameInputMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -134,12 +133,43 @@ public class Screen extends JPanel {
 			g.setColor(Color.BLACK);
 			g.drawString(((ButtonComponent) uiComponent).getText(), uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
 
+		} else if (uiComponent.getClass() == InputComponent.class) { // button
+			if (uiComponent.inside(InputBuffer.getMousePosition())) {
+				g.setColor(((InputComponent) uiComponent).getSecondaryColor());
+			} else {
+				g.setColor(uiComponent.getColor());
+			}
+			drawRect(g, uiComponent.getPosition());
+
+			((InputComponent) uiComponent).checkInput();
+			if (((InputComponent) uiComponent).isReady()) {
+				((InputComponent) uiComponent).getAction().perform(this, worldState);
+			}
+
+			g.setColor(Color.BLACK);
+			String out = ((InputComponent) uiComponent).getText() + ((InputComponent) uiComponent).getContent();
+			g.drawString(out, uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
+
 		} else if (uiComponent.getClass() == TextComponent.class) { // text
 			g.setColor(uiComponent.getColor());
 			drawRect(g, uiComponent.getPosition());
 
 			g.setColor(Color.BLACK);
 			String[] lines = ((TextComponent) uiComponent).getText().split("\n");
+			int i = 0;
+			int xPos = uiComponent.getPosition().getX() + 5;
+			int yPos = uiComponent.getPosition().getY() + 10;
+			for (String line : lines) {
+				g.drawString(line, xPos, yPos + i * 15);
+				i++;
+			}
+
+		} else if (uiComponent.getClass() == UpdatingTextComponent.class) { // updating text
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
+
+			g.setColor(Color.BLACK);
+			String[] lines = ((UpdatingTextComponent) uiComponent).getText().split("\n");
 			int i = 0;
 			int xPos = uiComponent.getPosition().getX() + 5;
 			int yPos = uiComponent.getPosition().getY() + 10;

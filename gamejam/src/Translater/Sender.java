@@ -59,6 +59,20 @@ public class Sender {
 		}
 	}
 
+	public static void sendMessages() {
+		if (worldState != null) {
+			if (worldState.getChatMessages().size() > 0) {
+				send(Encoder.createChatMsgAll(worldState));
+			}
+		}
+	}
+
+	public static void sendMessage(String msg) {
+		if (msg != null) {
+			send(Encoder.createChatMsg(msg));
+		}
+	}
+
 	// -----------------------------------------------------------------------------------------------------------------
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// ########################################################## THE ACTUAL SENDING ###################################

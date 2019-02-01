@@ -3,6 +3,7 @@ package Translater;
 import Logic.Component;
 import Logic.Player;
 import Logic.WorldState;
+import Network.Server;
 
 public class Encoder {
 
@@ -126,6 +127,25 @@ public class Encoder {
 			stringBuilder.append(Separator.KEYWORD);
 
 			stringBuilder.append(chatMessage);
+		}
+
+		return stringBuilder.toString();
+	}
+
+	public static String createChatMsgAll(WorldState worldState) {
+		StringBuilder stringBuilder = new StringBuilder();
+		if (worldState != null) {
+			boolean first = true;
+
+			for (String msg : worldState.getChatMessages()) {
+				if (!first) {
+					stringBuilder.append(Separator.INFO);
+				}
+
+				stringBuilder.append(KeyWord.CHAT.name());
+				stringBuilder.append(Separator.KEYWORD);
+				stringBuilder.append(msg);
+			}
 		}
 
 		return stringBuilder.toString();

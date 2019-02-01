@@ -6,11 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Controls {
-    LEFT(0, KeyEvent.VK_LEFT),
-    RIGHT(1, KeyEvent.VK_RIGHT),
-    UP(2, KeyEvent.VK_UP),
-    DOWN(3, KeyEvent.VK_DOWN),
-    MOUSE(4,MouseEvent.BUTTON3);
+    SHOOTLEFT(0, KeyEvent.VK_LEFT),
+    SHOOTRIGHT(1, KeyEvent.VK_RIGHT),
+    SHOOTUP(2, KeyEvent.VK_UP),
+    SHOOTDOWN(3, KeyEvent.VK_DOWN),
+    SHOOTLEFTMOUSE(4, MouseEvent.BUTTON3),
+    MOVELEFT(5, KeyEvent.VK_L),
+    MOVERIGHT(6, KeyEvent.VK_R),
+    MOVEUP(7, KeyEvent.VK_W),
+    MOVEDOWN(8, KeyEvent.VK_S),
+    TOGGLESAIL(9, KeyEvent.VK_F);
 
     private int id;
     private int event;

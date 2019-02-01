@@ -18,6 +18,7 @@ public class TestDataSendingServer {
         String ip = "";
         int port = 42069;
 
+        MasterSwitch.isServer = true;
         new GameLoop().start();
 
         try {
@@ -26,7 +27,6 @@ public class TestDataSendingServer {
 
             Sender.setClient(client);
             Sender.setServer(server);
-            MasterSwitch.isServer = true;
 
             // app functionality here
             String message;
@@ -39,9 +39,10 @@ public class TestDataSendingServer {
                     break;
                 } else if (message.equals("sendmap")) {
                     Sender.sendMap();
+                } else {
+                    //client.send(message);
+                    Sender.sendMessages();
                 }
-
-                client.send(message);
             }
 
             // try worldstate, message

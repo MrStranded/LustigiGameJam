@@ -1,5 +1,10 @@
 package Input;
 
+import Graphics.Gui.Actions.ChatAction;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class InputBuffer {
 
 	private static boolean[] keyPressed = new boolean[223];
@@ -7,11 +12,14 @@ public class InputBuffer {
 	private static boolean[] mouseClicked = new boolean[3];
 	private static int mx, my;
 
+	private static List<Integer> lastInput = new ArrayList<>(32);
+
 	private static int dx = 0, dy = 0; // the insets of the frame which we need to subtract from the mouse position
 
 	public static void keyIsPressed(int keyCode) {
 		if (keyCode >= 0 && keyCode < keyPressed.length) {
 			keyPressed[keyCode] = true;
+			lastInput.add(keyCode);
 		}
 	}
 	public static void keyIsReleased(int keyCode) {
@@ -77,6 +85,12 @@ public class InputBuffer {
 
 	public static int[] getMousePosition() {
 		return new int[] { mx, my };
+	}
+
+	public static Integer[] getLastInput() {
+		Integer[] r = lastInput.toArray(new Integer[0]);
+		lastInput.clear();
+		return r;
 	}
 
 }

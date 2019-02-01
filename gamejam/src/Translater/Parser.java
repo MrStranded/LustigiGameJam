@@ -1,6 +1,7 @@
 package Translater;
 
 import Globals.MasterSwitch;
+import Graphics.Screen;
 import Logic.Component;
 import Logic.Player;
 import Logic.WorldState;
@@ -11,8 +12,13 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class Parser {
 
 	private static WorldState worldState;
+	private static Screen screen;
 
 	private static Map<Integer, ConcurrentLinkedDeque<String>> playerMessages = new HashMap<>(32);
+
+	public static void setScreen(Screen screen) {
+		Parser.screen = screen;
+	}
 
 	public static void setWorldState(WorldState worldState) {
 		Parser.worldState = worldState;
@@ -172,6 +178,15 @@ public class Parser {
 				case PLAYERID:
 					if (worldState != null) {
 						worldState.setUserId(Integer.parseInt(values[0]));
+					}
+
+					break;
+
+				case START:
+					if (!MasterSwitch.isServer) {
+						if (screen != null) {
+							screen.updateGui(null);
+						}
 					}
 
 					break;

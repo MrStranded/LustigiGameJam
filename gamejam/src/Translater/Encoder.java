@@ -187,4 +187,9 @@ public class Encoder {
 		return KeyWord.PLAYERID.name() + Separator.KEYWORD + playerId;
 	}
 
+	public static String createStartMsg(int playerId) {
+		return KeyWord.START.name();
+	}
+
+
 }

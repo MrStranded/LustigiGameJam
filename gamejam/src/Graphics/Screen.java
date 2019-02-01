@@ -122,12 +122,13 @@ public class Screen extends JPanel {
 	private void drawUnits(Graphics g) {
 		if (worldState != null) {
 			for (Component unit : worldState.getUnits()) {
-				int xPos = (int) (unit.getPosition().getX()*tileSize);
-				int yPos = (int) (unit.getPosition().getY()*tileSize);
+				int xPos = (int) ((unit.getPosition().getX()+0.5d)*tileSize);
+				int yPos = (int) ((unit.getPosition().getY()+0.5d)*tileSize);
 
 				BufferedImage unitImage = Images.getComponentImage((int) unit.getAttribute(Attributes.IMAGE), unit.getAttribute(Attributes.ANGLE));
 				if (unitImage != null) {
-					g.drawImage(unitImage, xPos, yPos, null);
+					int offset = unitImage.getWidth()/2;
+					g.drawImage(unitImage, xPos-offset, yPos-offset, null);
 				} else {
 					g.setColor(Color.RED);
 					g.fillOval(xPos - 20, yPos - 20, 40, 40);

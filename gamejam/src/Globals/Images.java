@@ -22,4 +22,8 @@ public class Images {
 		return null;
 	}
 
+	public static Image getSpecific(int i) {
+		return components[i];
+	}
+
 }

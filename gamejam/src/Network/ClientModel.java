@@ -2,7 +2,8 @@ package Network;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by Lukas on 31.01.19.
@@ -18,7 +19,7 @@ public class ClientModel implements Runnable {
     Long lastPing = 0l;
     Long lastPong = 0l;
     Long pingValue = 0l;
-    ReentrantLock lock = new ReentrantLock();
+    ReadWriteLock lock = new ReentrantReadWriteLock();
 
 
     public ClientModel(Socket _socket) {
@@ -31,13 +32,13 @@ public class ClientModel implements Runnable {
 
     public synchronized void send(String message) throws IOException {
         synchronized (socket) {
-            lock.lock();
+            lock.writeLock().lock();
             try {
                 PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
                 printWriter.print(message);
                 printWriter.flush();
             } finally {
-                lock.unlock();
+                lock.writeLock().unlock();
             }
 
         }

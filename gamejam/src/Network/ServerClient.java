@@ -14,7 +14,9 @@ public class ServerClient extends ClientModel {
     private int connectionId;
 
     public ServerClient(Socket _socket, Server _server) {
-        super(_socket);
+        socket = _socket;
+        client = new Thread(this);
+        client.start();
         server = _server;
         try {
             send("GIBMENAME");
@@ -66,8 +68,10 @@ public class ServerClient extends ClientModel {
                     continue;
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
-                    Parser.parse(connectionId, "PING|" + pingValue);
+                    Parser.parse(connectionId, "PING|" + getPing());
                     continue;
+                } else if (message.equals("HEADER")) {
+                    send("LUSCHTIGIGAMEJAM");
                 }
 
                 server.broadcast("<"+getName()+"> " + message);

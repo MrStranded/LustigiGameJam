@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class NetworkTest {
     public static void main(String[] args) {
         Network network = new Network();
+        network.scan();
         Server server;
         Client client;
         String ip = "";

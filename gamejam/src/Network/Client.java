@@ -94,10 +94,10 @@ public class Client extends ClientModel {
 
     public void clean() {
         try {
-            socket.close();
             if (ping != null) {
                 ping.stop();
             }
+            socket.close();
         } catch (IOException e) {
             System.out.println("couldn't close socket");
             //e.printStackTrace();

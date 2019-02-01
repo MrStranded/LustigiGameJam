@@ -45,6 +45,8 @@ public class Network {
             } catch (InterruptedException e) {}
         }
 
+        System.out.println(servers.size());
+
         Map<String, String> gameServers = new HashMap<>();
         for (Map.Entry<String, Client> entry: servers.entrySet()) {
             if (entry.getValue().isGameServer()) {
@@ -54,6 +56,10 @@ public class Network {
                 System.out.println(ip + ": " + name);
             }
         }
+
+        System.out.println(gameServers.size());
+
+
 
         String gameList = "";
         for (Map.Entry<String, String> entry: gameServers.entrySet()) {

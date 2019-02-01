@@ -13,7 +13,7 @@ public class Server implements Runnable {
     private Thread server;
     private ServerSocket serverSocket;
     private int port;
-    private static Queue<ClientModel> clients;
+    private Queue<ClientModel> clients;
     private Ping ping;
 
 
@@ -62,7 +62,7 @@ public class Server implements Runnable {
         broadcast(message);
     }
 
-    public static Queue<ClientModel> getClients() {
+    public Queue<ClientModel> getClients() {
         return clients;
     }
 

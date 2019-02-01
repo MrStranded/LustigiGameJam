@@ -43,7 +43,7 @@ public class Client extends ClientModel {
                 if (message.startsWith("GAME: ")) {
                     String change = message.substring(message.indexOf(" ") + 1);
                     Parser.parse(change);
-                }else if (message.startsWith("MSG")) {
+                } else if (message.startsWith("MSG")) {
 
                 } else if (message.equals("GIBMENAME")) {
                     send("HEREISNAME: " + name);

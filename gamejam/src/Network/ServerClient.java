@@ -18,12 +18,11 @@ public class ServerClient extends ClientModel {
             System.out.println("failed to receive name");
             e.printStackTrace();
         }
-
     }
+
 
     @Override
     public void run() {
-
         try {
             Boolean proceed = true;
             while(proceed) {
@@ -45,12 +44,20 @@ public class ServerClient extends ClientModel {
                 } else if (message.startsWith("HEREISNAME: ")) {
                     name = message.split(" ")[1];
                     server.broadcast("<server> " + getName() + " joined the game");
+                    continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
-                    String players = "PLAYERS:\n";
-                    for (ServerClient client: server.getClients()) {
-                        players += client.getName() + "\n";
+                    String players = "PLAYER | PING:\n";
+                    for (ClientModel client: server.getClients()) {
+                        players += client.getName() + " | " + client.getPing() + "\n";
                     }
                     send(players);
+                    continue;
+                } else if (message.equals("PING")) {
+                    send("PONG");
+                    continue;
+                } else if (message.equals("PONG")) {
+                    setLastPong(System.currentTimeMillis());
+                    continue;
                 }
 
                 server.broadcast("<"+getName()+"> " + message);
@@ -63,10 +70,18 @@ public class ServerClient extends ClientModel {
             // create error log
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            clean();
         }
     }
 
-    public String getName() {
-        return name;
+    public void clean() {
+        try {
+            server.getClients().remove(this);
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("couldn't close socket");
+            e.printStackTrace();
+        }
     }
 }

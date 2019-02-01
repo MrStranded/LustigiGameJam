@@ -13,7 +13,8 @@ public class Server implements Runnable {
     private Thread server;
     private ServerSocket serverSocket;
     private int port;
-    private Queue<ServerClient> clients;
+    private static Queue<ClientModel> clients;
+    private Ping ping;
 
 
     public Server(int _port) throws IOException {
@@ -21,34 +22,51 @@ public class Server implements Runnable {
         serverSocket = new ServerSocket(port);
         server = new Thread(this);
         server.start();
-        clients = new ConcurrentLinkedDeque<ServerClient>();
+        clients = new ConcurrentLinkedDeque<ClientModel>();
+        ping = new Ping(getClients());
     }
 
     @Override
     public void run() {
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                System.out.println("New connection from " + socket.getInetAddress() + ":" + socket.getPort());
+        try {
+            while (true) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    System.out.println("New connection from " + socket.getInetAddress() + ":" + socket.getPort());
 
-                ServerClient client = new ServerClient(socket, this);
-                clients.add(client);
+                    ServerClient client = new ServerClient(socket, this);
+                    clients.add(client);
 
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+                } catch (IOException e) {
+                    System.out.println("failed to accept socket");
+                    System.out.println(e.getMessage());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            clean();
         }
     }
 
 
 
     public void broadcast(String message) throws IOException {
-        for (ServerClient client: clients) {
+        for (ClientModel client: clients) {
             client.send(message);
         }
     }
 
-    public Queue<ServerClient> getClients() {
+    public static Queue<ClientModel> getClients() {
         return clients;
+    }
+
+    public void clean() {
+        try {
+            ping.stop();
+            serverSocket.close();
+        } catch (IOException e) {
+            System.out.println("failed to close server");
+        }
     }
 }

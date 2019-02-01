@@ -6,6 +6,10 @@ public class Parser {
 
 	private static WorldState worldState;
 
+	public static void setWorldState(WorldState worldState) {
+		Parser.worldState = worldState;
+	}
+
 	public static void parse(String msg) {
 		if (worldState != null) {
 			String[] infos = msg.split(Separator.INFO);
@@ -34,7 +38,14 @@ public class Parser {
 
 					int[][] newMap = new int[s][s];
 
-					//for ()
+					for (int x=0; x<s; x++) {
+						for (int y=0; y<s; y++) {
+							newMap[x][y] = Integer.parseInt(values[1 + y + x*s]);
+						}
+					}
+
+					worldState.setMap(newMap);
+
 					break;
 			}
 		}

@@ -3,6 +3,8 @@ package Logic;
 import Graphics.Window;
 import Graphics.Gui.GUI;
 import Graphics.Gui.GUICreater;
+import Translater.Parser;
+import Translater.Sender;
 
 public class GameLoop extends Thread {
 
@@ -18,6 +20,9 @@ public class GameLoop extends Thread {
 
 		worldState = new WorldState();
 		worldState.createTestMap();
+
+		Sender.setWorldState(worldState);
+		Parser.setWorldState(worldState);
 	}
 
 	@Override

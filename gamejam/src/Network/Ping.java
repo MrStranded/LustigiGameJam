@@ -31,7 +31,7 @@ public class Ping implements Runnable {
                 try {
                     pingClient(client);
                 } catch (IOException e) {
-                    System.out.println("Failed to ping " + client.getName());
+                    System.out.println("Failed to ping " + client.getRemoteName());
                     e.printStackTrace();
                 }
             }

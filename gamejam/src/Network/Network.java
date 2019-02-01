@@ -13,14 +13,23 @@ import java.util.Map;
  */
 public class Network {
     private final int port = 42069;
+    private String userName;
+
+
+    public Network(String _userName) {
+        userName = _userName;
+    }
+
+
+
     public Server startServer(int port) throws IOException {
         Server server = new Server(port);
         return server;
     }
 
-    public Client connect(String ip, int port, String name) throws IOException {
+    public Client connect(String ip, int port) throws IOException {
         Socket socket = new Socket();
-        Client client = new Client(socket, name, ip, port, false);
+        Client client = new Client(socket, userName, ip, port, false);
         return client;
     }
 
@@ -47,7 +56,7 @@ public class Network {
         for (Map.Entry<String, Client> entry: servers.entrySet()) {
             if (entry.getValue().isGameServer()) {
                 String ip = entry.getKey();
-                String name = entry.getValue().getName();
+                String name = entry.getValue().getRemoteName();
                 gameServers.put(ip, name);
             }
         }

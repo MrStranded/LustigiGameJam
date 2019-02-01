@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class NetworkTest {
     public static void main(String[] args) {
-        Network network = new Network();
+        Network network = new Network("gundar");
         network.scan();
         boolean abort = true;
         if (abort) {
@@ -21,7 +21,7 @@ public class NetworkTest {
 
         try {
             server = network.startServer(port);
-            client = network.connect(ip, port, "gundar");
+            client = network.connect(ip, port);
 
             // app functionality here
             String message;

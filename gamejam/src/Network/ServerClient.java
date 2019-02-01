@@ -53,19 +53,21 @@ public class ServerClient extends ClientModel {
                 } else if (message.equals("GUESSIDIE")) {
                     server.getClients().remove(this);
                     send("GUESSYOUDIE");
-                    server.broadcast("<server> " + getName() + " left the game");
+                    server.broadcast("<server> " + getRemoteName() + " left the game");
                     break;
+                } else if (message.equals("GIBMENAME")) {
+                    send("HEREISNAME: " + name);
                 } else if (message.startsWith("HEREISNAME: ")) {
-                    name = message.split(" ")[1];
-                    if (!name.equals("SCAN")) {
-                        Parser.parse(connectionId, "PLAYER|" + name); // creates new player
-                        server.broadcast("<server> " + getName() + " joined the game");
+                    remoteName = message.split(" ")[1];
+                    if (!remoteName.equals("SCAN")) {
+                        Parser.parse(connectionId, "PLAYER|" + remoteName); // creates new player
+                        server.broadcast("<server> " + getRemoteName() + " joined the game");
                     }
                     continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
                     String players = "PLAYER|PING:\n";
                     for (ClientModel client: server.getClients()) {
-                        players += client.getName() + " | " + client.getPing() + "\n";
+                        players += client.getRemoteName() + " | " + client.getPing() + "\n";
                     }
                     send(players);
                     continue;
@@ -81,7 +83,7 @@ public class ServerClient extends ClientModel {
                     break;
                 }
 
-                server.broadcast("<"+getName()+"> " + message);
+                server.broadcast("<"+getRemoteName()+"> " + message);
             }
         } catch (IOException e) {
             // create error log

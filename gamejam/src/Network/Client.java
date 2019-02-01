@@ -67,6 +67,8 @@ public class Client extends ClientModel {
 
                 } else if (message.equals("GIBMENAME")) {
                     send("HEREISNAME: " + name);
+                } else if (message.startsWith("HEREISNAME: ")) {
+                    remoteName = message.split(" ")[1];
                 } else if (message.equals("GUESSYOUDIE")) {
                     System.out.println("ok bye");
                     break;

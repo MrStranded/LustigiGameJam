@@ -16,6 +16,7 @@ public class ClientModel implements Runnable {
     char[] buffer = new char[BUFSIZE];
     String message;
     String name;
+    String remoteName;
     private Long lastPing = 0l;
     private Long lastPong = 0l;
     private Long pingValue = 0l;
@@ -52,6 +53,10 @@ public class ClientModel implements Runnable {
 
     public String getName() {
         return name;
+    }
+
+    public String getRemoteName() {
+        return remoteName;
     }
 
     public Long getPing() {

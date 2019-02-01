@@ -4,7 +4,6 @@ import Globals.MasterSwitch;
 import Logic.Component;
 import Logic.WorldState;
 import Network.Client;
-import Network.ClientModel;
 import Network.Server;
 
 import java.io.IOException;
@@ -35,16 +34,9 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public static void sendWorldState() {
-		if (worldState != null) {
-			StringBuilder stringBuilder = new StringBuilder(Encoder.createMapMsg(worldState));
+		sendMap();
 
-			for (Component component : worldState.getUnits()) {
-				stringBuilder.append(Separator.INFO);
-				stringBuilder.append(Encoder.createFullComponentMsg(component));
-			}
-
-			send(stringBuilder.toString());
-		}
+		sendComponents();
 	}
 
 	public static void sendMap() {
@@ -53,9 +45,29 @@ public class Sender {
 		}
 	}
 
+	public static void sendComponents() {
+		if (worldState != null) {
+			for (Component component : worldState.getUnits()) {
+				sendComponent(component);
+			}
+		}
+	}
+
+	public static void sendComponent(Component component) {
+		if (component != null) {
+			send(Encoder.createFullComponentMsg(component));
+		}
+	}
+
 	public static void sendPlayers() {
 		if (worldState != null) {
 			send(Encoder.createPlayerListMsg(worldState));
+		}
+	}
+
+	public static void sendLogin() {
+		if (worldState != null) {
+			send(Encoder.createPlayerLoginMsg(worldState.userName));
 		}
 	}
 
@@ -77,6 +89,10 @@ public class Sender {
 		send(Encoder.createDisconnect(playerId));
 	}
 
+	public static void sendStart() {
+		send(Encoder.createStartMsg(0));
+	}
+
 	// -----------------------------------------------------------------------------------------------------------------
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// ########################################################## THE ACTUAL SENDING ###################################
@@ -84,7 +100,7 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	private static void send(String msg) {
-		System.out.println(MasterSwitch.isServer + " sends " + msg);
+		msg = Separator.INFO + msg;
 		if (MasterSwitch.isServer) {
 			if (server != null) {
 				try {
@@ -95,7 +111,6 @@ public class Sender {
 			}
 		} else {
 			if (client != null) {
-				System.out.println("NOT NULL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				try {
 					client.sendGameState(msg);
 				} catch (IOException e) {

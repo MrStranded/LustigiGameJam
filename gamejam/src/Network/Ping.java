@@ -26,7 +26,6 @@ public class Ping implements Runnable {
         }
         while (proceed) {
             Long start = System.currentTimeMillis();
-            System.out.println("proceed: " + proceed);
             for (ClientModel client: clients) {
                 try {
                     pingClient(client);

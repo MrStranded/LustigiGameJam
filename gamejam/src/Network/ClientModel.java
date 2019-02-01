@@ -20,22 +20,13 @@ public class ClientModel implements Runnable {
     private Long lastPing = 0l;
     private Long lastPong = 0l;
     private Long pingValue = 0l;
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
 
     public void send(String message) throws IOException {
-        lock.writeLock().lock();
-        try {
+        synchronized (socket) {
             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             printWriter.print(message);
             printWriter.flush();
-        } finally {
-            lock.writeLock().unlock();
         }
-    }
-
-    public void sendGameState(String message) throws IOException {
-        message = "GAME: " + message;
-        send(message);
     }
 
     @Override

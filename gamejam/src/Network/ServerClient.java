@@ -15,6 +15,7 @@ public class ServerClient extends ClientModel {
     private int connectionId;
 
     public ServerClient(Socket _socket, Server _server, String _userName) {
+        connectionId = (++counter);
         socket = _socket;
         client = new Thread(this);
         client.start();
@@ -23,11 +24,11 @@ public class ServerClient extends ClientModel {
         try {
             send("GIBMENAME");
             send("CONID: " + connectionId);
+            System.out.println("conid: " + connectionId);
         } catch (IOException e) {
             System.out.println("failed to request name");
             e.printStackTrace();
         }
-        connectionId = (++counter);
     }
 
 
@@ -80,7 +81,7 @@ public class ServerClient extends ClientModel {
                     Parser.parse(connectionId, "PING|" + getPing());
                     continue;
                 } else if (message.equals("HEADER")) {
-                    send("LUSCHTIGIGAMEJAM");
+                    send("LUSCHTIGIGAMEJAM: " + name);
                     break;
                 }
 
@@ -106,6 +107,14 @@ public class ServerClient extends ClientModel {
             e.printStackTrace();
         } catch (InterruptedException e) {
             System.out.println("Insomnia");
+        }
+    }
+
+    public void send(String message) throws IOException {
+        synchronized (socket) {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
         }
     }
 }

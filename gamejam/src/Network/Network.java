@@ -58,8 +58,10 @@ public class Network {
                 String ip = entry.getKey();
                 String name = entry.getValue().getRemoteName();
                 gameServers.put(ip, name);
+                System.out.println(ip + ": " + name);
             }
         }
+
 
         Parser.parse(0 ,Encoder.createGameList(gameServers));
     }

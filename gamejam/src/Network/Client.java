@@ -33,7 +33,9 @@ public class Client extends ClientModel {
         clients.add(this);
         try {
             send("GIBMENAME");
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -41,7 +43,9 @@ public class Client extends ClientModel {
     public void run() {
         try {
             socket.connect(new InetSocketAddress(ip, port), 1000);
-            ping = new Ping(clients);
+            if (!scan) {
+                ping = new Ping(clients);
+            }
             Boolean proceed = true;
             while(proceed) {
                 // Input
@@ -55,8 +59,9 @@ public class Client extends ClientModel {
                 }
 
                 if (scan) {
-                    if (message.equals("LUSCHTIGIGAMEJAM")) {
+                    if (message.startsWith("LUSCHTIGIGAMEJAM: ")) {
                         gameServer = true;
+                        remoteName = message.split(" ")[1];
                         break;
                     } else {
                         getHeader();
@@ -65,7 +70,7 @@ public class Client extends ClientModel {
                     String change = message.substring(message.indexOf(" ") + 1);
                     Parser.parse(0, change);
 
-                    System.out.println(message);
+                    //System.out.println(message);
                 } else if (message.startsWith("MSG")) {
 
                 } else if (message.equals("GIBMENAME")) {
@@ -81,6 +86,7 @@ public class Client extends ClientModel {
                     setLastPong(System.currentTimeMillis());
                 } else if (message.startsWith("CONID: ")) {
                     connectionId = Integer.parseInt(message.split(" ")[1]);
+                    System.out.println("///////////////////////// I got id " + connectionId);
                     Parser.parse(0, Encoder.createPlayerIdMsg(connectionId));
                 } else {
                     System.out.println(message);
@@ -123,7 +129,22 @@ public class Client extends ClientModel {
         return gameServer;
     }
 
+    public void send(String message) throws IOException {
+        synchronized (socket) {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        }
+    }
+
     public void getHeader() throws IOException {
         send("HEADER");
+    }
+
+
+
+    public void sendGameState(String message) throws IOException {
+        message = "GAME: " + message;
+        send(message);
     }
 }

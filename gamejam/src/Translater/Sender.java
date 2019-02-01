@@ -100,6 +100,7 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	private static void send(String msg) {
+		msg = Separator.INFO + msg;
 		if (MasterSwitch.isServer) {
 			if (server != null) {
 				try {

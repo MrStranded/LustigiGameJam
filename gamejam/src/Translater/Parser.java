@@ -26,8 +26,8 @@ public class Parser {
 	}
 
 	public static void parse(int playerId, String msg) {
-		ConcurrentLinkedDeque<String> messages = null;
-		if ((messages = playerMessages.get(playerId)) == null) {
+		ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
+		if (messages == null) {
 			messages = new ConcurrentLinkedDeque<String>();
 		}
 		messages.add(msg);
@@ -39,10 +39,6 @@ public class Parser {
 		if (worldState != null) {
 			for (int playerId : playerMessages.keySet()) {
 				ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
-				//if (messages.size() > 0) {
-				//System.out.println("looking at player " + playerId);
-				//System.out.println(messages.size() + " messages");
-				//}
 				Iterator<String> messageIterator = messages.iterator();
 				String msg;
 
@@ -56,7 +52,9 @@ public class Parser {
 					String[] infos = msg.split(Separator.INFO);
 
 					for (String info : infos) {
-						parseInfo(playerId, info);
+						if (info != null && info.length() > 0) {
+							parseInfo(playerId, info);
+						}
 					}
 				}
 			}
@@ -92,7 +90,10 @@ public class Parser {
 
 				for (int x = 0; x < s; x++) {
 					for (int y = 0; y < s; y++) {
-						newMap[x][y] = Integer.parseInt(values[1 + y + x * s]);
+						int i = 1 + y + x * s;
+						if (i < values.length) {
+							newMap[x][y] = Integer.parseInt(values[i]);
+						}
 					}
 				}
 

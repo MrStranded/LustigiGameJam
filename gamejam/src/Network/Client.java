@@ -1,5 +1,7 @@
 package Network;
 
+import Translater.Parser;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Queue;
@@ -37,27 +39,23 @@ public class Client extends ClientModel {
                 }
 
 
-                if (message.startsWith("MSG")) {
+                if (message.startsWith("GAME: ")) {
+                    String change = message.substring(message.indexOf(" ") + 1);
+                    Parser.parse(change);
+                }else if (message.startsWith("MSG")) {
 
                 } else if (message.equals("GIBMENAME")) {
                     send("HEREISNAME: " + name);
-                    continue;
                 } else if (message.equals("GUESSYOUDIE")) {
                     System.out.println("ok bye");
                     break;
                 } else if (message.equals("PING")) {
                     send("PONG");
-                    continue;
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
-                    setPing();
-                    continue;
+                } else {
+                    System.out.println(message);
                 }
-
-
-                System.out.println(message);
-
-
             }
 
 

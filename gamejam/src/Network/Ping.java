@@ -22,7 +22,9 @@ public class Ping implements Runnable {
     public void run() {
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+            System.out.println("Insomnia");
+        }
         proceed = true;
         while (proceed) {
             Long start = System.currentTimeMillis();
@@ -33,7 +35,6 @@ public class Ping implements Runnable {
                     System.out.print("Failed to ping " + client.getName());
                     e.printStackTrace();
                 }
-
             }
             Long end = System.currentTimeMillis();
             try {

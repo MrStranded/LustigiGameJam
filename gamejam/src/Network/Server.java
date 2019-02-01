@@ -57,6 +57,11 @@ public class Server implements Runnable {
         }
     }
 
+    public void broadcastGameState(String message) throws IOException {
+        message = "GAME: " + message;
+        broadcast(message);
+    }
+
     public static Queue<ClientModel> getClients() {
         return clients;
     }

@@ -2,6 +2,7 @@ package Network;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Lukas on 31.01.19.
@@ -10,13 +11,14 @@ public class ClientModel implements Runnable {
     Thread client;
     final Socket socket;
     BufferedReader bufferedReader;
-    final int BUFSIZE = 1024;
+    final int BUFSIZE = 4096;
     char[] buffer;
     String message;
     String name;
     Long lastPing = 0l;
     Long lastPong = 0l;
     Long pingValue = 0l;
+    ReentrantLock lock = new ReentrantLock();
 
 
     public ClientModel(Socket _socket) {
@@ -27,11 +29,17 @@ public class ClientModel implements Runnable {
     }
 
 
-    public void send(String message) throws IOException {
+    public synchronized void send(String message) throws IOException {
         synchronized (socket) {
-            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-            printWriter.print(message);
-            printWriter.flush();
+            lock.lock();
+            try {
+                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+                printWriter.print(message);
+                printWriter.flush();
+            } finally {
+                lock.unlock();
+            }
+
         }
     }
 
@@ -44,6 +52,7 @@ public class ClientModel implements Runnable {
 
     public void setLastPong(Long time) {
         lastPong = time;
+        setPing();
     }
 
 
@@ -55,7 +64,7 @@ public class ClientModel implements Runnable {
         return pingValue;
     }
 
-    public void setPing() {
+    private void setPing() {
         pingValue = lastPong - lastPing;
     }
 }

@@ -57,7 +57,6 @@ public class ServerClient extends ClientModel {
                     continue;
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
-                    setPing();
                     continue;
                 }
 

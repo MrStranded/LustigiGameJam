@@ -1,6 +1,7 @@
 package Network;
 
 import Translater.Parser;
+import Translater.Sender;
 
 import java.io.*;
 import java.net.Socket;
@@ -92,6 +93,8 @@ public class ServerClient extends ClientModel {
     }
 
     public void clean() {
+        Sender.sendDisconnect(connectionId);
+
         try {
             server.getClients().remove(this);
             Thread.sleep(1000);

@@ -83,11 +83,9 @@ public class GUICreater {
 		mainBox.addUIComponent(createInput("IP to connect to: ", new IpSetAction(), 0.2, 0.2, 0.6, 0.05));
 
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
-
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.2, 0.6, 0.6, 0.05));
 
-		mainBox.addUIComponent(createButton("Connect", new JoinAction(),0.2, 0.8, 0.6, 0.05));
-
+		mainBox.addUIComponent(createButton("Connect", new ConnectAction(),0.2, 0.7, 0.6, 0.05));
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;

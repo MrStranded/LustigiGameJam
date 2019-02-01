@@ -173,4 +173,8 @@ public class Encoder {
 		return stringBuilder.toString();
 	}
 
+	public static String createDisconnect(int playerId) {
+		return KeyWord.DISCONNECT.name() + Separator.KEYWORD + playerId;
+	}
+
 }

@@ -9,6 +9,8 @@ public enum KeyWord {
 	CHAT,
 	PLAYERLIST,
 	PLAYER,
-	PING
+	PING,
+	GAMELIST,
+	DISCONNECT
 
 }

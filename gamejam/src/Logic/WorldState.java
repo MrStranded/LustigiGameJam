@@ -1,5 +1,6 @@
 package Logic;
 
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -12,11 +13,21 @@ public class WorldState {
 	private int size;
 
 	public String userName = "-";
+	public String ip = "127.0.0.1";
 
 	private ConcurrentLinkedDeque<Player> players;
 	private ConcurrentLinkedDeque<Component> units;
-
 	private ConcurrentLinkedDeque<String> chatMessages;
+
+	private HashMap<String, String> ipNameTuples;
+
+	public HashMap<String, String> getIpNameTuples() {
+		return ipNameTuples;
+	}
+
+	public void setIpNameTuples(HashMap<String, String> ipNameTuples) {
+		this.ipNameTuples = ipNameTuples;
+	}
 
 	public WorldState() {
 		players = new ConcurrentLinkedDeque<Player>();

@@ -15,11 +15,15 @@ public class UserNameAction implements Action {
 
 	@Override
 	public void perform(Screen screen, WorldState worldState) {
-		if (parent != null && parent.getContent().length() > 0) {
-			worldState.userName = parent.getContent();
-			parent.setContent("");
+		if (parent != null) {
+			String content = parent.getContent().trim();
+			if (content.length() > 0) {
+				worldState.userName = content;
+				parent.setContent("");
+				parent.setReady(false);
 
-			screen.updateGui(GUICreater.createMainMenu(screen));
+				screen.updateGui(GUICreater.createMainMenu(screen));
+			}
 		}
 	}
 }

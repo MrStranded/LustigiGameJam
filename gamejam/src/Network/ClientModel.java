@@ -10,38 +10,31 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class ClientModel implements Runnable {
     Thread client;
-    final Socket socket;
+    Socket socket;
     BufferedReader bufferedReader;
     final int BUFSIZE = 4096;
-    char[] buffer;
+    char[] buffer = new char[BUFSIZE];
     String message;
     String name;
-    Long lastPing = 0l;
-    Long lastPong = 0l;
-    Long pingValue = 0l;
-    ReadWriteLock lock = new ReentrantReadWriteLock();
+    private Long lastPing = 0l;
+    private Long lastPong = 0l;
+    private Long pingValue = 0l;
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
 
-
-    public ClientModel(Socket _socket) {
-        buffer = new char[BUFSIZE];
-        socket = _socket;
-        client = new Thread(this);
-        client.start();
+    public void send(String message) throws IOException {
+        lock.writeLock().lock();
+        try {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
-
-    public synchronized void send(String message) throws IOException {
-        synchronized (socket) {
-            lock.writeLock().lock();
-            try {
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-                printWriter.print(message);
-                printWriter.flush();
-            } finally {
-                lock.writeLock().unlock();
-            }
-
-        }
+    public void sendGameState(String message) throws IOException {
+        message = "GAME: " + message;
+        send(message);
     }
 
     @Override
@@ -67,5 +60,9 @@ public class ClientModel implements Runnable {
 
     private void setPing() {
         pingValue = lastPong - lastPing;
+    }
+
+    public Thread getClient() {
+        return client;
     }
 }

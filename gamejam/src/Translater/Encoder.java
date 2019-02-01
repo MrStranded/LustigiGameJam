@@ -6,6 +6,8 @@ import Logic.Player;
 import Logic.WorldState;
 import Network.Server;
 
+import java.util.HashMap;
+
 public class Encoder {
 
 	public static String createMapMsg(WorldState worldState) {
@@ -155,6 +157,30 @@ public class Encoder {
 		}
 
 		return stringBuilder.toString();
+	}
+
+	public static String createGameList(HashMap<String, String> ipNameTuples) {
+		StringBuilder stringBuilder = new StringBuilder();
+
+		stringBuilder.append(KeyWord.GAMELIST.name());
+		boolean first = true;
+
+		for (String ip : ipNameTuples.keySet()) {
+			if (first) {
+				stringBuilder.append(Separator.KEYWORD);
+			} else {
+				stringBuilder.append(Separator.VALUE);
+			}
+			stringBuilder.append(ip);
+			stringBuilder.append(Separator.VALUE);
+			stringBuilder.append(ipNameTuples.get(ip));
+		}
+
+		return stringBuilder.toString();
+	}
+
+	public static String createDisconnect(int playerId) {
+		return KeyWord.DISCONNECT.name() + Separator.KEYWORD + playerId;
 	}
 
 }

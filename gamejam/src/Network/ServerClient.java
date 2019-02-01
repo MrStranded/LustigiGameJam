@@ -1,6 +1,7 @@
 package Network;
 
 import Translater.Parser;
+import Translater.Sender;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,7 +15,9 @@ public class ServerClient extends ClientModel {
     private int connectionId;
 
     public ServerClient(Socket _socket, Server _server) {
-        super(_socket);
+        socket = _socket;
+        client = new Thread(this);
+        client.start();
         server = _server;
         try {
             send("GIBMENAME");
@@ -51,8 +54,10 @@ public class ServerClient extends ClientModel {
                     break;
                 } else if (message.startsWith("HEREISNAME: ")) {
                     name = message.split(" ")[1];
-                    Parser.parse(connectionId, "PLAYER|" + name); // creates new player
-                    server.broadcast("<server> " + getName() + " joined the game");
+                    if (!name.equals("SCAN")) {
+                        Parser.parse(connectionId, "PLAYER|" + name); // creates new player
+                        server.broadcast("<server> " + getName() + " joined the game");
+                    }
                     continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
                     String players = "PLAYER|PING:\n";
@@ -66,16 +71,14 @@ public class ServerClient extends ClientModel {
                     continue;
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
-                    Parser.parse(connectionId, "PING|" + pingValue);
+                    Parser.parse(connectionId, "PING|" + getPing());
                     continue;
+                } else if (message.equals("HEADER")) {
+                    send("LUSCHTIGIGAMEJAM");
                 }
 
                 server.broadcast("<"+getName()+"> " + message);
             }
-
-
-            socket.close();
-
         } catch (IOException e) {
             // create error log
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
@@ -86,12 +89,17 @@ public class ServerClient extends ClientModel {
     }
 
     public void clean() {
+        Sender.sendDisconnect(connectionId);
+
         try {
             server.getClients().remove(this);
+            Thread.sleep(1000);
             socket.close();
         } catch (IOException e) {
             System.out.println("couldn't close socket");
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.out.println("Insomnia");
         }
     }
 }

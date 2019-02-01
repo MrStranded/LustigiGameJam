@@ -43,7 +43,9 @@ public class GUICreater {
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.175));
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.4, 0.6, 0.175));
 
-		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.6, 0.6, 0.1));
+		mainBox.addUIComponent(createInput(screen.getWorldState().userName + ": ", new ChatAction(), 0.2, 0.6, 0.6, 0.05));
+
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.7, 0.6, 0.05));
 
 		return gui;
 	}
@@ -58,8 +60,33 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.275));
-		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.5, 0.6, 0.3));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.175));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.4, 0.6, 0.175));
+
+		mainBox.addUIComponent(createInput(screen.getWorldState().userName + ": ", new ChatAction(), 0.2, 0.6, 0.6, 0.05));
+
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.7, 0.6, 0.05));
+
+		return gui;
+	}
+
+	public static GUI createLobbyMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
+
+		GUI gui = new GUI();
+
+		UIComponent mainBox = createUIComponent(0.1,0.1,0.8,0.8);
+		gui.addUIComponent(mainBox);
+		mainBox.setColor(new Color(200,200,200));
+
+		mainBox.addUIComponent(createInput("IP to connect to: ", new IpSetAction(), 0.2, 0.2, 0.6, 0.05));
+
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.2, 0.6, 0.6, 0.05));
+
+		mainBox.addUIComponent(createButton("Connect", new ConnectAction(),0.2, 0.7, 0.6, 0.05));
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;
 	}

@@ -21,7 +21,7 @@ public class Utility {
 				while (addresses.hasMoreElements()) {
 					InetAddress addr = addresses.nextElement();
 					ip = addr.getHostAddress();
-					System.out.println(iface.getDisplayName() + " " + ip);
+					//System.out.println(iface.getDisplayName() + " " + ip);
 				}
 			}
 		} catch (SocketException e) {

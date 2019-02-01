@@ -73,6 +73,10 @@ public class Sender {
 		}
 	}
 
+	public static void sendDisconnect(int playerId) {
+		send(Encoder.createDisconnect(playerId));
+	}
+
 	// -----------------------------------------------------------------------------------------------------------------
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// ########################################################## THE ACTUAL SENDING ###################################
@@ -80,6 +84,7 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	private static void send(String msg) {
+		System.out.println(MasterSwitch.isServer + " sends " + msg);
 		if (MasterSwitch.isServer) {
 			if (server != null) {
 				try {
@@ -90,6 +95,7 @@ public class Sender {
 			}
 		} else {
 			if (client != null) {
+				System.out.println("NOT NULL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				try {
 					client.send(msg);
 				} catch (IOException e) {

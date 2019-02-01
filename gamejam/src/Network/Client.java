@@ -3,6 +3,7 @@ package Network;
 import Translater.Parser;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -13,19 +14,27 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class Client extends ClientModel {
     private static Queue<ClientModel> clients;
     private Ping ping;
+    private boolean gameServer = false;
+    private String ip;
+    private int port;
 
-    public Client(Socket _socket, String _name) {
-        super(_socket);
+    public Client(Socket _socket, String _name, String _ip, int _port) {
+        socket = _socket;
         name = _name;
+        ip = _ip;
+        port = _port;
+        client = new Thread(this);
+        client.start();
         clients = new ConcurrentLinkedDeque<ClientModel>();
         clients.add(this);
-        ping = new Ping(clients);
     }
 
 
     @Override
     public void run() {
         try {
+            socket.connect(new InetSocketAddress(ip, port), 1000);
+            ping = new Ping(clients);
             Boolean proceed = true;
             while(proceed) {
                 // Input
@@ -55,17 +64,17 @@ public class Client extends ClientModel {
                     send("PONG");
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
+                } else if (message.equals("LUSCHTIGIGAMEJAM")) {
+                    gameServer = true;
+                    break;
                 } else {
                     System.out.println(message);
                 }
             }
-
-            socket.close();
-
         } catch (IOException e) {
             // create error log
-            System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Client " + socket.getInetAddress() + " crashed: " + e.getMessage());
+            //e.printStackTrace();
         } finally {
             clean();
         }
@@ -81,11 +90,23 @@ public class Client extends ClientModel {
 
     public void clean() {
         try {
+            clients.remove(this);
+            if (ping != null) {
+                ping.stop();
+                try {
+                    ping.getPing().join();
+                } catch (InterruptedException e) {
+                    System.out.println("Failed ping join");
+                }
+            }
             socket.close();
-            ping.stop();
         } catch (IOException e) {
             System.out.println("couldn't close socket");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+    }
+
+    public boolean isGameServer() {
+        return gameServer;
     }
 }

@@ -16,6 +16,7 @@ public class ClientModel implements Runnable {
     String name;
     Long lastPing = 0l;
     Long lastPong = 0l;
+    Long pingValue = 0l;
 
 
     public ClientModel(Socket _socket) {
@@ -51,7 +52,10 @@ public class ClientModel implements Runnable {
     }
 
     public Long getPing() {
-        Long pingValue = lastPong - lastPing;
         return pingValue;
+    }
+
+    public void setPing() {
+        pingValue = lastPong - lastPing;
     }
 }

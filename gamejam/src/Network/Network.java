@@ -1,5 +1,6 @@
 package Network;
 
+import Translater.Encoder;
 import Translater.Parser;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Network {
 
     public Client connect(String ip, int port, String name) throws IOException {
         Socket socket = new Socket();
-        Client client = new Client(socket, name, ip, port);
+        Client client = new Client(socket, name, ip, port, false);
         return client;
     }
 
@@ -29,47 +30,28 @@ public class Network {
         Map<String, Client> servers = new HashMap<String, Client>();
         for (int i = 0; i < 255; i++) {
             String ip = subNet + i;
-            System.out.println(ip);
-            try {
-                Socket socket = new Socket();
-                Client client = new Client(socket, "SCAN", ip, port);
-                client.send("HEADER");
-                servers.put(ip, client);
-            } catch (IOException e) {
-                System.out.println("scan fail " + ip);
-            }
+            Socket socket = new Socket();
+            Client client = new Client(socket, "SCAN", ip, port, true);
+            servers.put(ip, client);
         }
         for (Client server: servers.values()) {
+            try {
+                server.getHeader();
+            } catch (IOException e) {}
             try {
                 server.getClient().join();
             } catch (InterruptedException e) {}
         }
 
-        System.out.println(servers.size());
-
-        Map<String, String> gameServers = new HashMap<>();
+        HashMap<String, String> gameServers = new HashMap<>();
         for (Map.Entry<String, Client> entry: servers.entrySet()) {
             if (entry.getValue().isGameServer()) {
                 String ip = entry.getKey();
                 String name = entry.getValue().getName();
                 gameServers.put(ip, name);
-                System.out.println(ip + ": " + name);
             }
         }
 
-        System.out.println(gameServers.size());
-
-
-
-        String gameList = "";
-        for (Map.Entry<String, String> entry: gameServers.entrySet()) {
-            String ip = entry.getKey();
-            String name = entry.getValue();
-            String game = ip + "" + name;
-            gameList += game + ",";
-            System.out.println(game);
-        }
-
-        //Parser.parse(gameServers);
+        Parser.parse(0 ,Encoder.createGameList(gameServers));
     }
 }

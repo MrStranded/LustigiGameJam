@@ -75,6 +75,7 @@ public class ServerClient extends ClientModel {
                     continue;
                 } else if (message.equals("HEADER")) {
                     send("LUSCHTIGIGAMEJAM");
+                    break;
                 }
 
                 server.broadcast("<"+getName()+"> " + message);

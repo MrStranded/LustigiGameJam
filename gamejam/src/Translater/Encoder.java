@@ -1,5 +1,6 @@
 package Translater;
 
+import Logic.Attributes;
 import Logic.Component;
 import Logic.Player;
 import Logic.WorldState;
@@ -92,6 +93,11 @@ public class Encoder {
 			stringBuilder.append(component.getPosition().getX());
 			stringBuilder.append(Separator.VALUE);
 			stringBuilder.append(component.getPosition().getY());
+			stringBuilder.append(Separator.VALUE);
+			stringBuilder.append(component.getAttribute(Attributes.SPEED));
+			stringBuilder.append(Separator.VALUE);
+			stringBuilder.append(component.getAttribute(Attributes.ANGLE));
+
 		}
 
 		return stringBuilder.toString();

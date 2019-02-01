@@ -1,5 +1,6 @@
 package Translater;
 
+import Logic.Component;
 import Logic.WorldState;
 
 public class Parser {
@@ -45,6 +46,12 @@ public class Parser {
 					}
 
 					worldState.setMap(newMap);
+
+					break;
+
+				case COMPONENT:
+					//int id = Integer
+					//Component component = worldState.getUnit()
 
 					break;
 			}

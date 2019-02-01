@@ -31,7 +31,6 @@ public class Client extends ClientModel {
                 // Input
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 int count = bufferedReader.read(buffer, 0, BUFSIZE); // blocking function
-                System.out.println("count: " + count);
                 try {
                     message = new String(buffer, 0, count);
                 } catch (StringIndexOutOfBoundsException e) {
@@ -43,6 +42,8 @@ public class Client extends ClientModel {
                 if (message.startsWith("GAME: ")) {
                     String change = message.substring(message.indexOf(" ") + 1);
                     Parser.parse(0, change);
+
+                    System.out.println(message);
                 } else if (message.startsWith("MSG")) {
 
                 } else if (message.equals("GIBMENAME")) {

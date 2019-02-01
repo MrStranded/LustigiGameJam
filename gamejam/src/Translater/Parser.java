@@ -30,6 +30,10 @@ public class Parser {
 		if (worldState != null) {
 			for (int playerId : playerMessages.keySet()) {
 				ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
+				if (messages.size() > 0) {
+					System.out.println("looking at player " + playerId);
+					System.out.println(messages.size() + " messages");
+				}
 				Iterator<String> messageIterator = messages.iterator();
 				String msg;
 

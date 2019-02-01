@@ -55,7 +55,7 @@ public class ServerClient extends ClientModel {
                     server.broadcast("<server> " + getName() + " joined the game");
                     continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
-                    String players = "PLAYER | PING:\n";
+                    String players = "PLAYER|PING:\n";
                     for (ClientModel client: server.getClients()) {
                         players += client.getName() + " | " + client.getPing() + "\n";
                     }

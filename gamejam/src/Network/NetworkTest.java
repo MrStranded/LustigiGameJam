@@ -10,6 +10,10 @@ public class NetworkTest {
     public static void main(String[] args) {
         Network network = new Network();
         network.scan();
+        boolean abort = true;
+        if (abort) {
+            return;
+        }
         Server server;
         Client client;
         String ip = "";

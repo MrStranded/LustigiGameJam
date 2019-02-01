@@ -19,19 +19,16 @@ public class ClientModel implements Runnable {
     private Long lastPing = 0l;
     private Long lastPong = 0l;
     private Long pingValue = 0l;
-    ReadWriteLock lock = new ReentrantReadWriteLock();
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    public synchronized void send(String message) throws IOException {
-        synchronized (socket) {
-            lock.writeLock().lock();
-            try {
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-                printWriter.print(message);
-                printWriter.flush();
-            } finally {
-                lock.writeLock().unlock();
-            }
-
+    public void send(String message) throws IOException {
+        lock.writeLock().lock();
+        try {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 

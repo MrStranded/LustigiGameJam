@@ -53,8 +53,10 @@ public class ServerClient extends ClientModel {
                     break;
                 } else if (message.startsWith("HEREISNAME: ")) {
                     name = message.split(" ")[1];
-                    Parser.parse(connectionId, "PLAYER|" + name); // creates new player
-                    server.broadcast("<server> " + getName() + " joined the game");
+                    if (!name.equals("SCAN")) {
+                        Parser.parse(connectionId, "PLAYER|" + name); // creates new player
+                        server.broadcast("<server> " + getName() + " joined the game");
+                    }
                     continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {
                     String players = "PLAYER|PING:\n";
@@ -92,10 +94,13 @@ public class ServerClient extends ClientModel {
     public void clean() {
         try {
             server.getClients().remove(this);
+            Thread.sleep(1000);
             socket.close();
         } catch (IOException e) {
             System.out.println("couldn't close socket");
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.out.println("Insomnia");
         }
     }
 }

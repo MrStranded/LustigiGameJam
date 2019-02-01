@@ -69,12 +69,14 @@ public class Parser {
 		System.out.println("parse " + msg);
 		int sep = msg.indexOf(Separator.KEYWORD);
 
-		String keyword = msg.substring(0, sep);
+		String keyword;
 
 		String[] values;
 		if (sep >= 0) {
+			keyword = msg.substring(0, sep);
 			values = (msg.substring(sep + 1)).split(Separator.VALUE);
 		} else {
+			keyword = msg;
 			values = new String[0];
 		}
 

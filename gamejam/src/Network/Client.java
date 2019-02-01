@@ -31,6 +31,9 @@ public class Client extends ClientModel {
         client.start();
         clients = new ConcurrentLinkedDeque<ClientModel>();
         clients.add(this);
+        try {
+            send("GIBMENAME");
+        } catch (IOException e) {}
     }
 
 

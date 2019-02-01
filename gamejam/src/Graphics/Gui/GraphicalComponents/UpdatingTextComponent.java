@@ -1,6 +1,7 @@
 package Graphics.Gui.GraphicalComponents;
 
 import Graphics.Gui.Rect;
+import Graphics.Screen;
 import Logic.Player;
 import Logic.WorldState;
 
@@ -13,13 +14,14 @@ public class UpdatingTextComponent extends UIComponent{
 
 	private String text;
 	private int whatToUpdate = 0;
-	private WorldState worldState;
+	private Screen screen;
 
 	private SmallUpdateTimer timer;
 
-	public UpdatingTextComponent(int whatToUpdate, WorldState worldState, Rect position) {
+	public UpdatingTextComponent(int whatToUpdate, Screen screen, Rect position) {
 		super(position);
 		this.text = "";
+		this.screen = screen;
 
 		this.whatToUpdate = whatToUpdate;
 
@@ -33,6 +35,7 @@ public class UpdatingTextComponent extends UIComponent{
 	public void update() {
 		StringBuilder players = new StringBuilder();
 
+		WorldState worldState = screen.getWorldState();
 		if (worldState != null) {
 
 			switch (whatToUpdate) {

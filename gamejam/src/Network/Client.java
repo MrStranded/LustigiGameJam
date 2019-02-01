@@ -60,7 +60,6 @@ public class Client extends ClientModel {
                 }
             }
 
-
             socket.close();
 
         } catch (IOException e) {

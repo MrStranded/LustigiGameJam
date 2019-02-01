@@ -102,6 +102,6 @@ public class WorldState {
 	}
 
 	public String[] getChatMessages() {
-		return (String[]) chatMessages.toArray();
+		return chatMessages.toArray(new String[5]);
 	}
 }

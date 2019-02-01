@@ -4,6 +4,7 @@ import Graphics.Gui.*;
 import Graphics.Gui.GraphicalComponents.ButtonComponent;
 import Graphics.Gui.GraphicalComponents.TextComponent;
 import Graphics.Gui.GraphicalComponents.UIComponent;
+import Graphics.Gui.GraphicalComponents.UpdatingTextComponent;
 import Input.InputBuffer;
 import Logic.WorldState;
 
@@ -31,7 +32,7 @@ public class Screen extends JPanel {
 		setBackground(Color.BLUE);
 		setSize(width, height);
 
-		gui = GUICreater.createPlayerMenu(this);
+		gui = GUICreater.createMainMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -140,6 +141,20 @@ public class Screen extends JPanel {
 
 			g.setColor(Color.BLACK);
 			String[] lines = ((TextComponent) uiComponent).getText().split("\n");
+			int i = 0;
+			int xPos = uiComponent.getPosition().getX() + 5;
+			int yPos = uiComponent.getPosition().getY() + 10;
+			for (String line : lines) {
+				g.drawString(line, xPos, yPos + i * 15);
+				i++;
+			}
+
+		} else if (uiComponent.getClass() == UpdatingTextComponent.class) { // updating text
+			g.setColor(uiComponent.getColor());
+			drawRect(g, uiComponent.getPosition());
+
+			g.setColor(Color.BLACK);
+			String[] lines = ((UpdatingTextComponent) uiComponent).getText().split("\n");
 			int i = 0;
 			int xPos = uiComponent.getPosition().getX() + 5;
 			int yPos = uiComponent.getPosition().getY() + 10;

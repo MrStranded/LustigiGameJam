@@ -32,10 +32,10 @@ public class Parser {
 		if (worldState != null) {
 			for (int playerId : playerMessages.keySet()) {
 				ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
-				if (messages.size() > 0) {
+				//if (messages.size() > 0) {
 					//System.out.println("looking at player " + playerId);
 					//System.out.println(messages.size() + " messages");
-				}
+				//}
 				Iterator<String> messageIterator = messages.iterator();
 				String msg;
 
@@ -101,13 +101,11 @@ public class Parser {
 							if (player == null) {
 								player = new Player(id);
 								worldState.addPlayer(player);
-								System.out.println("added player");
 							}
 
 							player.setName(values[1+i*4]);
 							player.setPing(Integer.parseInt(values[2+i*4]));
 							player.setCash(Integer.parseInt(values[3+i*4]));
-							System.out.println("player: " + player.getName());
 						}
 					}
 

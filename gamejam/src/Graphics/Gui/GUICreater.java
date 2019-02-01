@@ -27,9 +27,8 @@ public class GUICreater {
 		String ipAddress = Network.Utility.getOwnIp();
 		mainBox.addUIComponent(createButton("Your IP Address: " + ipAddress, new CopyContentAction(ipAddress),0.2, 0.125, 0.6, 0.05));
 
-		TextComponent text = createText("A1 \n yolo \n\nlel\n",0.2, 0.2, 0.6, 0.4);
-		mainBox.addUIComponent(text);
-		text.setColor(new Color(190,190,190));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.175));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.4, 0.6, 0.175));
 
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.6, 0.6, 0.1));
 
@@ -46,8 +45,8 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen.getWorldState(), 0.2, 0.2, 0.6, 0.275));
-		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen.getWorldState(), 0.2, 0.5, 0.6, 0.3));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen, 0.2, 0.2, 0.6, 0.275));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen, 0.2, 0.5, 0.6, 0.3));
 
 		return gui;
 	}
@@ -81,8 +80,8 @@ public class GUICreater {
 		return new TextComponent(text, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
-	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, WorldState worldState, double x, double y, double w, double h) {
-		return new UpdatingTextComponent(whatToUpdate, worldState, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, Screen screen, double x, double y, double w, double h) {
+		return new UpdatingTextComponent(whatToUpdate, screen, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
 }

@@ -178,6 +178,7 @@ public class Parser {
 				case PLAYERID:
 					if (worldState != null) {
 						worldState.setUserId(Integer.parseInt(values[0]));
+						System.out.println("--------------------------------------------- i am " + worldState.getUserId());
 					}
 
 					break;

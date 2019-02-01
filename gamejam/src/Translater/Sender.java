@@ -14,6 +14,12 @@ public class Sender {
 	private static Server server;
 	private static Client client;
 
+	private static WorldState worldState;
+
+	public static void setWorldState(WorldState worldState) {
+		Sender.worldState = worldState;
+	}
+
 	public static void setServer(Server server) {
 		Sender.server = server;
 	}
@@ -28,7 +34,7 @@ public class Sender {
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// -----------------------------------------------------------------------------------------------------------------
 
-	private static void sendWorldState(WorldState worldState) {
+	public static void sendWorldState() {
 		if (worldState != null) {
 			StringBuilder stringBuilder = new StringBuilder(Encoder.createMapMsg(worldState));
 
@@ -38,6 +44,12 @@ public class Sender {
 			}
 
 			send(stringBuilder.toString());
+		}
+	}
+
+	public static void sendMap() {
+		if (worldState != null) {
+			send(Encoder.createMapMsg(worldState));
 		}
 	}
 
@@ -51,7 +63,7 @@ public class Sender {
 		if (MasterSwitch.isServer) {
 			if (server != null) {
 				try {
-					server.broadcast(msg);
+					server.broadcastGameState(msg);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

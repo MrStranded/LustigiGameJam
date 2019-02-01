@@ -61,8 +61,8 @@ public class Sender {
 
 	public static void sendMessages() {
 		if (worldState != null) {
-			if (worldState.getChatMessages().length > 0) {
-				send(Encoder.createChatMsg(worldState.getChatMessages()[0]));
+			if (worldState.getChatMessages().size() > 0) {
+				send(Encoder.createChatMsg(worldState.getChatMessages().getLast()));
 			}
 		}
 	}

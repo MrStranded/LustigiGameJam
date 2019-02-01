@@ -14,11 +14,11 @@ public class HostAction implements Action {
 	public void perform(Screen screen, WorldState worldState) {
 		screen.updateGui(GUICreater.createHostMenu(screen));
 
+		MasterSwitch.isServer = true;
+		
 		Player serverPlayer = new Player(0);
 		serverPlayer.setName("Phantom");
 		worldState.addPlayer(serverPlayer);
-
-		MasterSwitch.isServer = true;
 
 		try {
 			Network network = new Network();

@@ -14,11 +14,12 @@ public class WorldState {
 	private ConcurrentLinkedDeque<Player> players;
 	private ConcurrentLinkedDeque<Component> units;
 
-	private Stack<String> chatMessages = new Stack<>();
+	private ConcurrentLinkedDeque<String> chatMessages;
 
 	public WorldState() {
 		players = new ConcurrentLinkedDeque<Player>();
 		units = new ConcurrentLinkedDeque<Component>();
+		chatMessages = new ConcurrentLinkedDeque<String>();
 
 		createTestMap();
 	}
@@ -105,7 +106,7 @@ public class WorldState {
 		}
 	}
 
-	public String[] getChatMessages() {
-		return chatMessages.toArray(new String[5]);
+	public ConcurrentLinkedDeque<String> getChatMessages() {
+		return chatMessages;
 	}
 }

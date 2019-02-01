@@ -81,10 +81,12 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createInput("IP to connect to: ", new IpFromInputAction(), 0.2, 0.2, 0.6, 0.05));
+		mainBox.addUIComponent(createButton("Scan", new ScanAction(),0.2, 0.2, 0.6, 0.05));
 
 		mainBox.addUIComponent(createUpdatingButtons(UpdatingButtonsComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
-		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.2, 0.6, 0.6, 0.05));
+
+		mainBox.addUIComponent(createInput("IP to connect to: ", new IpFromInputAction(), 0.2, 0.6, 0.275, 0.05));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.525, 0.6, 0.275, 0.05));
 
 		mainBox.addUIComponent(createButton("Connect", new ConnectAction(),0.2, 0.7, 0.6, 0.05));
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));

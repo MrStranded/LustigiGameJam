@@ -9,52 +9,54 @@ import Translater.Sender;
 
 public class GameLoop extends Thread {
 
-	private Window window;
-	private WorldState worldState;
-	private GUI gui;
+    private Window window;
+    private WorldState worldState;
+    private GUI gui;
 
-	private long t;
-	private long tLastPlayerListSend = 0;
-	private long millisPerFrame = 1000/60;
+    private long t;
+    private long tLastPlayerListSend = 0;
+    private long millisPerFrame = 1000 / 60;
 
-	public GameLoop() {
-		window = new Window();
+    public GameLoop() {
+        window = new Window();
 
-		worldState = new WorldState();
-		worldState.createTestMap();
+        worldState = new WorldState();
+        worldState.createTestMap();
 
-		Sender.setWorldState(worldState);
-		Parser.setWorldState(worldState);
-		Parser.setScreen(window.getScreen());
-	}
+        Sender.setWorldState(worldState);
+        Parser.setWorldState(worldState);
+        Parser.setScreen(window.getScreen());
+    }
 
-	@Override
-	public void run() {
-		while (true) {
-			t = System.currentTimeMillis();
+    @Override
+    public void run() {
+        while (true) {
+            t = System.currentTimeMillis();
 
-			if (MasterSwitch.isServer) {
-				if (System.currentTimeMillis() - tLastPlayerListSend > 1000) {
-					Sender.sendPlayers();
-					tLastPlayerListSend = System.currentTimeMillis();
-				}
-			}
+            if (MasterSwitch.isServer) {
+                if (System.currentTimeMillis() - tLastPlayerListSend > 1000) {
+                    Sender.sendPlayers();
+                    tLastPlayerListSend = System.currentTimeMillis();
+                }
+            }
 
-			Parser.update();
+            Parser.update();
 
-			Logic.locigIteration(worldState);
+            if (worldState.isGameRunning()) {
+                Logic.locigIteration(worldState);
+            }
 
-			window.registerInput(worldState);
-			window.drawWorld(worldState);
+            window.registerInput(worldState);
+            window.drawWorld(worldState);
 
-			long waitTime = millisPerFrame - (System.currentTimeMillis()-t);
-			if (waitTime > 0) {
-				try {
-					sleep(waitTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+            long waitTime = millisPerFrame - (System.currentTimeMillis() - t);
+            if (waitTime > 0) {
+                try {
+                    sleep(waitTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

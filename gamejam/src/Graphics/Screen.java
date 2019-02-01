@@ -1,10 +1,8 @@
 package Graphics;
 
 import Graphics.Gui.*;
-import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
-import Graphics.Gui.GraphicalComponents.UIComponent;
-import Graphics.Gui.GraphicalComponents.UpdatingTextComponent;
 import Input.InputBuffer;
 import Logic.WorldState;
 
@@ -32,7 +30,7 @@ public class Screen extends JPanel {
 		setBackground(Color.BLUE);
 		setSize(width, height);
 
-		gui = GUICreater.createMainMenu(this);
+		gui = GUICreater.createUserNameInputMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -134,6 +132,23 @@ public class Screen extends JPanel {
 
 			g.setColor(Color.BLACK);
 			g.drawString(((ButtonComponent) uiComponent).getText(), uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
+
+		} else if (uiComponent.getClass() == InputComponent.class) { // button
+			if (uiComponent.inside(InputBuffer.getMousePosition())) {
+				g.setColor(((InputComponent) uiComponent).getSecondaryColor());
+			} else {
+				g.setColor(uiComponent.getColor());
+			}
+			drawRect(g, uiComponent.getPosition());
+
+			((InputComponent) uiComponent).checkInput();
+			if (((InputComponent) uiComponent).isReady()) {
+				((InputComponent) uiComponent).getAction().perform(this, worldState);
+			}
+
+			g.setColor(Color.BLACK);
+			String out = ((InputComponent) uiComponent).getText() + ((InputComponent) uiComponent).getContent();
+			g.drawString(out, uiComponent.getPosition().getX() + 10, uiComponent.getPosition().getY() + (uiComponent.getPosition().getH()) / 2);
 
 		} else if (uiComponent.getClass() == TextComponent.class) { // text
 			g.setColor(uiComponent.getColor());

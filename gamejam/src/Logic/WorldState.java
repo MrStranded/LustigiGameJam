@@ -11,6 +11,8 @@ public class WorldState {
 	private int[][] map;
 	private int size;
 
+	public String userName = "-";
+
 	private ConcurrentLinkedDeque<Player> players;
 	private ConcurrentLinkedDeque<Component> units;
 

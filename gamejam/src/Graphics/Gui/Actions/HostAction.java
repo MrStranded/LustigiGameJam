@@ -15,9 +15,9 @@ public class HostAction implements Action {
 		screen.updateGui(GUICreater.createHostMenu(screen));
 
 		MasterSwitch.isServer = true;
-		
+
 		Player serverPlayer = new Player(0);
-		serverPlayer.setName("Phantom");
+		serverPlayer.setName(worldState.userName);
 		worldState.addPlayer(serverPlayer);
 
 		try {

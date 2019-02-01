@@ -133,9 +133,10 @@ public class Parser {
 
 				case CHAT:
 					if (MasterSwitch.isServer) {
-						//worldState.addChatMessage();
+						worldState.addChatMessage(values[0]);
+						Sender.sendMessages();
 					} else {
-
+						worldState.addChatMessage(values[0]);
 					}
 					break;
 			}

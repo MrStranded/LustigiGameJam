@@ -17,7 +17,7 @@ public class JoinAction implements Action {
 		String ip = "127.0.0.1";
 		//ip = "192.168.178.20";
 		int port = 42069;
-		String username = "ClientPlayer";
+		String username = worldState.userName;
 
 		try {
 			client = network.connect(ip, port, username);

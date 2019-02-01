@@ -1,9 +1,7 @@
 package Graphics.Gui;
 
-import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
-import Graphics.Gui.GraphicalComponents.UIComponent;
-import Graphics.Gui.GraphicalComponents.UpdatingTextComponent;
 import Graphics.Screen;
 import Graphics.Gui.Actions.*;
 import Logic.WorldState;
@@ -13,6 +11,21 @@ import java.awt.*;
 public class GUICreater {
 
 	private static int width, height;
+
+	public static GUI createUserNameInputMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
+
+		GUI gui = new GUI();
+
+		UIComponent mainBox = createUIComponent(0.1,0.45,0.8,0.1);
+		gui.addUIComponent(mainBox);
+		mainBox.setColor(new Color(200,200,200));
+
+		mainBox.addUIComponent(createInput("Username: ", new UserNameAction(), 0.11, 0.46, 0.78, 0.08));
+
+		return gui;
+	}
 
 	public static GUI createHostMenu(Screen screen) {
 		width = screen.getWidth();
@@ -82,6 +95,10 @@ public class GUICreater {
 
 	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, Screen screen, double x, double y, double w, double h) {
 		return new UpdatingTextComponent(whatToUpdate, screen, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	}
+
+	private static InputComponent createInput(String text, Action action, double x, double y, double w, double h) {
+		return new InputComponent(text, action, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
 }

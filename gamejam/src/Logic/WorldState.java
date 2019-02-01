@@ -40,15 +40,7 @@ public class WorldState {
     }
 
     public void createTestMap() {
-        size = mapSize;
-        map = new int[size][size];
-
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                map[x][y] = (int) (Math.random() * 3d);
-            }
-        }
-
+		map = MapGen.generate(mapSize);
         units = new ConcurrentLinkedDeque<>();
     }
 

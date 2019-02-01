@@ -22,6 +22,7 @@ public class Parser {
 		if ((messages = playerMessages.get(playerId)) == null) {
 			messages = new ConcurrentLinkedDeque<String>();
 		}
+		messages.add(msg);
 		playerMessages.put(playerId, messages);
 	}
 

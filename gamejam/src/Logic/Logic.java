@@ -58,6 +58,8 @@ public class Logic {
                 Integer[] controls = controlsAll.get(p.getId());
                 Component ship = getShipById(p.getId());
 
+                assert ship != null;
+
                 // ---------------------------- SHOOT ----------------------------------------------------
                 if (controls[Actions.SHOOTLEFT.valueOf()] == 1) {
                     shoot(ship, Slotpositions.LEFT);
@@ -82,25 +84,24 @@ public class Logic {
                     sailUp = ship.getAttribute(Attributes.SAIL) == 1;
                 }
 
-                // --------------------------- MOVE UP DOWN -------------------------------------------
-                for (Component c : ship.getSubComponents()) {
-                    if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
-                        accelerators.add(c);
-                    }
-
-                    if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
-                        accelerators.add(c);
-                    }
-                }
+                // --------------------------- ACCELERATE -------------------------------------------
+                processAcceleration(accelerators, sailUp, ship);
 
                 accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
 
                 // -------------------------- STEER -----------------------------------------------------
                 steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
+
+                move(ship);
+                fly();
+
+                changes.append(Encoder.createAttributesMsg(ship));
             }
         } else {
             int[] controls = InputBuffer.getControls();
             Component ship = getShipById(worldState.getUserId());
+
+            assert ship != null;
 
             // ---------------------------  TOGGLE SAIL  ---------------------------------------------
             if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
@@ -109,21 +110,16 @@ public class Logic {
                 sailUp = ship.getAttribute(Attributes.SAIL) == 1;
             }
 
-            // --------------------------- MOVE UP DOWN -------------------------------------------
-            for (Component c : ship.getSubComponents()) {
-                if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
-                    accelerators.add(c);
-                }
-
-                if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
-                    accelerators.add(c);
-                }
-            }
+            // --------------------------- ACCELERATION -------------------------------------------
+            processAcceleration(accelerators, sailUp, ship);
 
             accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
 
             // -------------------------- STEER -----------------------------------------------------
             steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
+
+            move(ship);
+            fly();
         }
     }
 
@@ -149,8 +145,9 @@ public class Logic {
             component.getPosition().setY(Math.abs(yBorder - p.getY()));
         }
 
-        changes.append(Encoder.createPositionMsg(component));
-
+        if (MasterSwitch.isServer) {
+            changes.append(Encoder.createPositionMsg(component));
+        }
     }
 
     public static void shoot(Component ship, Slotpositions position) {
@@ -164,41 +161,47 @@ public class Logic {
 
                 projectile.setPosition(Position.add(getVector(1, angle), Position.add(ship.getPosition(), c.getPosition())));
 
-                worldState.addUnit(projectile);
-                changes.append(Encoder.createFullComponentMsg(c));
+                if (MasterSwitch.isServer) {
+                    worldState.addUnit(projectile);
+                    changes.append(Encoder.createFullComponentMsg(c));
+                }
             }
         }
     }
 
-    public static void fly(Component projectile) {
-        boolean hitSomething = false;
+    public static void fly() {
+        for (Component projectile : getProjectiles()) {
+            boolean hitSomething = false;
 
-        for (Component c : getNearestUnits(projectile)) {
-            Position unitNew = getRotatedPosition(c.getPosition(), c.getAttribute(Attributes.ANGLE));
-            Position projectileNew = getRotatedPosition(projectile.getPosition(), c.getAttribute(Attributes.ANGLE));
+            for (Component c : getNearestUnits(projectile)) {
+                Position unitNew = getRotatedPosition(c.getPosition(), c.getAttribute(Attributes.ANGLE));
+                Position projectileNew = getRotatedPosition(projectile.getPosition(), c.getAttribute(Attributes.ANGLE));
 
-            int numberOfParts = (int) (getDistance(projectile) / (worldState.getTileSize() / 2)) + 1;
-            Position projectileVectorPart = scaleVector(getVector(projectile), 1.0 / numberOfParts);
+                int numberOfParts = (int) (getDistance(projectile) / (worldState.getTileSize() / 2)) + 1;
+                Position projectileVectorPart = scaleVector(getVector(projectile), 1.0 / numberOfParts);
 
-            for (int i = 0; i < numberOfParts; i++) {
-                Position p = Position.add(projectileNew, new Position(projectileVectorPart.getX(), projectileVectorPart.getY()));
+                for (int i = 0; i < numberOfParts; i++) {
+                    Position p = Position.add(projectileNew, new Position(projectileVectorPart.getX(), projectileVectorPart.getY()));
 
-                if (p.getX() >= unitNew.getX() - c.getAttribute(Attributes.LENGTH) / 2
-                        && p.getX() <= unitNew.getX() + c.getAttribute(Attributes.LENGTH) / 2
-                        && p.getY() >= unitNew.getY() - c.getAttribute(Attributes.WIDTH) / 2
-                        && p.getY() <= unitNew.getY() + c.getAttribute(Attributes.WIDTH) / 2) {
+                    if (p.getX() >= unitNew.getX() - c.getAttribute(Attributes.LENGTH) / 2
+                            && p.getX() <= unitNew.getX() + c.getAttribute(Attributes.LENGTH) / 2
+                            && p.getY() >= unitNew.getY() - c.getAttribute(Attributes.WIDTH) / 2
+                            && p.getY() <= unitNew.getY() + c.getAttribute(Attributes.WIDTH) / 2) {
 
-                    hitSomething = true;
-                    if (MasterSwitch.isServer) {
-                        hit(c, projectile);
+                        hitSomething = true;
+                        if (MasterSwitch.isServer) {
+                            hit(c, projectile);
+                        }
+                        break;
                     }
-                    break;
+                    projectileVectorPart = addVector(projectileVectorPart, projectileVectorPart);
                 }
-                projectileVectorPart = addVector(projectileVectorPart, projectileVectorPart);
-            }
-            if (!hitSomething) {
-                projectile.setPosition(addVector(projectile.getPosition(), getVector(projectile)));
-                changes.append(Encoder.createPositionMsg(projectile));
+                if (!hitSomething) {
+                    projectile.setPosition(addVector(projectile.getPosition(), getVector(projectile)));
+                    if (MasterSwitch.isServer) {
+                        changes.append(Encoder.createPositionMsg(projectile));
+                    }
+                }
             }
         }
     }
@@ -224,11 +227,13 @@ public class Logic {
             target.set(Attributes.HEALTH, 0);
         }
 
-        changes.append(Encoder.createAttributesMsg(target));
-        changes.append(Encoder.createAttributesMsg(projectile));
+        if (MasterSwitch.isServer) {
+            changes.append(Encoder.createAttributesMsg(target));
+            changes.append(Encoder.createAttributesMsg(projectile));
 
-        worldState.removeUnit(target);
-        worldState.removeUnit(projectile);
+            worldState.removeUnit(target);
+            worldState.removeUnit(projectile);
+        }
     }
 
     public static void accelerate(Component ship, ArrayList<Component> accelerators, int input) {
@@ -252,10 +257,6 @@ public class Logic {
         }
 
         ship.set(Attributes.SPEED, speed);
-
-        if (MasterSwitch.isServer) {
-            changes.append(Encoder.createAttributesMsg(ship));
-        }
     }
 
     public static boolean toggleSails(Component ship) {
@@ -267,6 +268,18 @@ public class Logic {
 
     public static void steer(Component ship, int input) {
         ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * input));
+    }
+
+    private static void processAcceleration(ArrayList<Component> accelerators, boolean sailUp, Component ship) {
+        for (Component c : ship.getSubComponents()) {
+            if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
+                accelerators.add(c);
+            }
+
+            if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
+                accelerators.add(c);
+            }
+        }
     }
 
 

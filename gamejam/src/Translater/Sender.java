@@ -4,7 +4,6 @@ import Globals.MasterSwitch;
 import Logic.Component;
 import Logic.WorldState;
 import Network.Client;
-import Network.ClientModel;
 import Network.Server;
 
 import java.io.IOException;
@@ -35,21 +34,28 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public static void sendWorldState() {
-		if (worldState != null) {
-			StringBuilder stringBuilder = new StringBuilder(Encoder.createMapMsg(worldState));
+		sendMap();
 
-			for (Component component : worldState.getUnits()) {
-				stringBuilder.append(Separator.INFO);
-				stringBuilder.append(Encoder.createFullComponentMsg(component));
-			}
-
-			send(stringBuilder.toString());
-		}
+		sendComponents();
 	}
 
 	public static void sendMap() {
 		if (worldState != null) {
 			send(Encoder.createMapMsg(worldState));
+		}
+	}
+
+	public static void sendComponents() {
+		if (worldState != null) {
+			for (Component component : worldState.getUnits()) {
+				sendComponent(component);
+			}
+		}
+	}
+
+	public static void sendComponent(Component component) {
+		if (component != null) {
+			send(Encoder.createFullComponentMsg(component));
 		}
 	}
 

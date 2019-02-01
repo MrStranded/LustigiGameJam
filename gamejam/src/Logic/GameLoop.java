@@ -4,6 +4,7 @@ import Globals.MasterSwitch;
 import Graphics.Window;
 import Graphics.Gui.GUI;
 import Graphics.Gui.GUICreater;
+import Loader.ImageLoader;
 import Translater.Parser;
 import Translater.Sender;
 
@@ -25,6 +26,8 @@ public class GameLoop extends Thread {
         Sender.setWorldState(worldState);
         Parser.setWorldState(worldState);
         Parser.setScreen(window.getScreen());
+
+	    ImageLoader.loadImages();
     }
 
     @Override

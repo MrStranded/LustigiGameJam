@@ -12,6 +12,7 @@ public class Logic {
     private static WorldState worldState;
 
     private static long lastTick;
+    private static long tickDuration;
 
     private static StringBuilder changes;
 
@@ -28,6 +29,8 @@ public class Logic {
 
     // --------------------------------------------- ITERATE -----------------------------------------------------------
     public static void locigIteration(WorldState ws) {
+        tickDuration = System.currentTimeMillis() - lastTick;
+
         worldState = ws;
 
         changes = new StringBuilder();
@@ -284,6 +287,20 @@ public class Logic {
                 accelerators.add(c);
             }
         }
+
+        double acc = 0;
+
+        for (Component c : accelerators) {
+            acc += c.getAttribute(Attributes.ACCELERATION);
+        }
+
+        acc += ship.getAttribute(Attributes.ACCELERATION);
+
+        System.out.println(tickDuration);
+        System.out.println(acc);
+
+        ship.set(Attributes.SPEED, ship.getAttribute(Attributes.SPEED) + acc * tickDuration);
+        System.out.println(ship.getAttribute(Attributes.SPEED));
     }
 
     private static void shootTurret(Component ship, Component turret) {
@@ -320,7 +337,7 @@ public class Logic {
     }
 
     private static double getDistance(Component component) {
-        return (System.currentTimeMillis() - lastTick) * 1000 * component.getAttribute(Attributes.SPEED);
+        return tickDuration * 1000 * component.getAttribute(Attributes.SPEED);
     }
 
     private static Tiles getTile(Position p) {

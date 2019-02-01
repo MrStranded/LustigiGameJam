@@ -109,4 +109,12 @@ public class ServerClient extends ClientModel {
             System.out.println("Insomnia");
         }
     }
+
+    public void send(String message) throws IOException {
+        synchronized (socket) {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        }
+    }
 }

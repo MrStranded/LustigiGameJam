@@ -129,7 +129,22 @@ public class Client extends ClientModel {
         return gameServer;
     }
 
+    public void send(String message) throws IOException {
+        synchronized (socket) {
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            printWriter.print(message);
+            printWriter.flush();
+        }
+    }
+
     public void getHeader() throws IOException {
         send("HEADER");
+    }
+
+
+
+    public void sendGameState(String message) throws IOException {
+        message = "GAME: " + message;
+        send(message);
     }
 }

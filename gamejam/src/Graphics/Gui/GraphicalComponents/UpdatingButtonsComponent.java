@@ -1,11 +1,12 @@
 package Graphics.Gui.GraphicalComponents;
 
+import Graphics.Gui.Actions.IpFromInputAction;
+import Graphics.Gui.Actions.IpSetAction;
 import Graphics.Gui.Rect;
 import Graphics.Screen;
-import Logic.Player;
 import Logic.WorldState;
 
-import java.util.HashMap;
+import java.util.Set;
 
 public class UpdatingButtonsComponent extends UIComponent implements UpdatingComponent {
 
@@ -36,8 +37,23 @@ public class UpdatingButtonsComponent extends UIComponent implements UpdatingCom
 		WorldState worldState = screen.getWorldState();
 		if (worldState != null) {
 
+			int xPos = getPosition().getX() + 10;
+			int yPos = getPosition().getY() + 10;
+			int w = getPosition().getW() - 20;
+			int h = getPosition().getH() - 20;
+
 			switch (whatToUpdate) {
 				case GAMELIST:
+					Set<String> gameIps = worldState.getIpNameTuples().keySet();
+					int n = gameIps.size();
+					clearComponents();
+
+					int dh = h / n;
+					int i = 0;
+					for (String ip : gameIps) {
+						ButtonComponent button = new ButtonComponent(ip + " - " + worldState.getIpNameTuples().get(ip), new IpSetAction(ip), new Rect(xPos, yPos+i*dh, w, dh));
+						addUIComponent(button);
+					}
 
 					break;
 

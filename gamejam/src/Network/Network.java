@@ -45,7 +45,6 @@ public class Network {
         }
         for (Client server: servers.values()) {
             try {
-                server.send("GIBMENAME");
                 server.getHeader();
             } catch (IOException e) {}
             try {

@@ -51,7 +51,7 @@ public class ServerClient extends ClientModel {
                     break;
                 } else if (message.startsWith("HEREISNAME: ")) {
                     name = message.split(" ")[1];
-                    Parser.parse(connectionId, "PLAYER"); // creates new player
+                    Parser.parse(connectionId, "PLAYER|" + name); // creates new player
                     server.broadcast("<server> " + getName() + " joined the game");
                     continue;
                 } else if (message.equals("CANIHAZPLAYERLIST")) {

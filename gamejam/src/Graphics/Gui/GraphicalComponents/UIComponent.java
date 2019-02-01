@@ -1,4 +1,6 @@
-package Graphics.Gui;
+package Graphics.Gui.GraphicalComponents;
+
+import Graphics.Gui.Rect;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,6 +11,10 @@ public class UIComponent {
 	private Rect position = new Rect(0,0,0,0);
 	private List<UIComponent> uiComponentList = new ArrayList<UIComponent>();
 	private Color color = new Color(180,180,180);
+
+	public void kill() {
+
+	}
 
 	public UIComponent(Rect position) {
 		this.position = position;

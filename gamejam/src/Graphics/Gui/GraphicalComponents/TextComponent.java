@@ -1,4 +1,6 @@
-package Graphics.Gui;
+package Graphics.Gui.GraphicalComponents;
+
+import Graphics.Gui.Rect;
 
 public class TextComponent extends UIComponent{
 

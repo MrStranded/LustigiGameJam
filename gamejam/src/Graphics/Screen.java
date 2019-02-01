@@ -1,7 +1,9 @@
 package Graphics;
 
 import Graphics.Gui.*;
-import Graphics.Gui.TextComponent;
+import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.TextComponent;
+import Graphics.Gui.GraphicalComponents.UIComponent;
 import Input.InputBuffer;
 import Logic.WorldState;
 
@@ -39,6 +41,9 @@ public class Screen extends JPanel {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public void updateGui(GUI gui) {
+		if (this.gui != null && this.gui != gui) {
+			this.gui.cleanUp();
+		}
 		this.gui = gui;
 	}
 
@@ -164,6 +169,9 @@ public class Screen extends JPanel {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public void close() {
+		if (gui != null) {
+			gui.cleanUp();
+		}
 		window.close();
 	}
 

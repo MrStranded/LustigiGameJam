@@ -1,6 +1,7 @@
-package Graphics.Gui;
+package Graphics.Gui.GraphicalComponents;
 
 import Graphics.Gui.Actions.Action;
+import Graphics.Gui.Rect;
 
 import java.awt.*;
 

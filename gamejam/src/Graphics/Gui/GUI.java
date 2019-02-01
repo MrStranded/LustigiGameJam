@@ -1,5 +1,7 @@
 package Graphics.Gui;
 
+import Graphics.Gui.GraphicalComponents.ButtonComponent;
+import Graphics.Gui.GraphicalComponents.UIComponent;
 import Logic.WorldState;
 import Graphics.Screen;
 import Graphics.Gui.Actions.Action;
@@ -66,6 +68,25 @@ public class GUI {
 			}
 		}
 		return null;
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// ########################################################## CLEANUP ##############################################
+	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// -----------------------------------------------------------------------------------------------------------------
+
+	public void cleanUp() {
+		for (UIComponent uiComponent : getUIComponentList()) {
+			killComponent(uiComponent);
+		}
+	}
+
+	private void killComponent(UIComponent uiComponent) {
+		for (UIComponent c : uiComponent.getUIComponentList()) {
+			killComponent(c);
+		}
+		uiComponent.kill();
 	}
 
 }

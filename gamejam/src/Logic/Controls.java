@@ -22,12 +22,16 @@ public enum Controls {
 
     private static Map<Integer, Controls> map = new HashMap<Integer, Controls>();
 
-    public static Controls valueOf(int value) {
-        return map.get(value);
-    }
+//    public static Controls valueOf(int value) {
+//        return map.get(value);
+//    }
 
-    private Controls(int id, int event) {
+    Controls(int id, int event) {
         this.id = id;
         this.event = event;
+    }
+
+    public int valueOf() {
+        return this.event;
     }
 }

@@ -21,7 +21,11 @@ public enum Attributes {
     CONTROL(17),
     MAXHEALTH(18),
     MAXSPEED(19),
-    MAXARMOR(20);
+    MAXARMOR(20),
+    SAIL(21),
+    TURNANGLE(22),
+    PLAYER(23),
+    SLOTPOSITION(24);
 
     private final int att;
 

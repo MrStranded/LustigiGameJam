@@ -31,6 +31,7 @@ public class Client extends ClientModel {
                 // Input
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 int count = bufferedReader.read(buffer, 0, BUFSIZE); // blocking function
+                System.out.println("count: " + count);
                 try {
                     message = new String(buffer, 0, count);
                 } catch (StringIndexOutOfBoundsException e) {

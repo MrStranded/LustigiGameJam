@@ -5,6 +5,8 @@ public enum KeyWord {
 	MAP,
 	COMPONENT,
 	ATTRIBUTES,
-	POSITION
+	POSITION,
+	CHAT,
+	PLAYERLIST
 
 }

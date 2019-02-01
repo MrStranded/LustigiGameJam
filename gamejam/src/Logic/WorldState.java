@@ -12,6 +12,8 @@ public class WorldState {
     private int[][] map;
     private int size;
 
+    private boolean isGameRunning = false;
+
     public int userId = 0;
     public String userName = "-";
     public String ip = "127.0.0.1";
@@ -123,6 +125,14 @@ public class WorldState {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean isGameRunning() {
+        return isGameRunning;
+    }
+
+    public void setGameRunning(boolean gameRunning) {
+        isGameRunning = gameRunning;
     }
 
     public HashMap<Integer, Integer[]> getControls() {

@@ -1,5 +1,6 @@
 package Graphics;
 
+import Globals.Images;
 import Logic.Attributes;
 import Logic.WorldState;
 import Logic.Component;
@@ -10,6 +11,7 @@ import Input.InputBuffer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class Screen extends JPanel {
@@ -123,8 +125,13 @@ public class Screen extends JPanel {
 				int xPos = (int) (unit.getPosition().getX()*tileSize);
 				int yPos = (int) (unit.getPosition().getY()*tileSize);
 
-				g.setColor(Color.RED);
-				g.fillOval(xPos-20,yPos-20, 40, 40);
+				BufferedImage unitImage = Images.getComponentImage((int) unit.getAttribute(Attributes.IMAGE), unit.getAttribute(Attributes.ANGLE));
+				if (unitImage != null) {
+					g.drawImage(unitImage, xPos, yPos, null);
+				} else {
+					g.setColor(Color.RED);
+					g.fillOval(xPos - 20, yPos - 20, 40, 40);
+				}
 				g.setColor(Color.BLACK);
 				g.drawString(String.valueOf((int) unit.getAttribute(Attributes.PLAYER)), xPos, yPos);
 			}

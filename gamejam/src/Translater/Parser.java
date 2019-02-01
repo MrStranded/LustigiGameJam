@@ -2,6 +2,8 @@ package Translater;
 
 import Globals.MasterSwitch;
 import Graphics.Screen;
+import Logic.Component;
+import Logic.ComponentGen;
 import Logic.Player;
 import Logic.WorldState;
 
@@ -200,6 +202,10 @@ public class Parser {
 				if (!MasterSwitch.isServer) {
 					if (screen != null) {
 						screen.updateGui(null);
+					}
+					if (worldState != null) {
+						ComponentGen.placeShip(worldState.userId, 0, worldState);
+						worldState.setGameRunning(true);
 					}
 				}
 

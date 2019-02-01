@@ -18,8 +18,8 @@ public class Image {
 		try {
 			BufferedImage original = ImageIO.read(new File("res/"+path));
 
-			double w = images[0].getWidth();
-			double h = images[0].getHeight();
+			double w = original.getWidth();
+			double h = original.getHeight();
 
 			double da = Math.PI*2d/Images.DIRECTIONS;
 

@@ -19,7 +19,7 @@ public class ServerClient extends ClientModel {
         try {
             send("GIBMENAME");
         } catch (IOException e) {
-            System.out.println("failed to receive name");
+            System.out.println("failed to request name");
             e.printStackTrace();
         }
         connectionId = (++counter);

@@ -206,7 +206,7 @@ public class Parser {
                 }
 
                 break;
-                
+
             case CONTROL:
                 if (worldState != null) {
                     Integer[] array = new Integer[values.length];

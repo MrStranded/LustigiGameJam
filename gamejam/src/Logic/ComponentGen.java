@@ -9,6 +9,9 @@ public class ComponentGen {
 		ship.setPosition(new Position(10,10));
 
 		ship.set(Attributes.PLAYER, playerId);
+		ship.set(Attributes.ACCELERATION, 0.01d);
+		ship.set(Attributes.MAXSPEED, 2);
+		ship.set(Attributes.TURNANGLE, 1);
 
 		worldState.addUnit(ship);
 	}

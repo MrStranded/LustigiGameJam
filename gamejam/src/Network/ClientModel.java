@@ -23,8 +23,8 @@ public class ClientModel implements Runnable {
     private ReadWriteLock lock = new ReentrantReadWriteLock();
 
     public void send(String message) throws IOException {
-        lock.writeLock().lock();
         try {
+            lock.writeLock().lock();
             PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             printWriter.print(message);
             printWriter.flush();

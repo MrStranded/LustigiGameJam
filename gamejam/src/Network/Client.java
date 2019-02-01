@@ -58,6 +58,8 @@ public class Client extends ClientModel {
                     if (message.equals("LUSCHTIGIGAMEJAM")) {
                         gameServer = true;
                         break;
+                    } else if (message.startsWith("HEREISNAME: ")) {
+                        remoteName = message.split(" ")[1];
                     } else {
                         getHeader();
                     }

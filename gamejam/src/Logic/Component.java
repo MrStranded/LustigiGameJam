@@ -3,7 +3,7 @@ package Logic;
 public class Component {
     private double[] attributes = new double[32];
     private int id = -1;
-    private Component[] subComponents = null;
+    private Component[] subComponents = {};
     private Position position = null;
 
     public double getAttribute(Attributes a) {

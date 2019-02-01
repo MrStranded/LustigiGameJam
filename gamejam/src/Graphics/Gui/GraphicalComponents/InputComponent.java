@@ -2,6 +2,7 @@ package Graphics.Gui.GraphicalComponents;
 
 import Graphics.Gui.Actions.Action;
 import Graphics.Gui.Actions.ChatAction;
+import Graphics.Gui.Actions.IpSetAction;
 import Graphics.Gui.Actions.UserNameAction;
 import Graphics.Gui.Rect;
 import Input.InputBuffer;
@@ -26,6 +27,8 @@ public class InputComponent extends UIComponent{
 			((ChatAction) action).setParent(this);
 		} else if (action.getClass() == UserNameAction.class) {
 			((UserNameAction) action).setParent(this);
+		} else if (action.getClass() == IpSetAction.class) {
+			((IpSetAction) action).setParent(this);
 		}
 	}
 
@@ -50,8 +53,8 @@ public class InputComponent extends UIComponent{
 					} else {
 						content += Character.toLowerCase((char) keyCode);
 					}
-				} else if ((char) keyCode == ' ') {
-					content += ' ';
+				} else if ((char) keyCode == ' ' || (char) keyCode == '.') {
+					content += (char) keyCode;
 				}
 			}
 		}

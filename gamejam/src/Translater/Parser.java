@@ -139,6 +139,25 @@ public class Parser {
 						worldState.addChatMessage(values[0]);
 					}
 					break;
+
+				case GAMELIST:
+					if (worldState != null) {
+						HashMap<String, String> ipNameTuples = new HashMap<>();
+
+						if (values.length > 0) {
+							int t = values.length / 2;
+							for (int i = 0; i < t; i++) {
+								String ip = values[0+i*2];
+								String name = values[1+i*2];
+
+								ipNameTuples.put(ip, name);
+							}
+						}
+
+						worldState.setIpNameTuples(ipNameTuples);
+					}
+
+					break;
 			}
 		}
 	}

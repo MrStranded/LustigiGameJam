@@ -16,8 +16,8 @@ public class Image {
 
 	public Image(String path) {
 		try {
-			System.out.println("load " + "res/"+path);
-			BufferedImage original = ImageIO.read(new File("res/"+path));
+			System.out.println("load " + "res/img/"+path);
+			BufferedImage original = ImageIO.read(new File("res/img/"+path));
 
 			double w = original.getWidth();
 			double h = original.getHeight();

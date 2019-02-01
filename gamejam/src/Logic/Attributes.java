@@ -25,7 +25,8 @@ public enum Attributes {
     SAIL(21),
     TURNANGLE(22),
     PLAYER(23),
-    SLOTPOSITION(24);
+    SLOTPOSITION(24),
+    TYPE(25);
 
     private final int att;
 

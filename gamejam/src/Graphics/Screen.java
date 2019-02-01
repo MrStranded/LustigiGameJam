@@ -19,7 +19,7 @@ public class Screen extends JPanel {
 	private WorldState worldState;
 	private GUI gui;
 
-	private int tileSize = 40;
+	private final int tileSize = 40;
 
 	public Screen(int width, int height, Window window) {
 		this.width = width;

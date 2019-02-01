@@ -59,6 +59,7 @@ public class Parser {
 	}
 
 	private static void parseInfo(int playerId, String msg) {
+		System.out.println("parse " + msg);
 		int sep = msg.indexOf(Separator.KEYWORD);
 
 		if (sep >= 0) {

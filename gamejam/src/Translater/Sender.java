@@ -97,7 +97,7 @@ public class Sender {
 			if (client != null) {
 				System.out.println("NOT NULL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				try {
-					client.send(msg);
+					client.sendGameState(msg);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

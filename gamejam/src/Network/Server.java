@@ -69,6 +69,12 @@ public class Server implements Runnable {
     public void clean() {
         try {
             ping.stop();
+            try {
+                ping.getPing().join();
+            } catch (InterruptedException e) {
+                System.out.println("Failed ping join");
+            }
+
             serverSocket.close();
         } catch (IOException e) {
             System.out.println("failed to close server");

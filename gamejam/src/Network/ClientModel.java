@@ -32,6 +32,11 @@ public class ClientModel implements Runnable {
         }
     }
 
+    public void sendGameState(String message) throws IOException {
+        message = "GAME: " + message;
+        send(message);
+    }
+
     @Override
     public void run() {}
 

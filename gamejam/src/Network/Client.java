@@ -5,7 +5,6 @@ import Translater.Parser;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -72,9 +71,6 @@ public class Client extends ClientModel {
                     System.out.println(message);
                 }
             }
-
-            socket.close();
-
         } catch (IOException e) {
             // create error log
             System.out.println("Client " + socket.getInetAddress() + " crashed: " + e.getMessage());
@@ -94,8 +90,14 @@ public class Client extends ClientModel {
 
     public void clean() {
         try {
+            clients.remove(this);
             if (ping != null) {
                 ping.stop();
+                try {
+                    ping.getPing().join();
+                } catch (InterruptedException e) {
+                    System.out.println("Failed ping join");
+                }
             }
             socket.close();
         } catch (IOException e) {

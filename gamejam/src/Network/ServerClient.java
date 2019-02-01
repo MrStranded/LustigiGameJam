@@ -78,10 +78,6 @@ public class ServerClient extends ClientModel {
 
                 server.broadcast("<"+getName()+"> " + message);
             }
-
-
-            socket.close();
-
         } catch (IOException e) {
             // create error log
             System.out.println("Client" + socket.getInetAddress() + " crashed: " + e.getMessage());

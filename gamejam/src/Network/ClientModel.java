@@ -14,6 +14,8 @@ public class ClientModel implements Runnable {
     char[] buffer = new char[BUFSIZE];
     String message;
     String name;
+    Long lastPing = 0l;
+    Long lastPong = 0l;
 
 
     public ClientModel(Socket _socket) {
@@ -31,4 +33,22 @@ public class ClientModel implements Runnable {
 
     @Override
     public void run() {}
+
+    public void setLastPing(Long time) {
+        lastPing = time;
+    }
+
+    public void setLastPong(Long time) {
+        lastPong = time;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getPing() {
+        Long pingValue = lastPong - lastPing;
+        return pingValue;
+    }
 }

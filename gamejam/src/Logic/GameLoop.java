@@ -1,5 +1,6 @@
 package Logic;
 
+import Globals.MasterSwitch;
 import Graphics.Window;
 import Graphics.Gui.GUI;
 import Graphics.Gui.GUICreater;
@@ -13,6 +14,7 @@ public class GameLoop extends Thread {
 	private GUI gui;
 
 	private long t;
+	private long tLastPlayerListSend = 0;
 	private long millisPerFrame = 1000/60;
 
 	public GameLoop() {
@@ -29,6 +31,15 @@ public class GameLoop extends Thread {
 	public void run() {
 		while (true) {
 			t = System.currentTimeMillis();
+
+			if (MasterSwitch.isServer) {
+				if (System.currentTimeMillis() - tLastPlayerListSend > 1000) {
+					Sender.sendPlayers();
+					tLastPlayerListSend = System.currentTimeMillis();
+				}
+			}
+
+			Parser.update();
 
 			window.registerInput(worldState);
 			window.drawWorld(worldState);

@@ -1,18 +1,30 @@
 package Logic;
 
+import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class WorldState {
 
-	private final int tileSize = 32;
+	private final int tileSize = 40;
+	private final int mapSize = 32;
 
 	private int[][] map;
 	private int size;
 
+	private ConcurrentLinkedDeque<Player> players;
 	private ConcurrentLinkedDeque<Component> units;
 
+	private Stack<String> chatMessages = new Stack<>();
+
+	public WorldState() {
+		players = new ConcurrentLinkedDeque<Player>();
+		units = new ConcurrentLinkedDeque<Component>();
+
+		createTestMap();
+	}
+
 	public void createTestMap() {
-		size = 32;
+		size = mapSize;
 		map = new int[size][size];
 
 		for (int x=0; x<size; x++) {
@@ -26,6 +38,10 @@ public class WorldState {
 
 	public void addUnit(Component component) {
 		units.add(component);
+	}
+
+	public void addPlayer(Player player) {
+		players.add(player);
 	}
 
 	public int getTileSize() {
@@ -46,5 +62,35 @@ public class WorldState {
 
 	public ConcurrentLinkedDeque<Component> getUnits() {
 		return units;
+	}
+
+	public Component getUnit(int id) {
+		for (Component component : units) {
+			if (component.getId() == id) {
+				return component;
+			}
+		}
+		return null;
+	}
+
+	public ConcurrentLinkedDeque<Player> getPlayers() {
+		return players;
+	}
+
+	public Player getPlayer(int id) {
+		for (Player player : players) {
+			if (player.getId() == id) {
+				return player;
+			}
+		}
+		return null;
+	}
+
+	public void setPlayers(ConcurrentLinkedDeque<Player> players) {
+		this.players = players;
+	}
+
+	public void setUnits(ConcurrentLinkedDeque<Component> units) {
+		this.units = units;
 	}
 }

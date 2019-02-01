@@ -1,6 +1,7 @@
 package Translater;
 
 import Logic.Component;
+import Logic.Player;
 import Logic.WorldState;
 
 public class Encoder {
@@ -95,6 +96,37 @@ public class Encoder {
 		return stringBuilder.toString();
 	}
 
+	public static String createPlayerListMsg(WorldState worldState) {
+		StringBuilder stringBuilder = new StringBuilder(KeyWord.PLAYERLIST.name());
 
+		if (worldState != null) {
+			stringBuilder.append(Separator.KEYWORD);
+
+			for (Player player : worldState.getPlayers()) {
+				stringBuilder.append(Separator.VALUE);
+				stringBuilder.append(player.getId());
+				stringBuilder.append(Separator.VALUE);
+				stringBuilder.append(player.getName());
+				stringBuilder.append(Separator.VALUE);
+				stringBuilder.append(player.getPing());
+				stringBuilder.append(Separator.VALUE);
+				stringBuilder.append(player.getCash());
+			}
+		}
+
+		return stringBuilder.toString();
+	}
+
+	public static String createChatMsg(String chatMessage) {
+		StringBuilder stringBuilder = new StringBuilder(KeyWord.CHAT.name());
+
+		if (chatMessage != null) {
+			stringBuilder.append(Separator.KEYWORD);
+
+			stringBuilder.append(chatMessage);
+		}
+
+		return stringBuilder.toString();
+	}
 
 }

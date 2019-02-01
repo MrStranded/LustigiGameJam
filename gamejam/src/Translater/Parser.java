@@ -1,30 +1,55 @@
 package Translater;
 
 import Logic.Component;
+import Logic.Player;
 import Logic.WorldState;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Parser {
 
 	private static WorldState worldState;
 
+	private static Map<Integer, ConcurrentLinkedDeque<String>> playerMessages = new HashMap<>(32);
+
 	public static void setWorldState(WorldState worldState) {
 		Parser.worldState = worldState;
 	}
 
-	public static void parse(String msg) {
+	public static void parse(int playerId, String msg) {
+		ConcurrentLinkedDeque<String> messages = null;
+		if ((messages = playerMessages.get(playerId)) == null) {
+			messages = new ConcurrentLinkedDeque<String>();
+		}
+		playerMessages.put(playerId, messages);
+	}
+
+
+	public static void update() {
 		if (worldState != null) {
-			String[] infos = msg.split(Separator.INFO);
+			for (int playerId : playerMessages.keySet()) {
+				ConcurrentLinkedDeque<String> messages = playerMessages.get(playerId);
+				Iterator<String> messageIterator = messages.iterator();
+				String msg;
 
-			for (String info : infos) {
-				parseInfo(info);
+				while (messageIterator.hasNext()) {
+					msg = messageIterator.next();
+					messageIterator.remove();
+
+					String[] infos = msg.split(Separator.INFO);
+
+					for (String info : infos) {
+						parseInfo(playerId, info);
+					}
+				}
 			}
-
 		} else {
 			System.out.println("Cannot parse, because there is no world state.");
 		}
 	}
 
-	private static void parseInfo(String msg) {
+	private static void parseInfo(int playerId, String msg) {
 		int sep = msg.indexOf(Separator.KEYWORD);
 
 		if (sep >= 0) {
@@ -32,6 +57,8 @@ public class Parser {
 			String[] values = (msg.substring(sep+1)).split(Separator.VALUE);
 
 			KeyWord key = getFittingKeyWord(keyword);
+
+			Player player;
 
 			switch (key) {
 				case MAP:
@@ -52,6 +79,41 @@ public class Parser {
 				case COMPONENT:
 					//int id = Integer
 					//Component component = worldState.getUnit()
+
+					break;
+
+				case PLAYERLIST:
+					ConcurrentLinkedDeque<Player> playerList = new ConcurrentLinkedDeque<>();
+
+					int p = values.length/4;
+					for (int i=0; i<p; i++) {
+						player = new Player(Integer.parseInt(values[0]));
+						player.setName(values[1]);
+						player.setPing(Integer.parseInt(values[2]));
+						player.setCash(Integer.parseInt(values[3]));
+					}
+
+					worldState.setPlayers(playerList);
+
+					break;
+
+				case PING:
+					player = worldState.getPlayer(playerId);
+					if (player != null) {
+						player.setPing(Integer.valueOf(values[0]));
+					}
+
+					break;
+
+				case PLAYER:
+					player = worldState.getPlayer(playerId);
+					if (player != null) {
+						player.setName(values[0]);
+					} else {
+						player = new Player(playerId);
+						player.setName(values[0]);
+						worldState.addPlayer(player);
+					}
 
 					break;
 			}

@@ -7,6 +7,8 @@ public enum KeyWord {
 	ATTRIBUTES,
 	POSITION,
 	CHAT,
-	PLAYERLIST
+	PLAYERLIST,
+	PLAYER,
+	PING
 
 }

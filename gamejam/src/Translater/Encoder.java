@@ -24,6 +24,26 @@ public class Encoder {
 		return stringBuilder.toString();
 	}
 
+	public static String createFullComponentMsg(Component component) {
+		if (component != null) {
+			StringBuilder stringBuilder = new StringBuilder(createComponentMsg(component));
+
+			stringBuilder.append(Separator.INFO);
+			stringBuilder.append(createAttributesMsg(component));
+
+			stringBuilder.append(Separator.INFO);
+			stringBuilder.append(createPositionMsg(component));
+
+			for (Component sub : component.getSubComponents()) {
+				stringBuilder.append(Separator.INFO);
+				stringBuilder.append(createFullComponentMsg(sub));
+			}
+
+			return stringBuilder.toString();
+		}
+		return "";
+	}
+
 	public static String createComponentMsg(Component component) {
 		StringBuilder stringBuilder = new StringBuilder(KeyWord.COMPONENT.name());
 
@@ -31,6 +51,11 @@ public class Encoder {
 			stringBuilder.append(Separator.KEYWORD);
 
 			stringBuilder.append(component.getId());
+
+			for (Component sub : component.getSubComponents()) {
+				stringBuilder.append(Separator.VALUE);
+				stringBuilder.append(sub.getId());
+			}
 		}
 
 		return stringBuilder.toString();

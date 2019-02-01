@@ -144,17 +144,17 @@ public class Logic {
         int yBorder = (index[1] + (inputVector.getY() >= 0 ? 1 : 0));
 
         //TODO: fix (border - p) is wrong
-//        if (xTile.isCollision()) {
+//        if (xTile == null || xTile.isCollision()) {
 //            component.getPosition().setX(Math.abs(xBorder - p.getX()));
 //        }
 //
-//        if (yTile.isCollision()) {
+//        if (yTile == null || yTile.isCollision()) {
 //            component.getPosition().setY(Math.abs(yBorder - p.getY()));
 //        }
-
-        if (MasterSwitch.isServer) {
-            changes.append(Encoder.createPositionMsg(component));
-        }
+//
+//        if (MasterSwitch.isServer) {
+//            changes.append(Encoder.createPositionMsg(component));
+//        }
 
         component.setPosition(new Position(p.getX() + inputVector.getX(), p.getY() + inputVector.getY()));
     }
@@ -253,8 +253,13 @@ public class Logic {
     }
 
     private static void steer(Component ship, int input) {
-        System.out.println(input);
-        ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * input));
+        double angle = ship.getAttribute(Attributes.ANGLE) - (ship.getAttribute(Attributes.TURNANGLE) * input);
+
+        if (angle < 0) {
+            angle += 360;
+        }
+
+        ship.set(Attributes.ANGLE, angle);
     }
 
     private static void processAcceleration(ArrayList<Component> accelerators, boolean sailUp, Component ship) {

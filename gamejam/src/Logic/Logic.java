@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class Logic {
     private static WorldState worldState;
-    private static int tileSize;
 
     private static long lastTick;
 
@@ -22,7 +21,6 @@ public class Logic {
     // --------------------------------------------- INITIALIZE --------------------------------------------------------
     public static void init(WorldState ws) {
         worldState = ws;
-        tileSize = worldState.getTileSize();
         cosSinLookup = CosSinLookup.getTable();
     }
 
@@ -74,6 +72,10 @@ public class Logic {
                 }
 
                 if (controls[Actions.SHOOTDOWN.valueOf()] == 1) {
+                    shoot(ship, Slotpositions.LEFT);
+                }
+
+                if (controls[Actions.SHOOTLEFTMOUSE.valueOf()] == 1) {
                     shoot(ship, Slotpositions.LEFT);
                 }
 
@@ -134,8 +136,8 @@ public class Logic {
         Tiles xTile = getTile(new Position(p.getX() + inputVector.getX(), p.getY()));
         Tiles yTile = getTile(new Position(p.getX(), p.getY() + inputVector.getY()));
 
-        int xBorder = tileSize * (index[0] + (inputVector.getX() >= 0 ? 1 : 0));
-        int yBorder = tileSize * (index[1] + (inputVector.getY() >= 0 ? 1 : 0));
+        int xBorder = (index[0] + (inputVector.getX() >= 0 ? 1 : 0));
+        int yBorder = (index[1] + (inputVector.getY() >= 0 ? 1 : 0));
 
         if (xTile.isCollision()) {
             component.getPosition().setX(Math.abs(xBorder - p.getX()));
@@ -316,11 +318,11 @@ public class Logic {
     }
 
     public static Tiles getTile(Position p) {
-        return Tiles.valueOf(worldState.getMap()[(int) p.getX() / tileSize][(int) p.getY() / tileSize]);
+        return Tiles.valueOf(worldState.getMap()[(int) p.getX()][(int) p.getY()]);
     }
 
     public static int[] getTileIndex(Position p) {
-        return new int[]{(int) p.getX() / tileSize, (int) p.getY() / tileSize};
+        return new int[]{(int) p.getX(), (int) p.getY()};
     }
 
     public static Position scaleVector(Position vector, double scalar) {

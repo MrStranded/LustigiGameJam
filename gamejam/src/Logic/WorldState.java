@@ -23,7 +23,7 @@ public class WorldState {
     private ConcurrentLinkedDeque<String> chatMessages;
 
     private HashMap<String, String> ipNameTuples;
-    private HashMap<Integer, Integer[]> playerControlTuples;
+    private HashMap<Integer, Integer[]> playerControlTuples = new HashMap<>();
 
     public HashMap<String, String> getIpNameTuples() {
         return ipNameTuples;

@@ -80,7 +80,7 @@ public class ServerClient extends ClientModel {
                     Parser.parse(connectionId, "PING|" + getPing());
                     continue;
                 } else if (message.equals("HEADER")) {
-                    send("LUSCHTIGIGAMEJAM");
+                    send("LUSCHTIGIGAMEJAM: " + name);
                     break;
                 }
 

@@ -55,11 +55,9 @@ public class Client extends ClientModel {
                 }
 
                 if (scan) {
-                    send("GIBMENAME");
-                    if (message.startsWith("HEREISNAME: ")) {
-                        remoteName = message.split(" ")[1];
-                    } else if (message.equals("LUSCHTIGIGAMEJAM")) {
+                    if (message.startsWith("LUSCHTIGIGAMEJAM: ")) {
                         gameServer = true;
+                        remoteName = message.split(" ")[1];
                         break;
                     } else {
                         getHeader();

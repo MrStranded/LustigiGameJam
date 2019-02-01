@@ -2,11 +2,11 @@ package Graphics.Gui.GraphicalComponents;
 
 public class SmallUpdateTimer extends Thread {
 
-	private UpdatingTextComponent parent;
+	private UpdatingComponent parent;
 	private long t;
 	private boolean running = true;
 
-	public SmallUpdateTimer(UpdatingTextComponent parent) {
+	public SmallUpdateTimer(UpdatingComponent parent) {
 		this.parent = parent;
 
 		setDaemon(true);

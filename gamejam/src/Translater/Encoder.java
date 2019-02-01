@@ -183,4 +183,8 @@ public class Encoder {
 		return KeyWord.DISCONNECT.name() + Separator.KEYWORD + playerId;
 	}
 
+	public static String createPlayerIdMsg(int playerId) {
+		return KeyWord.PLAYERID.name() + Separator.KEYWORD + playerId;
+	}
+
 }

@@ -168,6 +168,13 @@ public class Parser {
 					}
 
 					break;
+
+				case PLAYERID:
+					if (worldState != null) {
+						worldState.setUserId(Integer.parseInt(values[0]));
+					}
+
+					break;
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package Graphics;
 
+import Globals.Images;
 import Logic.Attributes;
 import Logic.WorldState;
 import Logic.Component;
@@ -10,6 +11,7 @@ import Input.InputBuffer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class Screen extends JPanel {
@@ -80,6 +82,13 @@ public class Screen extends JPanel {
 		drawGui(g);
 	}
 
+	private int[] getOffset() {
+		int[] playerpos = worldState.getPlayerPosition();
+		playerpos[0] = width/2 - playerpos[0];
+		playerpos[1] = height/2 - playerpos[1];
+		return playerpos;
+	}
+
 	// -----------------------------------------------------------------------------------------------------------------
 	// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 	// ########################################################## DRAW Map #############################################
@@ -91,6 +100,8 @@ public class Screen extends JPanel {
 			int s = worldState.getSize();
 			int[][] map = worldState.getMap();
 
+			int[] offset = getOffset();
+
 			Color[] tileColors = new Color[]{
 					Color.BLUE,
 					Color.YELLOW,
@@ -99,8 +110,8 @@ public class Screen extends JPanel {
 
 			for (int x = 0; x < s; x++) {
 				for (int y = 0; y < s; y++) {
-					int xPos = x * tileSize;
-					int yPos = y * tileSize;
+					int xPos = x * tileSize + offset[0];
+					int yPos = y * tileSize + offset[1];
 
 					g.setColor(tileColors[map[x][y]]);
 					g.fillRect(xPos, yPos, tileSize, tileSize);
@@ -119,12 +130,20 @@ public class Screen extends JPanel {
 
 	private void drawUnits(Graphics g) {
 		if (worldState != null) {
-			for (Component unit : worldState.getUnits()) {
-				int xPos = (int) (unit.getPosition().getX()*tileSize);
-				int yPos = (int) (unit.getPosition().getY()*tileSize);
+			int[] offset = getOffset();
 
-				g.setColor(Color.RED);
-				g.fillOval(xPos-20,yPos-20, 40, 40);
+			for (Component unit : worldState.getUnits()) {
+				int xPos = (int) ((unit.getPosition().getX()+0.5d)*tileSize) + offset[0];
+				int yPos = (int) ((unit.getPosition().getY()+0.5d)*tileSize) + offset[1];
+
+				BufferedImage unitImage = Images.getComponentImage((int) unit.getAttribute(Attributes.IMAGE), unit.getAttribute(Attributes.ANGLE));
+				if (unitImage != null) {
+					int mid = unitImage.getWidth()/2;
+					g.drawImage(unitImage, xPos-mid, yPos-mid, null);
+				} else {
+					g.setColor(Color.RED);
+					g.fillOval(xPos - 20, yPos - 20, 40, 40);
+				}
 				g.setColor(Color.BLACK);
 				g.drawString(String.valueOf((int) unit.getAttribute(Attributes.PLAYER)), xPos, yPos);
 			}

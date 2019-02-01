@@ -45,6 +45,20 @@ public class WorldState {
         units = new ConcurrentLinkedDeque<>();
     }
 
+    public int[] getPlayerPosition() {
+        int[] pos = new int[] {400,300};
+
+        for (Component unit : units) {
+            if ((int) unit.getAttribute(Attributes.PLAYER) == userId) {
+                pos[0] = (int) (unit.getPosition().getX()*tileSize);
+                pos[1] = (int) (unit.getPosition().getY()*tileSize);
+                return pos;
+            }
+        }
+
+        return pos;
+    }
+
     public void addUnit(Component component) {
         units.add(component);
     }

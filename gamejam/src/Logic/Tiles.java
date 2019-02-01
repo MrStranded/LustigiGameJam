@@ -1,29 +1,33 @@
 package Logic;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public enum Tiles {
-    GROUND(0, true, true),
-    DEEPWATER(1, false, true),
-    SHALLOWWATER(2, true, true);
+    GROUND(0, true),
+    DEEPWATER(1, false),
+    SHALLOWWATER(2, true);
 
     private int id;
     private boolean collision;
-    private boolean shootable;
+//    private boolean shootable;
 
-    private static Map<Integer, Tiles> map = new HashMap<Integer, Tiles>();
+    private static Map<Integer, Tiles> map = new HashMap<>();
 
-    public static Tiles valueOf(int value) {
-        return map.get(value);
+    public static Tiles valueOf(int key) {
+        return map.get(key);
     }
 
-    private Tiles(int id, boolean collision, boolean shootable) {
+    Tiles(int id, boolean collision) {
         this.id = id;
         this.collision = collision;
-        this.shootable = shootable;
+//        this.shootable = shootable;
+    }
+
+    static void initTiles() {
+        for(Tiles t : Tiles.values()) {
+            map.put(t.id, t);
+        }
     }
 
     public int getId() {
@@ -41,12 +45,12 @@ public enum Tiles {
     public void setCollision(boolean collision) {
         this.collision = collision;
     }
-
-    public boolean isShootable() {
-        return shootable;
-    }
-
-    public void setShootable(boolean shootable) {
-        this.shootable = shootable;
-    }
+//
+//    public boolean isShootable() {
+//        return shootable;
+//    }
+//
+//    public void setShootable(boolean shootable) {
+//        this.shootable = shootable;
+//    }
 }

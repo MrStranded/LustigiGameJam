@@ -15,6 +15,14 @@ public class Component {
         return value;
     }
 
+    public Component() {}
+    
+    public Component(Component other) {
+        for (int i=0; i<32; i++) {
+            attributes[i] = other.attributes[i];
+        }
+    }
+
     // #################################################################################################################
 
     public double[] getAttributes() {

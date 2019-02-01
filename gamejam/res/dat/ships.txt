@@ -1,0 +1,25 @@
+#-------------------------------------------------------------------- Standardschiff
+
+SHIP
+
+TYPE = 0
+
+MAXHEALTH = 100
+MAXSPEED = 2
+MAXARMOR = 20
+
+COLOR = 0
+WIDTH = 2
+LENGTH = 3
+
+SLOTS = 7
+DAMAGE = 10
+ACCELERATION = 0.1
+IMAGE = 0
+
+LOOT = 1000
+
+SAIL = 1
+TURNANGLE = 0.01
+
+#--------------------------------------------------------------------

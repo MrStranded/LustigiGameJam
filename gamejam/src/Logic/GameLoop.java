@@ -27,6 +27,8 @@ public class GameLoop extends Thread {
         Parser.setWorldState(worldState);
         Parser.setScreen(window.getScreen());
 
+        Logic.init(worldState);
+
 	    ImageLoader.loadImages();
     }
 

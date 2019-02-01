@@ -60,12 +60,10 @@ public class Sender {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	private static void send(String msg) {
-		msg = "Game: " + msg;
-
 		if (MasterSwitch.isServer) {
 			if (server != null) {
 				try {
-					server.broadcast(msg);
+					server.broadcastGameState(msg);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

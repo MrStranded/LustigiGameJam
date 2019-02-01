@@ -13,6 +13,7 @@ public class StartGameAction implements Action {
 
 			if (MasterSwitch.isServer) {
 				Sender.sendWorldState();
+				Sender.sendStart();
 			}
 		}
 	}

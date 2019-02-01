@@ -174,6 +174,7 @@ public class Encoder {
 			stringBuilder.append(ip);
 			stringBuilder.append(Separator.VALUE);
 			stringBuilder.append(ipNameTuples.get(ip));
+			first = false;
 		}
 
 		return stringBuilder.toString();
@@ -189,6 +190,10 @@ public class Encoder {
 
 	public static String createStartMsg(int playerId) {
 		return KeyWord.START.name();
+	}
+
+	public static String createPlayerLoginMsg(String playerName) {
+		return KeyWord.PLAYER.name() + Separator.KEYWORD + playerName;
 	}
 
 

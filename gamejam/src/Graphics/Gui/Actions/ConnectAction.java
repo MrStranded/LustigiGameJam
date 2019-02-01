@@ -15,7 +15,6 @@ public class ConnectAction implements Action {
 		Network network = new Network(worldState.userName);
 		Client client;
 		int port = 42069;
-		String username = worldState.userName;
 
 		try {
 			client = network.connect(worldState.ip, port);

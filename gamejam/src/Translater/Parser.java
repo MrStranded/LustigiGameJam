@@ -170,7 +170,10 @@ public class Parser {
 
 				case DISCONNECT:
 					if (worldState != null) {
-						worldState.getPlayers().remove(worldState.getPlayer(Integer.parseInt(values[0])));
+						Player p = worldState.getPlayer(Integer.parseInt(values[0]));
+						if (p != null) {
+							worldState.getPlayers().remove(p);
+						}
 					}
 
 					break;

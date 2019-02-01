@@ -126,7 +126,7 @@ public class Screen extends JPanel {
 				g.setColor(Color.RED);
 				g.fillOval(xPos-20,yPos-20, 40, 40);
 				g.setColor(Color.BLACK);
-				g.drawString(String.valueOf(unit.getAttribute(Attributes.ANGLE)), xPos, yPos);
+				g.drawString(String.valueOf((int) unit.getAttribute(Attributes.PLAYER)), xPos, yPos);
 			}
 		}
 	}

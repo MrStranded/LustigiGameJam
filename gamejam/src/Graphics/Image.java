@@ -22,7 +22,7 @@ public class Image {
 			double w = original.getWidth();
 			double h = original.getHeight();
 
-			double da = Math.PI*2d/Images.DIRECTIONS;
+			double da = 360d/Images.DIRECTIONS;
 
 			for (int i=0; i<Images.DIRECTIONS; i++) {
 				int s = (int) (Math.max(w,h) * f);
@@ -42,7 +42,7 @@ public class Image {
 	}
 
 	public BufferedImage getImage(double angle) {
-		int i = (int) ((double) (Images.DIRECTIONS) * angle / (Math.PI*2d)) % Images.DIRECTIONS;
+		int i = (int) ((double) (Images.DIRECTIONS) * angle / 360d) % Images.DIRECTIONS;
 		i = Math.min(Math.max(i,0),Images.DIRECTIONS-1);
 
 		return images[i];

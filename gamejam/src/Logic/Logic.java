@@ -64,12 +64,36 @@ public class Logic {
                         && p.getX() <= unitNew.getX() + c.getAttribute(Attributes.LENGTH) / 2
                         && p.getY() >= unitNew.getY() - c.getAttribute(Attributes.WIDTH) / 2
                         && p.getY() <= unitNew.getY() + c.getAttribute(Attributes.WIDTH) / 2) {
-                    //TODO: broadcast collision
+                    hit(c, projectile);
+                    //TODO: broadcast hit
                     break;
                 }
                 projectileVectorPart = addVector(projectileVectorPart, projectileVectorPart);
             }
         }
+    }
+
+    public static void hit(Component target, Component projectile) {
+        double armor = target.getAttribute(Attributes.ARMOR);
+        double health = target.getAttribute(Attributes.HEALTH);
+        double damage = projectile.getAttribute(Attributes.DAMAGE);
+
+        if (armor > 0) {
+            armor = target.set(Attributes.ARMOR, armor - damage);
+            if (armor < 0) {
+                damage = Math.abs(armor);
+                target.set(Attributes.ARMOR, 0);
+            }
+        }
+
+        health = target.set(Attributes.HEALTH, health - damage);
+
+        if (health < 0) {
+            target.set(Attributes.HEALTH, 0);
+            worldState.removeUnit(target);
+            //TODO: broadcast kill
+        }
+        worldState.removeUnit(projectile);
     }
 
     public static Position getRotatedPosition(Position position, double angle) {

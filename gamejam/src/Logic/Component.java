@@ -10,8 +10,9 @@ public class Component {
         return attributes[a.valueOf()];
     }
 
-    public void set(Attributes a, double value) {
+    public double set(Attributes a, double value) {
         attributes[a.valueOf()] = value;
+        return value;
     }
 
     // #################################################################################################################

@@ -64,6 +64,10 @@ public class WorldState {
 		return units;
 	}
 
+	public void removeUnit(Component unit) {
+		units.remove(unit);
+	}
+
 	public Component getUnit(int id) {
 		for (Component component : units) {
 			if (component.getId() == id) {

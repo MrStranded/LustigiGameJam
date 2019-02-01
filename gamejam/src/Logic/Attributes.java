@@ -18,7 +18,10 @@ public enum Attributes {
     IMAGE(14),
     LENGTH(15),
     DIRECTION(16),
-    CONTROL(17);
+    CONTROL(17),
+    MAXHEALTH(18),
+    MAXSPEED(19),
+    MAXARMOR(20);
 
     private final int att;
 

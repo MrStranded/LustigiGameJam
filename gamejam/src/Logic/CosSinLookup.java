@@ -3,7 +3,7 @@ package Logic;
 public class CosSinLookup {
     double[] cos = new double[361];
     double[] sin = new double[361];
-    private static CosSinLookup table = new CosSinLookup();
+    private static final CosSinLookup table = new CosSinLookup();
 
     private CosSinLookup() {
         for (int i = 0; i <= 360; i++) {

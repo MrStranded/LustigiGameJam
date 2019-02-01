@@ -22,6 +22,7 @@ public class Logic {
     public static void init(WorldState ws) {
         worldState = ws;
         cosSinLookup = CosSinLookup.getTable();
+        Tiles.initTiles();
     }
 
 
@@ -139,13 +140,14 @@ public class Logic {
         int xBorder = (index[0] + (inputVector.getX() >= 0 ? 1 : 0));
         int yBorder = (index[1] + (inputVector.getY() >= 0 ? 1 : 0));
 
-        if (xTile.isCollision()) {
-            component.getPosition().setX(Math.abs(xBorder - p.getX()));
-        }
-
-        if (yTile.isCollision()) {
-            component.getPosition().setY(Math.abs(yBorder - p.getY()));
-        }
+        //TODO: fix (border - p) is wrong
+//        if (xTile.isCollision()) {
+//            component.getPosition().setX(Math.abs(xBorder - p.getX()));
+//        }
+//
+//        if (yTile.isCollision()) {
+//            component.getPosition().setY(Math.abs(yBorder - p.getY()));
+//        }
 
         if (MasterSwitch.isServer) {
             changes.append(Encoder.createPositionMsg(component));
@@ -322,7 +324,8 @@ public class Logic {
     }
 
     private static Tiles getTile(Position p) {
-        return Tiles.valueOf(worldState.getMap()[(int) p.getX()][(int) p.getY()]);
+        int[][] map = worldState.getMap();
+        return Tiles.valueOf(map[(int) p.getX()][(int) p.getY()]);
     }
 
     private static int[] getTileIndex(Position p) {

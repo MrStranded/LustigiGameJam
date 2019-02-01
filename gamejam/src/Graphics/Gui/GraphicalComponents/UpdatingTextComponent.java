@@ -7,7 +7,7 @@ import Logic.WorldState;
 
 import java.util.HashMap;
 
-public class UpdatingTextComponent extends UIComponent{
+public class UpdatingTextComponent extends UIComponent implements UpdatingComponent {
 
 	public static final int PLAYERLIST = 0;
 	public static final int PING = 1;

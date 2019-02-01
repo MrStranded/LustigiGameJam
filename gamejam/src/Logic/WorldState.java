@@ -12,6 +12,7 @@ public class WorldState {
 	private int[][] map;
 	private int size;
 
+	public int userId = 0;
 	public String userName = "-";
 	public String ip = "127.0.0.1";
 
@@ -121,5 +122,13 @@ public class WorldState {
 
 	public ConcurrentLinkedDeque<String> getChatMessages() {
 		return chatMessages;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

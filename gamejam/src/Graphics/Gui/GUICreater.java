@@ -4,7 +4,6 @@ import Graphics.Gui.GraphicalComponents.*;
 import Graphics.Gui.GraphicalComponents.TextComponent;
 import Graphics.Screen;
 import Graphics.Gui.Actions.*;
-import Logic.WorldState;
 
 import java.awt.*;
 
@@ -45,7 +44,7 @@ public class GUICreater {
 
 		mainBox.addUIComponent(createInput(screen.getWorldState().userName + ": ", new ChatAction(), 0.2, 0.6, 0.6, 0.05));
 
-		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.7, 0.6, 0.05));
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;
 	}
@@ -65,7 +64,7 @@ public class GUICreater {
 
 		mainBox.addUIComponent(createInput(screen.getWorldState().userName + ": ", new ChatAction(), 0.2, 0.6, 0.6, 0.05));
 
-		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.7, 0.6, 0.05));
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;
 	}
@@ -80,7 +79,7 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createInput("IP to connect to: ", new IpSetAction(), 0.2, 0.2, 0.6, 0.05));
+		mainBox.addUIComponent(createInput("IP to connect to: ", new IpFromInputAction(), 0.2, 0.2, 0.6, 0.05));
 
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.GAMELIST, screen, 0.2, 0.3, 0.6, 0.275));
 		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.IP, screen, 0.2, 0.6, 0.6, 0.05));
@@ -103,7 +102,7 @@ public class GUICreater {
 
 		mainBox.addUIComponent(createButton("Host", new HostAction(),0.2, 0.2, 0.6, 0.1));
 		mainBox.addUIComponent(createButton("Join", new JoinAction(),0.2, 0.4, 0.6, 0.1));
-		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.6, 0.6, 0.1));
+		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.8, 0.6, 0.05));
 
 		return gui;
 	}

@@ -59,6 +59,7 @@ public class Parser {
 	}
 
 	private static void parseInfo(int playerId, String msg) {
+		System.out.println("parse " + msg);
 		int sep = msg.indexOf(Separator.KEYWORD);
 
 		if (sep >= 0) {
@@ -164,6 +165,13 @@ public class Parser {
 				case DISCONNECT:
 					if (worldState != null) {
 						worldState.getPlayers().remove(worldState.getPlayer(Integer.parseInt(values[0])));
+					}
+
+					break;
+
+				case PLAYERID:
+					if (worldState != null) {
+						worldState.setUserId(Integer.parseInt(values[0]));
 					}
 
 					break;

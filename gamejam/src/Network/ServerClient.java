@@ -47,6 +47,8 @@ public class ServerClient extends ClientModel {
                 if (message.startsWith("GAME: ")) {
                     String change =  message.substring(message.indexOf(" ") + 1);
                     Parser.parse(connectionId, change);
+
+                    System.out.println(message);
                 } else if (message.equals("GUESSIDIE")) {
                     server.getClients().remove(this);
                     send("GUESSYOUDIE");

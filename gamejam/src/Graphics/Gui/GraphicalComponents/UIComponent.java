@@ -32,6 +32,10 @@ public class UIComponent {
 		return uiComponentList;
 	}
 
+	public void clearComponents() {
+		uiComponentList.clear();
+	}
+
 	public Color getColor() {
 		return color;
 	}

@@ -20,8 +20,9 @@ public class ChatAction implements Action {
 	@Override
 	public void perform(Screen screen, WorldState worldState) {
 		if (parent != null) {
-			Sender.sendMessage(parent.getContent());
+			Sender.sendMessage(worldState.userName + ": " + parent.getContent());
 			parent.setContent("");
+			parent.setReady(false);
 		}
 	}
 }

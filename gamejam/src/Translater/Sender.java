@@ -69,7 +69,12 @@ public class Sender {
 
 	public static void sendMessage(String msg) {
 		if (msg != null) {
-			send(Encoder.createChatMsg(msg));
+			if (MasterSwitch.isServer) {
+				worldState.addChatMessage(msg);
+				send(Encoder.createChatMsg(msg));
+			} else {
+				send(Encoder.createChatMsg(msg));
+			}
 		}
 	}
 

@@ -33,6 +33,10 @@ public class InputComponent extends UIComponent{
 		return ready;
 	}
 
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
+
 	public void checkInput() {
 		for (int keyCode : InputBuffer.getLastInput()) {
 			if (keyCode == KeyEvent.VK_BACK_SPACE) {
@@ -41,12 +45,18 @@ public class InputComponent extends UIComponent{
 				}
 			} else {
 				if (Character.isLetterOrDigit((char) keyCode)) {
-					content += (char) keyCode;
+					if (InputBuffer.isKeyPressed(KeyEvent.VK_SHIFT) > 0) {
+						content += (char) keyCode;
+					} else {
+						content += Character.toLowerCase((char) keyCode);
+					}
+				} else if ((char) keyCode == ' ') {
+					content += ' ';
 				}
 			}
 		}
 
-		if (InputBuffer.isKeyPressed(KeyEvent.VK_ENTER) > 0 && content.length() > 0) {
+		if (InputBuffer.isKeyPressed(KeyEvent.VK_ENTER) > 0 && content.trim().length() > 0) {
 			ready = true;
 
 		}

@@ -21,7 +21,6 @@ public class GameLoop extends Thread {
         window = new Window();
 
         worldState = new WorldState();
-        worldState.createTestMap();
 
         Sender.setWorldState(worldState);
         Parser.setWorldState(worldState);

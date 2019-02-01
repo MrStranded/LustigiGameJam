@@ -155,6 +155,8 @@ public class Logic {
         if (MasterSwitch.isServer) {
             changes.append(Encoder.createPositionMsg(component));
         }
+
+        component.setPosition(new Position(p.getX() + inputVector.getX(), p.getY() + inputVector.getY()));
     }
 
     private static void shoot(Component ship, Slotpositions position) {
@@ -243,29 +245,6 @@ public class Logic {
         }
     }
 
-    private static void accelerate(Component ship, ArrayList<Component> accelerators, int input) {
-        double speed = ship.getAttribute(Attributes.SPEED);
-        long t = (System.currentTimeMillis() - lastTick);
-
-        speed += ship.getAttribute(Attributes.ACCELERATION) * t * input;
-
-        for (Component c : accelerators) {
-            if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf()) {
-                speed += c.getAttribute(Attributes.ACCELERATION) * t;
-            } else {
-                speed += c.getAttribute(Attributes.ACCELERATION) * t * input;
-            }
-        }
-
-        if (speed < 0) {
-            speed = 0;
-        } else if (speed > ship.getAttribute(Attributes.MAXSPEED)) {
-            speed = ship.getAttribute(Attributes.MAXSPEED);
-        }
-
-        ship.set(Attributes.SPEED, speed);
-    }
-
     private static boolean toggleSails(Component ship) {
         int x = ship.getAttribute(Attributes.SAIL) == 0 ? 1 : 0;
         ship.set(Attributes.SAIL, x);
@@ -274,6 +253,7 @@ public class Logic {
     }
 
     private static void steer(Component ship, int input) {
+        System.out.println(input);
         ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * input));
     }
 
@@ -287,20 +267,28 @@ public class Logic {
                 accelerators.add(c);
             }
         }
+    }
 
-        double acc = 0;
+    private static void accelerate(Component ship, ArrayList<Component> accelerators, int input) {
+        double speed = ship.getAttribute(Attributes.SPEED);
+
+        speed += ship.getAttribute(Attributes.ACCELERATION) * tickDuration * input;
 
         for (Component c : accelerators) {
-            acc += c.getAttribute(Attributes.ACCELERATION);
+            if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf()) {
+                speed += c.getAttribute(Attributes.ACCELERATION) * tickDuration;
+            } else {
+                speed += c.getAttribute(Attributes.ACCELERATION) * tickDuration * input;
+            }
         }
 
-        acc += ship.getAttribute(Attributes.ACCELERATION);
+        if (speed < (-ship.getAttribute(Attributes.MAXSPEED) * 0.6)) {
+            speed = -ship.getAttribute(Attributes.MAXSPEED) * 0.6;
+        } else if (speed > ship.getAttribute(Attributes.MAXSPEED)) {
+            speed = ship.getAttribute(Attributes.MAXSPEED);
+        }
 
-        System.out.println(tickDuration);
-        System.out.println(acc);
-
-        ship.set(Attributes.SPEED, ship.getAttribute(Attributes.SPEED) + acc * tickDuration);
-        System.out.println(ship.getAttribute(Attributes.SPEED));
+        ship.set(Attributes.SPEED, speed);
     }
 
     private static void shootTurret(Component ship, Component turret) {
@@ -337,7 +325,7 @@ public class Logic {
     }
 
     private static double getDistance(Component component) {
-        return tickDuration * 1000 * component.getAttribute(Attributes.SPEED);
+        return (tickDuration / 1000.0) * component.getAttribute(Attributes.SPEED);
     }
 
     private static Tiles getTile(Position p) {

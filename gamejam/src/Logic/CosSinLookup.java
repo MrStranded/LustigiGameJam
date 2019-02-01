@@ -13,12 +13,12 @@ public class CosSinLookup {
     }
 
     public double getSine(int angle) {
-        int angleCircle = angle % 360;
+        int angleCircle = angle < 0 ? angle + 360 : angle % 360;
         return sin[angleCircle];
     }
 
     public double getCos(int angle) {
-        int angleCircle = angle % 360;
+        int angleCircle = angle < 0 ? angle + 360 : angle % 360;
         return cos[angleCircle];
     }
 

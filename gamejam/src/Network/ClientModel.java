@@ -11,7 +11,7 @@ public class ClientModel implements Runnable {
     Socket socket;
     BufferedReader bufferedReader;
     final int BUFSIZE = 1024;
-    char[] buffer = new char[BUFSIZE];
+    char[] buffer;
     String message;
     String name;
     Long lastPing = 0l;
@@ -19,13 +19,14 @@ public class ClientModel implements Runnable {
 
 
     public ClientModel(Socket _socket) {
+        buffer = new char[BUFSIZE];
         socket = _socket;
         client = new Thread(this);
         client.start();
     }
 
 
-    public void send(String message) throws IOException {
+    public synchronized void send(String message) throws IOException {
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         printWriter.print(message);
         printWriter.flush();

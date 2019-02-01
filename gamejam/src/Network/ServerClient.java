@@ -14,11 +14,12 @@ public class ServerClient extends ClientModel {
     private static int counter = 0;
     private int connectionId;
 
-    public ServerClient(Socket _socket, Server _server) {
+    public ServerClient(Socket _socket, Server _server, String _userName) {
         socket = _socket;
         client = new Thread(this);
         client.start();
         server = _server;
+        name = _userName;
         try {
             send("GIBMENAME");
             send("CONID: " + connectionId);

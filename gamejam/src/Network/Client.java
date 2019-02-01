@@ -1,5 +1,6 @@
 package Network;
 
+import Translater.Encoder;
 import Translater.Parser;
 
 import java.io.*;
@@ -18,6 +19,7 @@ public class Client extends ClientModel {
     private String ip;
     private int port;
     private boolean scan;
+    private int connectionId;
 
     public Client(Socket _socket, String _name, String _ip, int _port, boolean _scan) {
         socket = _socket;
@@ -72,6 +74,9 @@ public class Client extends ClientModel {
                     send("PONG");
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
+                } else if (message.startsWith("CONID: ")) {
+                    connectionId = Integer.parseInt(message.split(" ")[1]);
+                    Parser.parse(0, Encoder.createPlayerIdMsg(connectionId));
                 } else {
                     System.out.println(message);
                 }

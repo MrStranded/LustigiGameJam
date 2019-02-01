@@ -21,6 +21,7 @@ public class ServerClient extends ClientModel {
         server = _server;
         try {
             send("GIBMENAME");
+            send("CONID: " + connectionId);
         } catch (IOException e) {
             System.out.println("failed to request name");
             e.printStackTrace();

@@ -33,7 +33,9 @@ public class Client extends ClientModel {
         clients.add(this);
         try {
             send("GIBMENAME");
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -41,7 +43,9 @@ public class Client extends ClientModel {
     public void run() {
         try {
             socket.connect(new InetSocketAddress(ip, port), 1000);
-            ping = new Ping(clients);
+            if (!scan) {
+                ping = new Ping(clients);
+            }
             Boolean proceed = true;
             while(proceed) {
                 // Input

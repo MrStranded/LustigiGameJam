@@ -9,7 +9,7 @@ import java.util.Queue;
 public class Ping implements Runnable {
     private Thread ping;
     private Queue<ClientModel> clients;
-    private volatile Boolean proceed;
+    private volatile boolean proceed = true;
 
     public Ping(Queue<ClientModel> _clients) {
         clients = _clients;
@@ -24,7 +24,6 @@ public class Ping implements Runnable {
         } catch (InterruptedException e) {
             System.out.println("Insomnia");
         }
-        proceed = true;
         while (proceed) {
             Long start = System.currentTimeMillis();
             System.out.println("proceed: " + proceed);

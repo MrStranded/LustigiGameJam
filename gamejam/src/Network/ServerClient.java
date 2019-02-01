@@ -1,5 +1,7 @@
 package Network;
 
+import Translater.Parser;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -8,6 +10,8 @@ import java.net.Socket;
  */
 public class ServerClient extends ClientModel {
     private Server server;
+    private static int counter = 0;
+    private int connectionId;
 
     public ServerClient(Socket _socket, Server _server) {
         super(_socket);
@@ -18,6 +22,7 @@ public class ServerClient extends ClientModel {
             System.out.println("failed to receive name");
             e.printStackTrace();
         }
+        connectionId = (++counter);
     }
 
 
@@ -36,7 +41,10 @@ public class ServerClient extends ClientModel {
                     break;
                 }
 
-                if (message.equals("GUESSIDIE")) {
+                if (message.startsWith("GAME: ")) {
+                    String change =  message.substring(message.indexOf(" ") + 1);
+                    Parser.parse(connectionId, change);
+                } else if (message.equals("GUESSIDIE")) {
                     server.getClients().remove(this);
                     send("GUESSYOUDIE");
                     server.broadcast("<server> " + getName() + " left the game");
@@ -57,6 +65,7 @@ public class ServerClient extends ClientModel {
                     continue;
                 } else if (message.equals("PONG")) {
                     setLastPong(System.currentTimeMillis());
+                    Parser.parse(connectionId, "PING|" + pingValue);
                     continue;
                 }
 

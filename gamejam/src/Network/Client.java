@@ -82,6 +82,7 @@ public class Client extends ClientModel {
                     setLastPong(System.currentTimeMillis());
                 } else if (message.startsWith("CONID: ")) {
                     connectionId = Integer.parseInt(message.split(" ")[1]);
+                    System.out.println("///////////////////////// I got id " + connectionId);
                     Parser.parse(0, Encoder.createPlayerIdMsg(connectionId));
                 } else {
                     System.out.println(message);

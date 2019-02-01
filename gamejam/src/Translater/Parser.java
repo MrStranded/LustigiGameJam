@@ -153,7 +153,7 @@ public class Parser {
 					if (worldState != null) {
 						HashMap<String, String> ipNameTuples = new HashMap<>();
 
-						if (values.length > 0) {
+						if (values.length > 1) {
 							int t = values.length / 2;
 							for (int i = 0; i < t; i++) {
 								String ip = values[0+i*2];

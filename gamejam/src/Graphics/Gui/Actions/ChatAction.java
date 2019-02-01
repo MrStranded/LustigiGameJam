@@ -1,5 +1,6 @@
 package Graphics.Gui.Actions;
 
+import Globals.MasterSwitch;
 import Graphics.Gui.GUICreater;
 import Graphics.Gui.GraphicalComponents.InputComponent;
 import Graphics.Screen;
@@ -20,9 +21,15 @@ public class ChatAction implements Action {
 	@Override
 	public void perform(Screen screen, WorldState worldState) {
 		if (parent != null) {
-			Sender.sendMessage(worldState.userName + ": " + parent.getContent());
-			parent.setContent("");
-			parent.setReady(false);
+			if (parent.getContent().length() > 0) {
+				String msg = parent.getText() + parent.getContent();
+				if (MasterSwitch.isServer) {
+					worldState.addChatMessage(msg);
+				}
+				Sender.sendMessage(msg);
+				parent.setContent("");
+				parent.setReady(false);
+			}
 		}
 	}
 }

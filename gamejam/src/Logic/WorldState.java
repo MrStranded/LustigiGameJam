@@ -93,4 +93,15 @@ public class WorldState {
 	public void setUnits(ConcurrentLinkedDeque<Component> units) {
 		this.units = units;
 	}
+
+	public void addChatMessage(String msg) {
+		chatMessages.add(msg);
+		if (chatMessages.size() > 5) {
+			chatMessages.pop();
+		}
+	}
+
+	public String[] getChatMessages() {
+		return (String[]) chatMessages.toArray();
+	}
 }

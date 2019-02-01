@@ -46,7 +46,8 @@ public class GUICreater {
 		gui.addUIComponent(mainBox);
 		mainBox.setColor(new Color(200,200,200));
 
-		mainBox.addUIComponent(createUpdatingText(0, screen.getWorldState(), 0.2, 0.2, 0.6, 0.6));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.PLAYERLIST, screen.getWorldState(), 0.2, 0.2, 0.6, 0.275));
+		mainBox.addUIComponent(createUpdatingText(UpdatingTextComponent.CHAT, screen.getWorldState(), 0.2, 0.5, 0.6, 0.3));
 
 		return gui;
 	}

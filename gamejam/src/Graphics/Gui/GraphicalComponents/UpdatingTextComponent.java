@@ -6,10 +6,10 @@ import Logic.WorldState;
 
 public class UpdatingTextComponent extends UIComponent{
 
-	public static int PLAYERLIST = 0;
-	public static int PING = 1;
-	public static int CHAT = 2;
-	public static int PLAYERATTRIBUTES = 3;
+	public static final int PLAYERLIST = 0;
+	public static final int PING = 1;
+	public static final int CHAT = 2;
+	public static final int PLAYERATTRIBUTES = 3;
 
 	private String text;
 	private int whatToUpdate = 0;
@@ -34,11 +34,24 @@ public class UpdatingTextComponent extends UIComponent{
 		StringBuilder players = new StringBuilder();
 
 		if (worldState != null) {
-			for (Player player : worldState.getPlayers()) {
-				players.append(player.getName());
-				players.append(" : ");
-				players.append(player.getPing());
-				players.append("\n");
+
+			switch (whatToUpdate) {
+				case PLAYERLIST:
+					for (Player player : worldState.getPlayers()) {
+						players.append(player.getName());
+						players.append(" : ");
+						players.append(player.getPing());
+						players.append("\n");
+					}
+					break;
+
+				case CHAT:
+					for (String msg : worldState.getChatMessages()) {
+						players.append(msg);
+						players.append("\n");
+					}
+					break;
+
 			}
 		}
 

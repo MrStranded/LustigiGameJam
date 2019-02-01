@@ -32,7 +32,7 @@ public class Image {
 				at.rotate(i*da);
 				g.drawImage(original, at, null);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

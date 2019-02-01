@@ -10,7 +10,6 @@ public class WorldState {
     private final int mapSize = 32;
 
     private int[][] map;
-    private int size;
 
     private boolean isGameRunning = false;
 
@@ -77,7 +76,7 @@ public class WorldState {
     }
 
     public int getSize() {
-        return size;
+        return mapSize;
     }
 
     public ConcurrentLinkedDeque<Component> getUnits() {

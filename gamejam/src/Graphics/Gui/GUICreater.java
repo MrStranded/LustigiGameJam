@@ -3,8 +3,10 @@ package Graphics.Gui;
 import Graphics.Gui.GraphicalComponents.ButtonComponent;
 import Graphics.Gui.GraphicalComponents.TextComponent;
 import Graphics.Gui.GraphicalComponents.UIComponent;
+import Graphics.Gui.GraphicalComponents.UpdatingTextComponent;
 import Graphics.Screen;
 import Graphics.Gui.Actions.*;
+import Logic.WorldState;
 
 import java.awt.*;
 
@@ -30,6 +32,21 @@ public class GUICreater {
 		text.setColor(new Color(190,190,190));
 
 		mainBox.addUIComponent(createButton("Close", new CloseAction(),0.2, 0.6, 0.6, 0.1));
+
+		return gui;
+	}
+
+	public static GUI createPlayerMenu(Screen screen) {
+		width = screen.getWidth();
+		height = screen.getHeight();
+
+		GUI gui = new GUI();
+
+		UIComponent mainBox = createUIComponent(0.1,0.1,0.8,0.8);
+		gui.addUIComponent(mainBox);
+		mainBox.setColor(new Color(200,200,200));
+
+		mainBox.addUIComponent(createUpdatingText(0, screen.getWorldState(), 0.2, 0.2, 0.6, 0.6));
 
 		return gui;
 	}
@@ -61,6 +78,10 @@ public class GUICreater {
 
 	private static TextComponent createText(String text, double x, double y, double w, double h) {
 		return new TextComponent(text, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
+	}
+
+	private static UpdatingTextComponent createUpdatingText(int whatToUpdate, WorldState worldState, double x, double y, double w, double h) {
+		return new UpdatingTextComponent(whatToUpdate, worldState, new Rect((int) (x*width), (int) (y*height), (int) (w*width), (int) (h*height)));
 	}
 
 }

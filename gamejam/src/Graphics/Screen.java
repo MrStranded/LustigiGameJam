@@ -31,7 +31,7 @@ public class Screen extends JPanel {
 		setBackground(Color.BLUE);
 		setSize(width, height);
 
-		//gui = GUICreater.createMainMenu(this);
+		gui = GUICreater.createPlayerMenu(this);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------

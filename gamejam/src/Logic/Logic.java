@@ -51,11 +51,7 @@ public class Logic {
         ArrayList<Component> accelerators = new ArrayList<>();
         boolean sailUp;
 
-        int[] controls = InputBuffer.getControls();
-        Component ship = getShipById(worldState.getUserId());
-        
         if (MasterSwitch.isServer) {
-            accelerators = new ArrayList<>();
             HashMap<Integer, Integer[]> controlsAll = worldState.getControls();
 
             for (Player p : worldState.getPlayers()) {
@@ -78,31 +74,57 @@ public class Logic {
                 if (controls[Actions.SHOOTDOWN.valueOf()] == 1) {
                     shoot(ship, Slotpositions.LEFT);
                 }
-            }
-        }
 
-        // ---------------------------  TOGGLE SAIL  ---------------------------------------------
-        if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
-            sailUp = toggleSails(ship);
+                // ---------------------------  TOGGLE SAIL  ---------------------------------------------
+                if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
+                    sailUp = toggleSails(ship);
+                } else {
+                    sailUp = ship.getAttribute(Attributes.SAIL) == 1;
+                }
+
+                // --------------------------- MOVE UP DOWN -------------------------------------------
+                for (Component c : ship.getSubComponents()) {
+                    if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
+                        accelerators.add(c);
+                    }
+
+                    if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
+                        accelerators.add(c);
+                    }
+                }
+
+                accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
+
+                // -------------------------- STEER -----------------------------------------------------
+                steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
+            }
         } else {
-            sailUp = ship.getAttribute(Attributes.SAIL) == 1;
-        }
+            int[] controls = InputBuffer.getControls();
+            Component ship = getShipById(worldState.getUserId());
 
-        // --------------------------- MOVE UP DOWN -------------------------------------------
-        for (Component c : ship.getSubComponents()) {
-            if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
-                accelerators.add(c);
+            // ---------------------------  TOGGLE SAIL  ---------------------------------------------
+            if (controls[Actions.TOGGLESAIL.valueOf()] == 1) {
+                sailUp = toggleSails(ship);
+            } else {
+                sailUp = ship.getAttribute(Attributes.SAIL) == 1;
             }
 
-            if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
-                accelerators.add(c);
+            // --------------------------- MOVE UP DOWN -------------------------------------------
+            for (Component c : ship.getSubComponents()) {
+                if (c.getAttribute(Attributes.CATEGORY) == Categories.SAIL.valueOf() && sailUp) {
+                    accelerators.add(c);
+                }
+
+                if (c.getAttribute(Attributes.CATEGORY) == Categories.MOTOR.valueOf()) {
+                    accelerators.add(c);
+                }
             }
+
+            accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
+
+            // -------------------------- STEER -----------------------------------------------------
+            steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
         }
-
-        accelerate(ship, accelerators, controls[Actions.MOVEUPDOWN.valueOf()]);
-
-        // -------------------------- STEER -----------------------------------------------------
-        steer(ship, controls[Actions.MOVELEFTRIGHT.valueOf()]);
     }
 
     // ----------------------------------------- LOGIC -----------------------------------------------------------------

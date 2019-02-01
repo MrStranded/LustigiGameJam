@@ -1,6 +1,7 @@
 package Translater;
 
 import Globals.MasterSwitch;
+import Logic.Component;
 import Logic.WorldState;
 import Network.Client;
 import Network.ClientModel;
@@ -29,7 +30,14 @@ public class Sender {
 
 	private static void sendWorldState(WorldState worldState) {
 		if (worldState != null) {
-			StringBuilder stringBuilder = new StringBuilder();
+			StringBuilder stringBuilder = new StringBuilder(Encoder.createMapMsg(worldState));
+
+			for (Component component : worldState.getUnits()) {
+				stringBuilder.append(Separator.INFO);
+				stringBuilder.append(Encoder.createFullComponentMsg(component));
+			}
+
+			send(stringBuilder.toString());
 		}
 	}
 

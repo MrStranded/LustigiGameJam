@@ -66,7 +66,7 @@ public class Client extends ClientModel {
                     String change = message.substring(message.indexOf(" ") + 1);
                     Parser.parse(0, change);
 
-                    System.out.println(message);
+                    //System.out.println(message);
                 } else if (message.startsWith("MSG")) {
 
                 } else if (message.equals("GIBMENAME")) {

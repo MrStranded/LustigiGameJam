@@ -27,14 +27,14 @@ public class MapGen {
         for (int i = 0; i < blobs; i++) {
             int x = (int) (Math.random() * map.length);
             int y = (int) (Math.random() * map.length);
-            map = setBlobs(map, x, y, 0.42f);
+            map = setBlobs(map, x, y, 0.4f);
         }
         return map;
     }
 
     public static int[][] setBlobs(int[][] map, int x, int y, float p) {
         if (map[x][y] != 0) return map;
-        if (Math.random() <= p) {
+        if (Math.sin(Math.random()) <= p) {
             map[x][y] = (int) (Math.random() * 2d + 1);
             int xp = (x+1) % map.length;
             int xm = (x-1) % map.length;

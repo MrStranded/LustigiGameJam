@@ -56,6 +56,7 @@ public class UpdatingButtonsComponent extends UIComponent implements UpdatingCom
 						for (String ip : gameIps) {
 							ButtonComponent button = new ButtonComponent(ip + " - " + ipNameTuples.get(ip), new IpSetAction(ip), new Rect(xPos, yPos + i * dh, w, dh));
 							addUIComponent(button);
+							i++;
 						}
 					}
 

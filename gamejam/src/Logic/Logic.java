@@ -45,12 +45,13 @@ public class Logic {
         lastTick = System.currentTimeMillis();
     }
 
-    public static void processInput() {
+    private static void processInput() {
         ArrayList<Component> accelerators = new ArrayList<>();
         boolean sailUp;
 
         if (MasterSwitch.isServer) {
             HashMap<Integer, Integer[]> controlsAll = worldState.getControls();
+            controlsAll.put(worldState.userId, InputBuffer.getControls());
 
             for (Player p : worldState.getPlayers()) {
                 Integer[] controls = controlsAll.get(p.getId());
@@ -76,7 +77,6 @@ public class Logic {
                 }
 
                 if (controls[Actions.SHOOTLEFTMOUSE.valueOf()] == 1) {
-                    shoot(ship, Slotpositions.LEFT);
                 }
 
                 // ---------------------------  TOGGLE SAIL  ---------------------------------------------
@@ -100,7 +100,7 @@ public class Logic {
                 changes.append(Encoder.createAttributesMsg(ship));
             }
         } else {
-            int[] controls = InputBuffer.getControls();
+            Integer[] controls = InputBuffer.getControls();
             Component ship = getShipById(worldState.getUserId());
 
             assert ship != null;
@@ -127,7 +127,7 @@ public class Logic {
 
     // ----------------------------------------- LOGIC -----------------------------------------------------------------
 
-    public static void move(Component component) {
+    private static void move(Component component) {
         Position inputVector = getVector(component);
         Position p = component.getPosition();
 
@@ -152,7 +152,7 @@ public class Logic {
         }
     }
 
-    public static void shoot(Component ship, Slotpositions position) {
+    private static void shoot(Component ship, Slotpositions position) {
         for (Component c : ship.getSubComponents()) {
             if (c.getAttribute(Attributes.SLOTPOSITION) == position.valueOf()) {
                 Component projectile = new Component();
@@ -171,7 +171,7 @@ public class Logic {
         }
     }
 
-    public static void fly() {
+    private static void fly() {
         for (Component projectile : getProjectiles()) {
             boolean hitSomething = false;
 
@@ -208,7 +208,7 @@ public class Logic {
         }
     }
 
-    public static void hit(Component target, Component projectile) {
+    private static void hit(Component target, Component projectile) {
         double armor = target.getAttribute(Attributes.ARMOR);
         double health = target.getAttribute(Attributes.HEALTH);
         double damage = projectile.getAttribute(Attributes.DAMAGE);
@@ -238,7 +238,7 @@ public class Logic {
         }
     }
 
-    public static void accelerate(Component ship, ArrayList<Component> accelerators, int input) {
+    private static void accelerate(Component ship, ArrayList<Component> accelerators, int input) {
         double speed = ship.getAttribute(Attributes.SPEED);
         long t = (System.currentTimeMillis() - lastTick);
 
@@ -261,14 +261,14 @@ public class Logic {
         ship.set(Attributes.SPEED, speed);
     }
 
-    public static boolean toggleSails(Component ship) {
+    private static boolean toggleSails(Component ship) {
         int x = ship.getAttribute(Attributes.SAIL) == 0 ? 1 : 0;
         ship.set(Attributes.SAIL, x);
 
         return x == 1;
     }
 
-    public static void steer(Component ship, int input) {
+    private static void steer(Component ship, int input) {
         ship.set(Attributes.ANGLE, ship.getAttribute(Attributes.ANGLE) + (ship.getAttribute(Attributes.TURNANGLE) * input));
     }
 
@@ -284,15 +284,19 @@ public class Logic {
         }
     }
 
+    private static void shootTurret(Component ship, Component turret) {
+
+    }
+
 
     // ----------------------------------------- GET -------------------------------------------------------------------
 
-    public static Position getRotatedPosition(Position position, double angle) {
+    private static Position getRotatedPosition(Position position, double angle) {
         return new Position(cosSinLookup.getCos((int) angle) * position.getX() - cosSinLookup.getSine((int) angle) * position.getY(),
                 cosSinLookup.getSine((int) angle) * position.getX() + cosSinLookup.getCos((int) angle) * position.getY());
     }
 
-    public static ArrayList<Component> getNearestUnits(Component component) {
+    private static ArrayList<Component> getNearestUnits(Component component) {
         ArrayList<Component> nearestUnits = new ArrayList<Component>();
 
         for (Component c : getShips()) {
@@ -303,37 +307,37 @@ public class Logic {
         return nearestUnits;
     }
 
-    public static Position getVector(Component component) {
+    private static Position getVector(Component component) {
         double distance = getDistance(component);
 
         return new Position(cosSinLookup.getCos((int) component.getAttribute(Attributes.ANGLE)) * distance, cosSinLookup.getSine((int) component.getAttribute(Attributes.ANGLE)) * distance);
     }
 
-    public static Position getVector(double distance, double angle) {
+    private static Position getVector(double distance, double angle) {
         return new Position(Math.cos(angle) * distance, Math.sin(angle) * distance);
     }
 
-    public static double getDistance(Component component) {
+    private static double getDistance(Component component) {
         return (System.currentTimeMillis() - lastTick) * 1000 * component.getAttribute(Attributes.SPEED);
     }
 
-    public static Tiles getTile(Position p) {
+    private static Tiles getTile(Position p) {
         return Tiles.valueOf(worldState.getMap()[(int) p.getX()][(int) p.getY()]);
     }
 
-    public static int[] getTileIndex(Position p) {
+    private static int[] getTileIndex(Position p) {
         return new int[]{(int) p.getX(), (int) p.getY()};
     }
 
-    public static Position scaleVector(Position vector, double scalar) {
+    private static Position scaleVector(Position vector, double scalar) {
         return new Position(vector.getX() * scalar, vector.getY() * scalar);
     }
 
-    public static Position addVector(Position vector1, Position vector2) {
+    private static Position addVector(Position vector1, Position vector2) {
         return new Position(vector1.getX() + vector2.getX(), vector1.getY() + vector2.getY());
     }
 
-    public static ArrayList<Component> getShips() {
+    private static ArrayList<Component> getShips() {
         ArrayList<Component> list = new ArrayList<>();
 
         for (Component c : worldState.getUnits()) {
@@ -344,7 +348,7 @@ public class Logic {
         return list;
     }
 
-    public static ArrayList<Component> getProjectiles() {
+    private static ArrayList<Component> getProjectiles() {
         ArrayList<Component> list = new ArrayList<>();
 
         for (Component c : worldState.getUnits()) {
@@ -355,7 +359,7 @@ public class Logic {
         return list;
     }
 
-    public static Component getShipById(int playerId) {
+    private static Component getShipById(int playerId) {
         for (Component c : worldState.getUnits()) {
             if (c.getAttribute(Attributes.CATEGORY) == Categories.SHIP.valueOf() && c.getAttribute(Attributes.PLAYER) == playerId) {
                 return c;

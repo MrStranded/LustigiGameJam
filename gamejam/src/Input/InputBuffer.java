@@ -19,8 +19,8 @@ public class InputBuffer {
 
     private static int dx = 0, dy = 0; // the insets of the frame which we need to subtract from the mouse position
 
-    public static int[] getControls() {
-        int[] list = new int[32];
+    public static Integer[] getControls() {
+        Integer[] list = new Integer[32];
 
         list[Actions.MOVEUPDOWN.valueOf()] = isKeyPressed(Controls.MOVEUP.valueOf()) - isKeyPressed(Controls.MOVEDOWN.valueOf());
         list[Actions.MOVELEFTRIGHT.valueOf()] = isKeyPressed(Controls.MOVELEFT.valueOf()) - isKeyPressed(Controls.MOVERIGHT.valueOf());

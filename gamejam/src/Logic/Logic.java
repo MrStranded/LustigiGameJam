@@ -1,8 +1,6 @@
 package Logic;
 
 
-import javafx.geometry.Pos;
-
 import java.util.ArrayList;
 
 public class Logic {
@@ -48,23 +46,44 @@ public class Logic {
             worldState.addUnit(projectile);
         }
 
-        //TODO: broadcast new prjectiles
+        //TODO: broadcast new projectiles
     }
 
-    public double[] fly() {
+    public void fly(Component projectile) {
+        for (Component c : getNearestUnits(projectile)) {
+            Position unitNew = getRotatedPosition(c.getPosition(), c.getAttribute(Attributes.ANGLE));
+            Position projectileNew = getRotatedPosition(projectile.getPosition(), c.getAttribute(Attributes.ANGLE));
 
+            int numberOfParts = (int) (getDistance(projectile) / (worldState.getTileSize() / 2)) + 1;
+            double[] projectileVectorPart = scaleVector(getVector(projectile), 1.0 / numberOfParts);
 
-        return null;
+            for (int i = 0; i < numberOfParts; i++) {
+                Position p = Position.add(projectileNew, new Position(projectileVectorPart[0], projectileVectorPart[1]));
+
+                if (p.getX() >= unitNew.getX() - c.getAttribute(Attributes.LENGTH) / 2
+                        && p.getX() <= unitNew.getX() + c.getAttribute(Attributes.LENGTH) / 2
+                        && p.getY() >= unitNew.getY() - c.getAttribute(Attributes.WIDTH) / 2
+                        && p.getY() <= unitNew.getY() + c.getAttribute(Attributes.WIDTH) / 2) {
+                    //TODO: broadcast collision
+                    break;
+                }
+                projectileVectorPart = addVector(projectileVectorPart, projectileVectorPart);
+            }
+        }
     }
 
-    public ArrayList<Component> getNearestUnits(Component component) {
+    public static Position getRotatedPosition(Position position, double angle) {
+        return new Position(Math.cos(angle) * position.getX() - Math.sin(angle) * position.getY(), Math.sin(angle) * position.getX() + Math.sin(angle) * position.getY());
+    }
+
+    public static ArrayList<Component> getNearestUnits(Component component) {
         ArrayList<Component> nearestUnits = new ArrayList<Component>();
 
         for (Component c : worldState.getUnits()) {
             if (c.getAttribute(Attributes.CATEGORY) != Categories.SHIP.valueOf()) {
                 continue;
             }
-            if (Position.squaredDistance(Position.subtract(c.getPosition(), component.getPosition())) < Math.pow(component.getAttribute(Attributes.HEIGHT) + getDistance(component), 2)) {
+            if (Position.squaredDistance(Position.subtract(c.getPosition(), component.getPosition())) < Math.pow(component.getAttribute(Attributes.LENGTH) + getDistance(component), 2)) {
                 nearestUnits.add(c);
             }
         }
@@ -86,7 +105,14 @@ public class Logic {
     }
 
     public static int[] getTileIndex(Position p) {
-        int[] index = {(int) p.getX() / tileSize, (int) p.getY() / tileSize};
-        return index;
+        return new int[]{(int) p.getX() / tileSize, (int) p.getY() / tileSize};
+    }
+
+    public static double[] scaleVector(double[] vector, double scalar) {
+        return new double[]{vector[0] * scalar, vector[1] * scalar};
+    }
+
+    public static double[] addVector(double[] vector1, double[] vector2) {
+        return new double[]{vector1[0] + vector2[0], vector1[1] + vector2[1]};
     }
 }

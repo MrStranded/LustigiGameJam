@@ -16,7 +16,7 @@ public enum Attributes {
     ACCELERATION(12),
     CATEGORY(13),
     IMAGE(14),
-    HEIGHT(15),
+    LENGTH(15),
     DIRECTION(16),
     CONTROL(17);
 

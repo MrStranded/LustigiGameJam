@@ -4,6 +4,7 @@ import Globals.MasterSwitch;
 import Graphics.Window;
 import Graphics.Gui.GUI;
 import Graphics.Gui.GUICreater;
+import Loader.ComponentLoader;
 import Loader.ImageLoader;
 import Translater.Parser;
 import Translater.Sender;
@@ -30,6 +31,7 @@ public class GameLoop extends Thread {
         Logic.init(worldState);
 
 	    ImageLoader.loadImages();
+        ComponentLoader.loadComponents();
     }
 
     @Override

@@ -46,8 +46,6 @@ public class Image {
 		while (i < 0) { i+=Images.DIRECTIONS; }
 		while (i >= Images.DIRECTIONS) { i-=Images.DIRECTIONS; }
 
-		System.out.println(angle + " -> " + i);
-
 		return images[i];
 	}
 

@@ -204,7 +204,7 @@ public class Parser {
 						screen.updateGui(null);
 					}
 					if (worldState != null) {
-						ComponentGen.placeShip(worldState.userId, 0, worldState);
+						ComponentGen.placeShip(worldState.userId, (int) (Math.random()*2d + 1d), worldState);
 						worldState.setGameRunning(true);
 					}
 				}

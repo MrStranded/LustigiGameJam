@@ -17,8 +17,8 @@ public class Window {
 	private JFrame frame;
 
 	public Window () {
-		width = 1200;
-		height = 800;
+		width = 800;
+		height = 600;
 
 		initialize();
 	}

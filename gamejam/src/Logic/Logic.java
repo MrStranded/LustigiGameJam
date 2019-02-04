@@ -134,29 +134,36 @@ public class Logic {
     private static void move(Component component) {
         Position inputVector = getVector(component);
         Position p = component.getPosition();
+        boolean collision = false;
 
         int[] index = getTileIndex(p);
 
         Tiles xTile = getTile(new Position(p.getX() + inputVector.getX(), p.getY()));
         Tiles yTile = getTile(new Position(p.getX(), p.getY() + inputVector.getY()));
 
-        int xBorder = (index[0] + (inputVector.getX() >= 0 ? 1 : 0));
-        int yBorder = (index[1] + (inputVector.getY() >= 0 ? 1 : 0));
+        double xBorder = ((double) index[0] + (inputVector.getX() >= 0 ? 1 : 0));
+        double yBorder = ((double) index[1] + (inputVector.getY() >= 0 ? 1 : 0));
 
-        //TODO: fix (border - p) is wrong
-//        if (xTile == null || xTile.isCollision()) {
-//            component.getPosition().setX(Math.abs(xBorder - p.getX()));
-//        }
-//
-//        if (yTile == null || yTile.isCollision()) {
-//            component.getPosition().setY(Math.abs(yBorder - p.getY()));
-//        }
-//
-//        if (MasterSwitch.isServer) {
-//            changes.append(Encoder.createPositionMsg(component));
-//        }
+        if (xTile == null || xTile.isCollision()) {
+            collision = true;
+            component.getPosition().setX(xBorder);
+        }
 
-        component.setPosition(new Position(p.getX() + inputVector.getX(), p.getY() + inputVector.getY()));
+        if (yTile == null || yTile.isCollision()) {
+            collision = true;
+            component.getPosition().setY(yBorder);
+        }
+
+        if (MasterSwitch.isServer) {
+            changes.append(Encoder.createPositionMsg(component));
+        }
+        if (!collision) {
+            component.setPosition(new Position(p.getX() + inputVector.getX(), p.getY() + inputVector.getY()));
+        } else {
+            System.out.println(xTile);
+            System.out.println(yTile);
+            System.out.println("---------------");
+        }
     }
 
     private static void shoot(Component ship, Slotpositions position) {
@@ -340,6 +347,7 @@ public class Logic {
 
     private static int[] getTileIndex(Position p) {
         return new int[]{(int) p.getX(), (int) p.getY()};
+
     }
 
     private static Position scaleVector(Position vector, double scalar) {

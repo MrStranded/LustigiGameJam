@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Tiles {
-    GROUND(0, true),
-    DEEPWATER(1, false),
-    SHALLOWWATER(2, true);
+    GROUND(2, true),
+    DEEPWATER(0, false),
+    SHALLOWWATER(1, false);
 
     private int id;
     private boolean collision;
